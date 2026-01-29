@@ -99,7 +99,7 @@ export default defineNuxtConfig({
         },
         {
           property: "og:image",
-          content: "public/images/mcn_white.png",
+          content: "/images/mcn_white.png",
         },
         {
           property: "og:url",
@@ -116,11 +116,11 @@ export default defineNuxtConfig({
         },
         {
           name: "twitter:image",
-          content: "/public/images/mcn_white.png",
+          content: "/images/mcn_white.png",
         },
       ],
       link: [
-        { rel: "icon", type: "image/png", href: "public/images/mcn_white.png" },
+        { rel: "icon", type: "image/png", href: "/images/mcn_white.png" },
         { rel: "canonical", href: process.env.APP_SITE_URL },
       ],
     },
