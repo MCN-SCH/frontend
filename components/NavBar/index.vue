@@ -51,13 +51,27 @@ const scrollToSection = (id) => {
   mobileMenuOpen.value = false
 }
 
+const toggleMobileMenu = () => {
+  mobileMenuOpen.value = !mobileMenuOpen.value
+  emit('toggleMenu', mobileMenuOpen.value)
+}
+
+// Close mobile menu on resize to desktop
+const handleResize = () => {
+  if (window.innerWidth >= 1024 && mobileMenuOpen.value) {
+    mobileMenuOpen.value = false
+  }
+}
+
 // Lifecycle
 onMounted(() => {
   window.addEventListener('scroll', handleScroll)
+  window.addEventListener('resize', handleResize)
 })
 
 onBeforeUnmount(() => {
   window.removeEventListener('scroll', handleScroll)
+  window.removeEventListener('resize', handleResize)
 })
 </script>
 
@@ -91,7 +105,8 @@ onBeforeUnmount(() => {
     <!-- NAV CONTENT -->
     <div class="container mx-auto px-4 sm:px-6 py-2.5 sm:py-2 flex items-center justify-between gap-3 sm:gap-4">
       <!-- LOGO - Optimized for mobile -->
-      <div class="flex items-center space-x-2 sm:space-x-3 cursor-pointer group min-w-0 flex-shrink" @click="scrollToSection('hero')">
+      <div class="flex items-center space-x-2 sm:space-x-3 cursor-pointer group min-w-0 flex-shrink"
+           @click="scrollToSection('hero')">
         <div class="relative flex-shrink-0">
           <img
             src="@/assets/image/logo/mcn.svg"
@@ -155,19 +170,19 @@ onBeforeUnmount(() => {
         </button>
 
         <!-- Mobile Menu Button -->
-        <button @click="$emit('toggleMenu')" class="ml-1">
+        <button @click="toggleMobileMenu" class="ml-1">
           <div class="w-6 flex flex-col gap-1.5">
             <span :class="[
-              'h-0.5 transition-transform duration-200',
-              mobileMenuOpen ? 'rotate-45 translate-y-2' : 'bg-gray-700 dark:bg-gray-300'
+              'h-0.5 transition-all duration-300',
+              mobileMenuOpen ? 'rotate-45 translate-y-2 bg-blue-600 dark:bg-blue-400' : 'bg-gray-700 dark:bg-gray-300'
             ]"></span>
             <span :class="[
-              'h-0.5 transition-opacity duration-200',
+              'h-0.5 transition-all duration-300',
               mobileMenuOpen ? 'opacity-0' : 'bg-gray-700 dark:bg-gray-300'
             ]"></span>
             <span :class="[
-              'h-0.5 transition-transform duration-200',
-              mobileMenuOpen ? '-rotate-45 -translate-y-2' : 'bg-gray-700 dark:bg-gray-300'
+              'h-0.5 transition-all duration-300',
+              mobileMenuOpen ? '-rotate-45 -translate-y-2 bg-blue-600 dark:bg-blue-400' : 'bg-gray-700 dark:bg-gray-300'
             ]"></span>
           </div>
         </button>
@@ -175,12 +190,38 @@ onBeforeUnmount(() => {
     </div>
 
     <!-- MOBILE MENU -->
-    <transition name="slide-fade">
+    <transition name="mobile-menu">
       <div
-        v-if="$slots.mobileMenu"
-        class="lg:hidden px-4 sm:px-6 pb-4 pt-1 flex flex-col gap-3"
+        v-if="mobileMenuOpen"
+        class="lg:hidden border-t border-gray-200/40 dark:border-gray-700/40"
       >
-        <slot name="mobileMenu" />
+        <div class="px-4 sm:px-6 py-4 space-y-3">
+          <button
+            v-for="link in navLinks"
+            :key="link.id"
+            @click="scrollToSection(link.id)"
+            class="w-full text-left py-3 px-4 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-200 flex items-center justify-between group"
+          >
+            <span
+              class="text-gray-700 dark:text-gray-300 font-medium group-hover:text-blue-600 dark:group-hover:text-blue-400">
+              {{ link.label }}
+            </span>
+            <span class="text-blue-600 dark:text-blue-400 opacity-0 group-hover:opacity-100 transition-opacity">
+              →
+            </span>
+          </button>
+
+          <!-- Language Toggle in Mobile Menu -->
+          <button @click="$emit('toggleLanguage')"
+                  class="w-full text-left py-3 px-4 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-200 flex items-center justify-between">
+            <span class="text-gray-700 dark:text-gray-300 font-medium">
+              Language: {{ currentLanguage }}
+            </span>
+            <span class="text-blue-600 dark:text-blue-400">
+              {{ currentLanguage === '한국어' ? 'EN' : 'KO' }}
+            </span>
+          </button>
+        </div>
       </div>
     </transition>
   </header>
@@ -199,8 +240,13 @@ onBeforeUnmount(() => {
   z-index: -1;
 }
 
-.left-rope { left: 4rem; }
-.right-rope { right: 4rem; }
+.left-rope {
+  left: 4rem;
+}
+
+.right-rope {
+  right: 4rem;
+}
 
 .rope {
   width: 4px;
@@ -223,16 +269,32 @@ onBeforeUnmount(() => {
   margin-top: 2px;
 }
 
-/* Mobile animation */
-.slide-fade-enter-active,
-.slide-fade-leave-active {
-  transition: all 0.25s ease;
+/* Mobile menu animation */
+.mobile-menu-enter-active,
+.mobile-menu-leave-active {
+  transition: all 0.3s ease;
+  max-height: 500px;
+  overflow: hidden;
 }
 
-.slide-fade-enter-from,
-.slide-fade-leave-to {
+.mobile-menu-enter-from,
+.mobile-menu-leave-to {
+  max-height: 0;
   opacity: 0;
   transform: translateY(-10px);
+}
+
+/* Better touch targets for mobile */
+@media (max-width: 640px) {
+  button {
+    min-height: 40px;
+    min-width: 40px;
+  }
+
+  .mobile-menu-enter-active,
+  .mobile-menu-leave-active {
+    transition: all 0.25s ease;
+  }
 }
 
 /* Active link indicator */
@@ -243,13 +305,5 @@ onBeforeUnmount(() => {
 .active-link::after {
   content: '';
   @apply absolute left-0 -bottom-1 h-[2px] w-full bg-gradient-to-r from-blue-600 to-blue-700;
-}
-
-/* Better touch targets for mobile */
-@media (max-width: 640px) {
-  button {
-    min-height: 36px;
-    min-width: 36px;
-  }
 }
 </style>
