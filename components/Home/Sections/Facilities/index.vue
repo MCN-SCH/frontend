@@ -1,9 +1,4 @@
 <script setup>
-import { Server, Wifi, Smartphone, Users2 } from 'lucide-vue-next';
-import SectionHeader from '@/components/Home/ui/SectionHeader';
-import Card from '@/components/Home/ui/Card';
-import Badge from '@/components/Home/ui/Badge';
-
 const props = defineProps({
   facilities: Array
 });
@@ -13,7 +8,7 @@ const props = defineProps({
   <section id="facilities" class="py-20">
     <div class="container mx-auto px-6">
       <div class="max-w-7xl mx-auto">
-        <SectionHeader
+        <HomeUISectionHeader
           badge-text="Research Facilities"
           badge-icon="Server"
           title="Our Research Infrastructure"
@@ -21,7 +16,7 @@ const props = defineProps({
         />
 
         <div class="grid md:grid-cols-4 gap-8">
-          <Card
+          <HomeUICard
             v-for="facility in facilities"
             :key="facility.name"
             :title="facility.name"
@@ -43,7 +38,7 @@ const props = defineProps({
             <template #action>
               View Details
             </template>
-          </Card>
+          </HomeUICard>
         </div>
 
         <div class="mt-16 bg-gradient-to-r from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/20 rounded-2xl p-8">
@@ -52,19 +47,19 @@ const props = defineProps({
               <h3 class="text-2xl font-bold mb-4">Access & Usage</h3>
               <ul class="space-y-3">
                 <li class="flex items-center">
-                  <Badge text="Available" type="success" class="mr-3" />
+                  <HomeUIBadge text="Available" type="success" class="mr-3" />
                   <span class="text-gray-700 dark:text-gray-300">Lab members have 24/7 access</span>
                 </li>
                 <li class="flex items-center">
-                  <Badge text="Training" type="info" class="mr-3" />
+                  <HomeUIBadge text="Training" type="info" class="mr-3" />
                   <span class="text-gray-700 dark:text-gray-300">Required training before equipment use</span>
                 </li>
                 <li class="flex items-center">
-                  <Badge text="Reservation" type="warning" class="mr-3" />
+                  <HomeUIBadge text="Reservation" type="warning" class="mr-3" />
                   <span class="text-gray-700 dark:text-gray-300">Online reservation system for shared equipment</span>
                 </li>
                 <li class="flex items-center">
-                  <Badge text="Collaboration" type="default" class="mr-3" />
+                  <HomeUIBadge text="Collaboration" type="default" class="mr-3" />
                   <span class="text-gray-700 dark:text-gray-300">Available for external collaborators</span>
                 </li>
               </ul>

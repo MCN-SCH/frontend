@@ -1,8 +1,5 @@
 <script setup>
-import { Mail, MapPin, GraduationCap, ExternalLink } from 'lucide-vue-next';
-import SectionHeader from '@/components/Home/ui/SectionHeader';
-import Button from '@/components/Home/ui/Button';
-
+import { Mail, MapPin, GraduationCap } from 'lucide-vue-next';
 const emit = defineEmits(['apply']);
 
 const contactInfo = [
@@ -35,7 +32,7 @@ const contactInfo = [
   <section id="contact" class="py-20">
     <div class="container mx-auto px-6">
       <div class="max-w-7xl mx-auto">
-        <SectionHeader
+        <HomeUISectionHeader
           badge-text="Get In Touch"
           badge-icon="Mail"
           title="Contact Our Lab"
@@ -63,14 +60,14 @@ const contactInfo = [
                     <p v-if="info.description" class="text-sm text-gray-500 dark:text-gray-400 mt-1">
                       {{ info.description }}
                     </p>
-                    <Button
+                    <HomeUIButton
                       v-if="info.title === 'Join Our Lab'"
                       @click="$emit('apply')"
                       class="mt-3"
                       size="small"
                     >
                       Apply Now
-                    </Button>
+                    </HomeUIButton>
                   </div>
                 </div>
               </div>

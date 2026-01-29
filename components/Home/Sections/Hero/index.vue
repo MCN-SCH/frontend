@@ -14,7 +14,6 @@ import {
   Calendar,
   Shield
 } from 'lucide-vue-next'
-import Button from '@/components/Home/ui/Button'
 
 defineProps({
   showKoreanText: Boolean
@@ -159,7 +158,7 @@ onMounted(() => {
 
             <!-- CTA Buttons -->
             <div class="flex flex-wrap gap-4">
-              <Button
+              <HomeUIButton
                 @click="$emit('scrollTo', 'research')"
                 class="group relative overflow-hidden p-2"
                 :icon="ChevronRight"
@@ -168,15 +167,15 @@ onMounted(() => {
               >
                 <span class="relative z-10">Explore Research</span>
                 <div class="absolute inset-0 bg-gradient-to-r from-blue-600 to-blue-700 transform -translate-x-full group-hover:translate-x-0 transition-transform duration-300 -z-10"></div>
-              </Button>
-              <Button
+              </HomeUIButton>
+              <HomeUIButton
                 @click="$emit('scrollTo', 'contact')"
                 variant="secondary"
                 size="lg"
                 class="border-2 border-gray-300 dark:border-gray-600 hover:border-blue-500 transition-all p-2"
               >
                 Join Our Team
-              </Button>
+              </HomeUIButton>
             </div>
           </div>
 
@@ -202,20 +201,20 @@ onMounted(() => {
                     ></div>
                   </div>
                   <div class="flex gap-2">
-                    <button
+                    <el-button
                       @click="prevSlide"
                       class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
                       aria-label="Previous slide"
                     >
                       <ArrowRight class="w-5 h-5 rotate-180" />
-                    </button>
-                    <button
+                    </el-button>
+                    <el-button
                       @click="nextSlide"
                       class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
                       aria-label="Next slide"
                     >
                       <ArrowRight class="w-5 h-5" />
-                    </button>
+                    </el-button>
                   </div>
                 </div>
 

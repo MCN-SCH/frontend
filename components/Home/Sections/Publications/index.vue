@@ -1,9 +1,5 @@
 <script setup>
 import { FileText, ExternalLink, Code, Download, Eye, Clock, ArrowRight } from 'lucide-vue-next';
-import SectionHeader from '@/components/Home/ui/SectionHeader';
-import Card from '@/components/Home/ui/Card';
-import Badge from '@/components/Home/ui/Badge';
-import Button from '@/components/Home/ui/Button';
 
 const props = defineProps({
   publications: Array
@@ -26,7 +22,7 @@ const getBadgeColor = (badge) => {
   <section id="publications" class="py-20 bg-gray-50 dark:bg-gray-900/50">
     <div class="container mx-auto px-4 sm:px-6 lg:px-8">
       <div class="max-w-7xl mx-auto">
-        <SectionHeader
+        <HomeUISectionHeader
           badge-text="Research Output"
           badge-icon="FileText"
           title="Recent Publications"
@@ -34,7 +30,7 @@ const getBadgeColor = (badge) => {
         />
 
         <div class="mt-12 space-y-6">
-          <Card
+          <HomeUICard
             v-for="pub in publications"
             :key="pub.title"
             class="hover:shadow-lg transition-shadow duration-300"
@@ -47,7 +43,7 @@ const getBadgeColor = (badge) => {
                   {{ pub.badge }}
                 </div>
                 <div class="text-sm text-gray-500 dark:text-gray-400">{{ pub.impact }}</div>
-                <Badge v-if="pub.award" :text="pub.award" type="warning" />
+                <HomeUIBadge v-if="pub.award" :text="pub.award" type="warning" />
               </div>
 
               <!-- Title -->
@@ -81,7 +77,7 @@ const getBadgeColor = (badge) => {
               <!-- Action buttons -->
               <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-5 border-t border-gray-100 dark:border-gray-700">
                 <div class="flex flex-wrap gap-2">
-                  <Button
+                  <HomeUIButton
                     @click="window.open(pub.link, '_blank')"
                     variant="outline"
                     size="small"
@@ -89,8 +85,8 @@ const getBadgeColor = (badge) => {
                   >
                     <ExternalLink class="w-4 h-4 mr-2" />
                     View Paper
-                  </Button>
-                  <Button
+                  </HomeUIButton>
+                  <HomeUIButton
                     @click="$emit('openBibtex', pub)"
                     variant="outline"
                     size="small"
@@ -98,30 +94,30 @@ const getBadgeColor = (badge) => {
                   >
                     <Code class="w-4 h-4 mr-2" />
                     BibTeX
-                  </Button>
-                  <Button
+                  </HomeUIButton>
+                  <HomeUIButton
                     variant="outline"
                     size="small"
                     class="flex-1 sm:flex-none"
                   >
                     <Download class="w-4 h-4 mr-2" />
                     PDF
-                  </Button>
+                  </HomeUIButton>
                 </div>
-                <button class="text-sm text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 flex items-center justify-center sm:justify-start transition-colors">
+                <HomeUIButton class="text-sm text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 flex items-center justify-center sm:justify-start transition-colors">
                   <Eye class="w-4 h-4 mr-2" />
                   View Details
-                </button>
+                </HomeUIButton>
               </div>
             </div>
-          </Card>
+          </HomeUICard>
         </div>
 
         <!-- Centered "View All Publications" button -->
         <div class="mt-12 flex justify-center">
-          <Button variant="secondary" size="medium" class="px-8">
+          <HomeUIButton variant="secondary" size="medium" class="px-8">
             View All Publications
-          </Button>
+          </HomeUIButton>
         </div>
       </div>
     </div>

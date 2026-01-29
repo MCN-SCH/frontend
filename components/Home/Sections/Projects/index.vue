@@ -1,8 +1,5 @@
 <script setup>
 import { Briefcase, Users, Calendar, DollarSign, ChevronRight } from 'lucide-vue-next';
-import SectionHeader from '@/components/Home/ui/SectionHeader';
-import Card from '@/components/Home/ui/Card';
-import Badge from '@/components/Home/ui/Badge';
 
 const props = defineProps({
   projects: Array
@@ -22,7 +19,7 @@ const getStatusBadge = (status) => {
   <section id="projects" class="py-20 bg-gray-50 dark:bg-gray-900">
     <div class="container mx-auto px-6">
       <div class="max-w-7xl mx-auto">
-        <SectionHeader
+        <HomeUISectionHeader
           badge-text="Research Projects"
           badge-icon="Briefcase"
           title="Current Research Projects"
@@ -30,7 +27,7 @@ const getStatusBadge = (status) => {
         />
 
         <div class="grid md:grid-cols-3 gap-8">
-          <Card
+          <HomeUICard
             v-for="project in projects"
             :key="project.title"
             :title="project.title"
@@ -38,7 +35,7 @@ const getStatusBadge = (status) => {
           >
             <template #header>
               <div class="flex items-center justify-between mb-6">
-                <Badge
+                <HomeUIBadge
                   :text="getStatusBadge(project.status).text"
                   :type="getStatusBadge(project.status).type"
                 />
@@ -60,7 +57,7 @@ const getStatusBadge = (status) => {
             </div>
 
             <div class="flex flex-wrap gap-2 mb-6">
-              <Badge
+              <HomeUIBadge
                 v-for="tech in project.technologies"
                 :key="tech"
                 :text="tech"
@@ -78,7 +75,7 @@ const getStatusBadge = (status) => {
                 <ChevronRight class="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
               </button>
             </div>
-          </Card>
+          </HomeUICard>
         </div>
 
         <div class="mt-16 bg-gradient-to-r from-green-50 to-green-100 dark:from-green-900/20 dark:to-green-800/20 rounded-2xl p-8">
@@ -90,11 +87,11 @@ const getStatusBadge = (status) => {
                 cutting-edge research in computing and networks.
               </p>
               <div class="flex flex-wrap gap-4">
-                <Badge text="NRF Korea" type="success" />
-                <Badge text="IITP" type="info" />
-                <Badge text="MSIT" type="warning" />
-                <Badge text="Samsung" type="default" />
-                <Badge text="LG" type="default" />
+                <HomeUIBadge text="NRF Korea" type="success" />
+                <HomeUIBadge text="IITP" type="info" />
+                <HomeUIBadge text="MSIT" type="warning" />
+                <HomeUIBadge text="Samsung" type="default" />
+                <HomeUIBadge text="LG" type="default" />
               </div>
             </div>
           </div>

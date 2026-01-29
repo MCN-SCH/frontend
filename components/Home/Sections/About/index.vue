@@ -1,9 +1,5 @@
 <script setup>
-import { Lightbulb, Microscope, Users2, Zap, Sparkles, Target, TrendingUp, Globe, Shield, Cpu, Cloud, Brain } from 'lucide-vue-next';
-import SectionHeader from '@/components/Home/ui/SectionHeader';
-import Card from '@/components/Home/ui/Card';
-import { ElCarousel, ElCarouselItem } from 'element-plus';
-import { ref } from 'vue';
+import { Microscope, Users2, Zap, Sparkles, Target, Globe, Shield, Cpu, Cloud, Brain } from 'lucide-vue-next';
 
 const features = [
   {

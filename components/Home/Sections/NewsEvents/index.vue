@@ -1,9 +1,5 @@
 <script setup>
 import { FileText, Calendar, MapPin, Users, ChevronRight } from 'lucide-vue-next';
-import SectionHeader from '@/components/Home/ui/SectionHeader';
-import Card from '@/components/Home/UI/Card';
-import Badge from '@/components/Home/ui/Badge';
-import Button from '@/components/Home/ui/Button';
 
 const props = defineProps({
   news: Array,
@@ -36,13 +32,13 @@ const getBadgeType = (type) => {
                 </div>
                 <h2 class="text-3xl font-bold">Lab Updates</h2>
               </div>
-              <Button variant="outline" size="small">
+              <HomeUIButton variant="outline" size="small">
                 View All
-              </Button>
+              </HomeUIButton>
             </div>
 
             <div class="space-y-6">
-              <Card
+              <HomeUICard
                 v-for="item in news"
                 :key="item.title"
                 :title="item.title"
@@ -50,7 +46,7 @@ const getBadgeType = (type) => {
               >
                 <template #header>
                   <div class="flex items-center justify-between mb-3">
-                    <Badge :text="item.type" :type="getBadgeType(item.type)" />
+                    <HomeUIBadge :text="item.type" :type="getBadgeType(item.type)" />
                     <div class="text-sm text-gray-500 dark:text-gray-400">{{ item.date }}</div>
                   </div>
                 </template>
@@ -59,7 +55,7 @@ const getBadgeType = (type) => {
                   Read More
                   <ChevronRight class="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
                 </template>
-              </Card>
+              </HomeUICard>
             </div>
           </div>
 
@@ -73,13 +69,13 @@ const getBadgeType = (type) => {
                 </div>
                 <h2 class="text-3xl font-bold">Events & Seminars</h2>
               </div>
-              <Button variant="outline" size="small">
+              <HomeUIButton variant="outline" size="small">
                 Calendar
-              </Button>
+              </HomeUIButton>
             </div>
 
             <div class="space-y-6">
-              <Card
+              <HomeUICard
                 v-for="event in events"
                 :key="event.title"
                 :title="event.title"
@@ -96,7 +92,7 @@ const getBadgeType = (type) => {
                     </div>
                     <div class="flex-1">
                       <div class="flex items-center justify-between mb-2">
-                        <Badge :text="event.type" type="default" />
+                        <HomeUIBadge :text="event.type" type="default" />
                         <div class="text-sm text-gray-500 dark:text-gray-400 flex items-center">
                           <Users class="w-4 h-4 mr-1" />
                           {{ event.participants }}
@@ -118,7 +114,7 @@ const getBadgeType = (type) => {
                 <template #action>
                   Event Details
                 </template>
-              </Card>
+              </HomeUICard>
             </div>
 
             <div class="mt-8 bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg">
