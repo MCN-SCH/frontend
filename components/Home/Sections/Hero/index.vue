@@ -101,7 +101,7 @@ onMounted(() => {
       <div class="max-w-7xl mx-auto">
         <div class="grid lg:grid-cols-2 gap-12 items-center">
           <div class="relative">
-            <div class="flex justify-center">
+            <div class="flex justify-center sm:justify-start">
               <div
                 class="inline-flex flex-col sm:flex-row sm:items-center gap-2 px-4 py-3 rounded-full bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-blue-200 dark:border-blue-800 text-blue-700 dark:text-blue-300 text-sm font-medium mb-6 shadow-lg"
               >
@@ -111,9 +111,7 @@ onMounted(() => {
                   >
                     <Rocket class="w-3 h-3 text-white" />
                   </div>
-                  <span class="font-bold"
-                  >Soonchunhyang University's Research Lab</span
-                  >
+                  <span class="font-bold">Soonchunhyang University's Research Lab</span>
                 </div>
                 <span class="text-center sm:text-left">Since 20**</span>
               </div>
@@ -147,10 +145,14 @@ onMounted(() => {
               </div>
             </div>
 
-            <p class="text-xl text-gray-700 dark:text-gray-300 mb-5 leading-relaxed font-medium text-center md:text-left">
-  <span class="block text-blue-600 dark:text-blue-400 font-bold mt-2">
-    AI • 6G • Cloud • IoT • Security
-  </span>
+            <p
+              class="text-xl text-gray-700 dark:text-gray-300 mb-5 leading-relaxed font-medium text-center md:text-left"
+            >
+              <span
+                class="block text-blue-600 dark:text-blue-400 font-bold mt-2"
+              >
+                AI • 6G • Cloud • IoT • Security
+              </span>
             </p>
 
             <!-- Stats Grid -->
@@ -211,7 +213,7 @@ onMounted(() => {
 
             <!-- CTA Buttons -->
 
-            <div class="flex justify-center flex-wrap gap-4">
+            <div class="flex justify-center sm:justify-start flex-wrap gap-4">
               <HomeUIButton
                 @click="$emit('scrollTo', 'research')"
                 class="group relative overflow-hidden p-2"
@@ -270,7 +272,9 @@ onMounted(() => {
                       class="p-2.5 rounded-full bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-gray-200 dark:border-gray-700 hover:border-blue-500 dark:hover:border-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/30 transition-all duration-300 shadow-sm hover:shadow-md active:scale-95 group"
                       aria-label="Previous slide"
                     >
-                      <ChevronLeft class="w-5 h-5 text-gray-600 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors" />
+                      <ChevronLeft
+                        class="w-5 h-5 text-gray-600 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors"
+                      />
                     </button>
 
                     <button
@@ -278,7 +282,9 @@ onMounted(() => {
                       class="p-2.5 rounded-full bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-gray-200 dark:border-gray-700 hover:border-blue-500 dark:hover:border-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/30 transition-all duration-300 shadow-sm hover:shadow-md active:scale-95 group"
                       aria-label="Next slide"
                     >
-                      <ChevronRight class="w-5 h-5 text-gray-600 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors" />
+                      <ChevronRight
+                        class="w-5 h-5 text-gray-600 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors"
+                      />
                     </button>
                   </div>
                 </div>
@@ -392,8 +398,12 @@ onMounted(() => {
     </div>
 
     <!-- Scroll Indicator -->
-    <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce hidden lg:block">
-      <div class="w-6 h-10 border-2 border-gray-400 rounded-full flex justify-center">
+    <div
+      class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce hidden lg:block"
+    >
+      <div
+        class="w-6 h-10 border-2 border-gray-400 rounded-full flex justify-center"
+      >
         <div class="w-1 h-3 bg-gray-400 rounded-full mt-2"></div>
       </div>
     </div>
