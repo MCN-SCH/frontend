@@ -465,15 +465,6 @@ const currentCount = computed(() => {
               :key="`alumni-${index}`"
               class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 transition-all duration-300 hover:shadow-lg overflow-hidden group opacity-90 hover:opacity-100"
             >
-              <!-- Alumni Badge -->
-              <div class="absolute top-4 right-4 z-10">
-                <div class="bg-gradient-to-r from-gray-600 to-gray-700 px-3 py-1.5 rounded-full shadow-lg">
-                  <div class="flex items-center gap-2 text-white text-xs font-bold">
-                    <Award class="w-3.5 h-3.5" />
-                    <span>Alumni</span>
-                  </div>
-                </div>
-              </div>
 
               <!-- Alumni Card -->
               <div class="p-5">
