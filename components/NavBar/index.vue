@@ -158,7 +158,7 @@ onBeforeUnmount(() => {
       <div class="flex lg:hidden items-center gap-3">
         <!-- Dark Mode Toggle - Mobile -->
         <button @click="$emit('toggleDarkMode')"
-                class="p-1.5 rounded-lg border border-gray-200 hover:border-blue-500 dark:border-gray-700 dark:hover:border-blue-500 transition-colors duration-300">
+                class="p-1.5 rounded-lg border border-gray-200 hover:border-blue-500 dark:border-gray-700 dark:hover:border-blue-500 transition-colors duration-300 flex items-center justify-center">
           <Sun v-if="darkMode" class="w-4 h-4 sm:w-5 sm:h-5 text-yellow-500" />
           <Moon v-else class="w-4 h-4 sm:w-5 sm:h-5 text-gray-600 dark:text-gray-400" />
         </button>
