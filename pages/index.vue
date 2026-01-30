@@ -20,6 +20,12 @@ useSeoMeta({
   description: 'Welcome to our Research Lab - Pioneering Innovations in Science and Technology',
 })
 
+definePageMeta({
+  layout: 'default',
+  middleware: ['maintenance'],
+})
+
+
 // State
 const isMenuOpen = ref(false);
 const currentLanguage = ref('EN');

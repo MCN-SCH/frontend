@@ -1,13 +1,18 @@
 <script setup>
-import { ref, onMounted, onBeforeUnmount } from 'vue'
+import { ref, onMounted, onBeforeUnmount, computed } from 'vue'
 import { Cpu, Sun, Moon } from 'lucide-vue-next'
 
 const props = defineProps({
   darkMode: Boolean,
-  currentLanguage: String
+  currentLanguage: String,
 })
 
-const emit = defineEmits(['toggleDarkMode', 'toggleLanguage', 'scrollTo', 'toggleMenu'])
+const emit = defineEmits([
+  'toggleDarkMode',
+  'toggleLanguage',
+  'scrollTo',
+  'toggleMenu',
+])
 
 // State management
 const isScrolled = ref(false)
@@ -15,6 +20,7 @@ const isHidden = ref(false)
 const mobileMenuOpen = ref(false)
 const lastScrollY = ref(0)
 const swing = ref(0)
+const activeSection = ref('hero') // Track active section
 
 // Navigation links
 const navLinks = [
@@ -25,16 +31,38 @@ const navLinks = [
   { id: 'publications', label: 'Publications' },
   { id: 'projects', label: 'Projects' },
   { id: 'facilities', label: 'Facilities' },
-  { id: 'contact', label: 'Contact' }
+  { id: 'contact', label: 'Contact' },
 ]
 
-// Scroll handler with rope swing effect
+// Update active section based on scroll position
+const updateActiveSection = () => {
+  const sections = navLinks.map((link) => link.id)
+  const scrollPosition = window.scrollY + 100 // Offset for better UX
+
+  for (const sectionId of sections) {
+    const element = document.getElementById(sectionId)
+    if (element) {
+      const offsetTop = element.offsetTop
+      const offsetBottom = offsetTop + element.offsetHeight
+
+      if (scrollPosition >= offsetTop && scrollPosition < offsetBottom) {
+        activeSection.value = sectionId
+        break
+      }
+    }
+  }
+}
+
+// Enhanced scroll handler
 const handleScroll = () => {
   const current = window.scrollY
   const delta = current - lastScrollY.value
 
   isScrolled.value = current > 20
   isHidden.value = delta > 8 && current > 120
+
+  // Update active section
+  updateActiveSection()
 
   // Rope swing calculation (only on desktop)
   if (window.innerWidth >= 768) {
@@ -47,6 +75,7 @@ const handleScroll = () => {
 }
 
 const scrollToSection = (id) => {
+  activeSection.value = id // Set active immediately on click
   emit('scrollTo', id)
   mobileMenuOpen.value = false
 }
@@ -67,6 +96,8 @@ const handleResize = () => {
 onMounted(() => {
   window.addEventListener('scroll', handleScroll)
   window.addEventListener('resize', handleResize)
+  // Initial active section check
+  setTimeout(updateActiveSection, 100)
 })
 
 onBeforeUnmount(() => {
@@ -88,25 +119,35 @@ onBeforeUnmount(() => {
       isScrolled
         ? 'border-gray-200/40 dark:border-gray-700/40'
         : 'border-gray-200/60 dark:border-gray-700/30',
-      'rounded-2xl'
+      'rounded-2xl',
     ]"
   >
     <!-- ROPES - Hidden on mobile, shown on desktop -->
-    <div class="rope-wrap left-rope hidden md:block" :style="{ transform: `rotateZ(${swing}deg)` }">
+    <div
+      class="rope-wrap left-rope hidden md:block"
+      :style="{ transform: `rotateZ(${swing}deg)` }"
+    >
       <span class="rope"></span>
       <span class="knot"></span>
     </div>
 
-    <div class="rope-wrap right-rope hidden md:block" :style="{ transform: `rotateZ(${-swing}deg)` }">
+    <div
+      class="rope-wrap right-rope hidden md:block"
+      :style="{ transform: `rotateZ(${-swing}deg)` }"
+    >
       <span class="rope"></span>
       <span class="knot"></span>
     </div>
 
     <!-- NAV CONTENT -->
-    <div class="container mx-auto px-4 sm:px-6 py-2.5 sm:py-2 flex items-center justify-between gap-3 sm:gap-4">
+    <div
+      class="container mx-auto px-4 sm:px-6 py-2.5 sm:py-2 flex items-center justify-between gap-3 sm:gap-4"
+    >
       <!-- LOGO - Optimized for mobile -->
-      <div class="flex items-center space-x-2 sm:space-x-3 cursor-pointer group min-w-0 flex-shrink"
-           @click="scrollToSection('hero')">
+      <div
+        class="flex items-center space-x-2 sm:space-x-3 cursor-pointer group min-w-0 flex-shrink"
+        @click="scrollToSection('hero')"
+      >
         <div class="relative flex-shrink-0">
           <img
             src="@/assets/image/logo/mcn.svg"
@@ -122,17 +163,30 @@ onBeforeUnmount(() => {
           v-for="link in navLinks"
           :key="link.id"
           @click="scrollToSection(link.id)"
-          class="relative group cursor-pointer whitespace-nowrap"
+          class="relative group cursor-pointer whitespace-nowrap px-1"
         >
+          <div class="flex items-center">
+            <span
+              v-if="activeSection === link.id"
+              class="w-1.5 h-1.5 rounded-full bg-blue-500 mr-2 animate-pulse"
+            ></span>
+            <span
+              :class="[
+                'transition-colors duration-300 text-sm xl:text-base font-medium',
+                activeSection === link.id
+                  ? 'text-blue-600 dark:text-blue-400'
+                  : 'text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400',
+              ]"
+            >
+              {{ link.label }}
+            </span>
+          </div>
           <span
-            :class="[
-              'text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium',
-              'transition-colors duration-300 text-sm xl:text-base'
-            ]"
-          >
-            {{ link.label }}
-          </span>
+            v-if="activeSection === link.id"
+            class="absolute left-0 -bottom-1 h-[2px] w-full bg-gradient-to-r from-blue-600 to-blue-700"
+          ></span>
           <span
+            v-else
             class="absolute left-0 -bottom-1 h-[2px] bg-gradient-to-r from-blue-600 to-blue-700 transition-all duration-300 w-0 group-hover:w-full"
           ></span>
         </button>
@@ -141,14 +195,20 @@ onBeforeUnmount(() => {
       <!-- RIGHT SECTION - Desktop -->
       <div class="hidden lg:flex items-center gap-3 xl:gap-4">
         <!-- Language Toggle -->
-        <button @click="$emit('toggleLanguage')"
-                class="flex items-center space-x-2 px-3 py-1.5 xl:py-2 rounded-lg border border-gray-200 hover:border-blue-500 dark:border-gray-700 dark:hover:border-blue-500 transition-colors duration-300">
-          <span class="text-sm font-medium dark:text-gray-300">{{ currentLanguage }}</span>
+        <button
+          @click="$emit('toggleLanguage')"
+          class="flex items-center space-x-2 px-3 py-1.5 xl:py-2 rounded-lg border border-gray-200 hover:border-blue-500 dark:border-gray-700 dark:hover:border-blue-500 transition-colors duration-300"
+        >
+          <span class="text-sm font-medium dark:text-gray-300">{{
+            currentLanguage
+          }}</span>
         </button>
 
         <!-- Dark Mode Toggle -->
-        <button @click="$emit('toggleDarkMode')"
-                class="p-1.5 xl:p-2 rounded-lg border border-gray-200 hover:border-blue-500 dark:border-gray-700 dark:hover:border-blue-500 transition-colors duration-300">
+        <button
+          @click="$emit('toggleDarkMode')"
+          class="p-1.5 xl:p-2 rounded-lg border border-gray-200 hover:border-blue-500 dark:border-gray-700 dark:hover:border-blue-500 transition-colors duration-300"
+        >
           <Sun v-if="darkMode" class="w-5 h-5 text-yellow-500" />
           <Moon v-else class="w-5 h-5 text-gray-600 dark:text-gray-400" />
         </button>
@@ -157,33 +217,52 @@ onBeforeUnmount(() => {
       <!-- MOBILE CONTROLS - Visible on mobile -->
       <div class="flex lg:hidden items-center gap-3">
         <!-- Dark Mode Toggle - Mobile -->
-        <button @click="$emit('toggleDarkMode')"
-                class="p-1.5 rounded-lg border border-gray-200 hover:border-blue-500 dark:border-gray-700 dark:hover:border-blue-500 transition-colors duration-300 flex items-center justify-center">
+        <button
+          @click="$emit('toggleDarkMode')"
+          class="p-1.5 rounded-lg border border-gray-200 hover:border-blue-500 dark:border-gray-700 dark:hover:border-blue-500 transition-colors duration-300 flex items-center justify-center"
+        >
           <Sun v-if="darkMode" class="w-4 h-4 sm:w-5 sm:h-5 text-yellow-500" />
-          <Moon v-else class="w-4 h-4 sm:w-5 sm:h-5 text-gray-600 dark:text-gray-400" />
+          <Moon
+            v-else
+            class="w-4 h-4 sm:w-5 sm:h-5 text-gray-600 dark:text-gray-400"
+          />
         </button>
 
         <!-- Language Toggle - Mobile -->
-        <button @click="$emit('toggleLanguage')"
-                class="px-2 py-1.5 rounded-lg border border-gray-200 hover:border-blue-500 dark:border-gray-700 dark:hover:border-blue-500 transition-colors duration-300">
-          <span class="text-xs font-medium dark:text-gray-300">{{ currentLanguage === '한국어' ? 'KO' : 'EN' }}</span>
+        <button
+          @click="$emit('toggleLanguage')"
+          class="px-2 py-1.5 rounded-lg border border-gray-200 hover:border-blue-500 dark:border-gray-700 dark:hover:border-blue-500 transition-colors duration-300"
+        >
+          <span class="text-xs font-medium dark:text-gray-300">{{
+            currentLanguage === '한국어' ? 'KO' : 'EN'
+          }}</span>
         </button>
 
         <!-- Mobile Menu Button -->
         <button @click="toggleMobileMenu" class="ml-1">
           <div class="w-6 flex flex-col gap-1.5">
-            <span :class="[
-              'h-0.5 transition-all duration-300',
-              mobileMenuOpen ? 'rotate-45 translate-y-2 bg-blue-600 dark:bg-blue-400' : 'bg-gray-700 dark:bg-gray-300'
-            ]"></span>
-            <span :class="[
-              'h-0.5 transition-all duration-300',
-              mobileMenuOpen ? 'opacity-0' : 'bg-gray-700 dark:bg-gray-300'
-            ]"></span>
-            <span :class="[
-              'h-0.5 transition-all duration-300',
-              mobileMenuOpen ? '-rotate-45 -translate-y-2 bg-blue-600 dark:bg-blue-400' : 'bg-gray-700 dark:bg-gray-300'
-            ]"></span>
+            <span
+              :class="[
+                'h-0.5 transition-all duration-300',
+                mobileMenuOpen
+                  ? 'rotate-45 translate-y-2 bg-blue-600 dark:bg-blue-400'
+                  : 'bg-gray-700 dark:bg-gray-300',
+              ]"
+            ></span>
+            <span
+              :class="[
+                'h-0.5 transition-all duration-300',
+                mobileMenuOpen ? 'opacity-0' : 'bg-gray-700 dark:bg-gray-300',
+              ]"
+            ></span>
+            <span
+              :class="[
+                'h-0.5 transition-all duration-300',
+                mobileMenuOpen
+                  ? '-rotate-45 -translate-y-2 bg-blue-600 dark:bg-blue-400'
+                  : 'bg-gray-700 dark:bg-gray-300',
+              ]"
+            ></span>
           </div>
         </button>
       </div>
@@ -201,19 +280,37 @@ onBeforeUnmount(() => {
             :key="link.id"
             @click="scrollToSection(link.id)"
             class="w-full text-left py-3 px-4 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-200 flex items-center justify-between group"
+            :class="{
+              'bg-gray-100 dark:bg-gray-800': activeSection === link.id,
+            }"
           >
             <span
-              class="text-gray-700 dark:text-gray-300 font-medium group-hover:text-blue-600 dark:group-hover:text-blue-400">
+              :class="[
+                'font-medium',
+                activeSection === link.id
+                  ? 'text-blue-600 dark:text-blue-400'
+                  : 'text-gray-700 dark:text-gray-300 group-hover:text-blue-600 dark:group-hover:text-blue-400',
+              ]"
+            >
               {{ link.label }}
             </span>
-            <span class="text-blue-600 dark:text-blue-400 opacity-0 group-hover:opacity-100 transition-opacity">
+            <span
+              :class="[
+                activeSection === link.id
+                  ? 'text-blue-600 dark:text-blue-400 opacity-100'
+                  : 'text-blue-600 dark:text-blue-400 opacity-0 group-hover:opacity-100',
+              ]"
+              class="transition-opacity"
+            >
               →
             </span>
           </button>
 
           <!-- Language Toggle in Mobile Menu -->
-          <button @click="$emit('toggleLanguage')"
-                  class="w-full text-left py-3 px-4 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-200 flex items-center justify-between">
+          <button
+            @click="$emit('toggleLanguage')"
+            class="w-full text-left py-3 px-4 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-200 flex items-center justify-between"
+          >
             <span class="text-gray-700 dark:text-gray-300 font-medium">
               Language: {{ currentLanguage }}
             </span>

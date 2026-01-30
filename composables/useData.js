@@ -364,6 +364,20 @@ export const recentPublications = [
     citations: 12,
     status: 'Published',
   },
+  {
+    title: 'Federated Learning for Privacy-Preserving Healthcare Applications',
+    authors: 'Choi Jiwon, Lee Soojin, Kim Jane',
+    venue: 'Journal of Medical Internet Research (JMIR)',
+    year: '2023',
+    impact: 'SCI, IF: 5.2',
+    link: 'https://doi.org/10.2196/45678',
+    award: 'Top Cited Paper 2023',
+    badge: 'Federated Learning',
+    abstract:
+      'Explores federated learning techniques to enable collaborative healthcare data analysis while preserving patient privacy.',
+    citations: 30,
+    status: 'Published',
+  },
   // ... other publications
 ]
 

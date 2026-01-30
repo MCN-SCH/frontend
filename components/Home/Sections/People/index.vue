@@ -635,53 +635,45 @@ const currentCount = computed(() => {
       </div>
 
       <!-- Stats Footer -->
-      <div class="max-w-7xl mx-auto mt-14">
-        <div class="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-gray-800 dark:to-gray-900 rounded-2xl p-8 border border-blue-100 dark:border-gray-700 shadow-sm">
-          <div class="flex flex-col md:flex-row items-center justify-between gap-8">
-            <div class="text-center md:text-left">
-              <div class="flex items-center gap-4 mb-4">
-                <div class="p-3 rounded-xl bg-white dark:bg-gray-800 shadow-md">
-                  <Building2 class="w-8 h-8 text-blue-600 dark:text-blue-400" />
-                </div>
-                <div>
-                  <h3 class="text-2xl font-bold text-gray-900 dark:text-white">Research Team Overview</h3>
-                  <p class="text-gray-600 dark:text-gray-400 mt-1">
-                    Soonchunhyang university • {{ new Date().getFullYear() }}
-                  </p>
-                </div>
+      <div class="max-w-7xl mx-auto mt-8 md:mt-14 px-4">
+        <div class="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-gray-800 dark:to-gray-900 rounded-2xl p-6 md:p-8 border border-blue-100 dark:border-gray-700 shadow-sm">
+
+          <!-- Header - Always centered on mobile -->
+          <div class="text-center mb-8 md:mb-6">
+            <div class="inline-flex items-center gap-4 mb-4">
+              <div class="p-3 rounded-xl bg-white dark:bg-gray-800 shadow-md">
+                <Building2 class="w-8 h-8 text-blue-600 dark:text-blue-400" />
+              </div>
+              <div>
+                <h3 class="text-2xl font-bold text-gray-900 dark:text-white">Research Team</h3>
+                <p class="text-gray-600 dark:text-gray-400 mt-1 text-sm md:text-base">
+                  Soonchunhyang University • {{ new Date().getFullYear() }}
+                </p>
               </div>
             </div>
-            <div class="grid grid-cols-2 md:grid-cols-5 gap-6">
-              <div class="text-center">
-                <div class="text-3xl font-bold text-blue-600 dark:text-blue-400 mb-1">
-                  {{ sortedMembers.filter(m => isProfessor(m)).length }}
-                </div>
-                <div class="text-sm text-gray-600 dark:text-gray-400 font-medium">Professors</div>
-              </div>
-              <div class="text-center">
-                <div class="text-3xl font-bold text-green-600 dark:text-green-400 mb-1">
-                  {{ sortedMembers.filter(m => m.role.toLowerCase().includes('phd') && !isAlumni(m)).length }}
-                </div>
-                <div class="text-sm text-gray-600 dark:text-gray-400 font-medium">PhD Students</div>
-              </div>
-              <div class="text-center">
-                <div class="text-3xl font-bold text-cyan-600 dark:text-cyan-400 mb-1">
-                  {{ sortedMembers.filter(m => m.role.toLowerCase().includes('master') && !isAlumni(m)).length }}
-                </div>
-                <div class="text-sm text-gray-600 dark:text-gray-400 font-medium">Masters</div>
-              </div>
-              <div class="text-center">
-                <div class="text-3xl font-bold text-purple-600 dark:text-purple-400 mb-1">
-                  {{ sortedMembers.filter(m => m.role.toLowerCase().includes('postdoc') && !isAlumni(m)).length }}
-                </div>
-                <div class="text-sm text-gray-600 dark:text-gray-400 font-medium">Postdocs</div>
-              </div>
-              <div class="text-center">
-                <div class="text-3xl font-bold text-gray-600 dark:text-gray-400 mb-1">
-                  {{ alumniCount }}
-                </div>
-                <div class="text-sm text-gray-600 dark:text-gray-400 font-medium">Alumni</div>
-              </div>
+          </div>
+
+          <!-- Stats grid - Responsive layout -->
+          <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 md:gap-6">
+            <div class="text-center p-4 bg-white/60 dark:bg-gray-800/60 rounded-xl">
+              <div class="text-2xl md:text-3xl font-bold text-blue-600 dark:text-blue-400">{{ sortedMembers.filter(m => isProfessor(m)).length }}</div>
+              <div class="text-sm text-gray-600 dark:text-gray-400">Professors</div>
+            </div>
+            <div class="text-center p-4 bg-white/60 dark:bg-gray-800/60 rounded-xl">
+              <div class="text-2xl md:text-3xl font-bold text-green-600 dark:text-green-400">{{ sortedMembers.filter(m => m.role.toLowerCase().includes('phd') && !isAlumni(m)).length }}</div>
+              <div class="text-sm text-gray-600 dark:text-gray-400">PhD</div>
+            </div>
+            <div class="text-center p-4 bg-white/60 dark:bg-gray-800/60 rounded-xl">
+              <div class="text-2xl md:text-3xl font-bold text-cyan-600 dark:text-cyan-400">{{ sortedMembers.filter(m => m.role.toLowerCase().includes('master') && !isAlumni(m)).length }}</div>
+              <div class="text-sm text-gray-600 dark:text-gray-400">Masters</div>
+            </div>
+            <div class="text-center p-4 bg-white/60 dark:bg-gray-800/60 rounded-xl">
+              <div class="text-2xl md:text-3xl font-bold text-purple-600 dark:text-purple-400">{{ sortedMembers.filter(m => m.role.toLowerCase().includes('postdoc') && !isAlumni(m)).length }}</div>
+              <div class="text-sm text-gray-600 dark:text-gray-400">Postdocs</div>
+            </div>
+            <div class="text-center p-4 bg-white/60 dark:bg-gray-800/60 rounded-xl">
+              <div class="text-2xl md:text-3xl font-bold text-gray-600 dark:text-gray-400">{{ alumniCount }}</div>
+              <div class="text-sm text-gray-600 dark:text-gray-400">Alumni</div>
             </div>
           </div>
         </div>

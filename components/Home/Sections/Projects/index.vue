@@ -26,29 +26,31 @@ const getStatusBadge = (status) => {
           subtitle="Funded projects addressing critical challenges in computing and networking."
         />
 
-        <div class="grid md:grid-cols-3 gap-8">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
           <HomeUICard
             v-for="project in projects"
             :key="project.title"
             :title="project.title"
             :description="project.description"
+            class="h-full flex flex-col"
           >
             <template #header>
-              <div class="flex items-center justify-between mb-6">
+              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
                 <HomeUIBadge
                   :text="getStatusBadge(project.status).text"
                   :type="getStatusBadge(project.status).type"
+                  class="self-start sm:self-auto"
                 />
                 <div class="text-sm text-gray-500 dark:text-gray-400 flex items-center">
-                  <Calendar class="w-4 h-4 mr-1" />
-                  {{ project.duration }}
+                  <Calendar class="w-4 h-4 mr-2 shrink-0" />
+                  <span class="truncate">{{ project.duration }}</span>
                 </div>
               </div>
             </template>
 
             <div class="mb-6">
               <div class="text-sm text-gray-500 dark:text-gray-400 mb-2">Funding Source</div>
-              <div class="text-lg font-bold text-blue-600 dark:text-blue-400">
+              <div class="text-lg font-bold text-blue-600 dark:text-blue-400 truncate">
                 {{ project.funding }}
               </div>
               <div class="text-sm text-gray-500 dark:text-gray-400 mt-1">
@@ -56,22 +58,25 @@ const getStatusBadge = (status) => {
               </div>
             </div>
 
-            <div class="flex flex-wrap gap-2 mb-6">
-              <HomeUIBadge
-                v-for="tech in project.technologies"
-                :key="tech"
-                :text="tech"
-                type="info"
-              />
+            <div class="mb-6 flex-1">
+              <div class="flex flex-wrap gap-2">
+                <HomeUIBadge
+                  v-for="tech in project.technologies"
+                  :key="tech"
+                  :text="tech"
+                  type="info"
+                  class="text-xs"
+                />
+              </div>
             </div>
 
-            <div class="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-sm text-gray-500 dark:text-gray-400 pt-4 border-t border-gray-100 dark:border-gray-700">
               <div class="flex items-center">
-                <Users class="w-4 h-4 mr-2" />
-                {{ project.members }} members
+                <Users class="w-4 h-4 mr-2 shrink-0" />
+                <span>{{ project.members }} members</span>
               </div>
-              <button class="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium flex items-center group">
-                Project Details
+              <button class="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium flex items-center group self-start sm:self-auto mt-2 sm:mt-0">
+                <span>Details</span>
                 <ChevronRight class="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
               </button>
             </div>

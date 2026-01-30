@@ -147,10 +147,9 @@ const contactInfo = [
                   <input type="checkbox" id="subscribe" class="mr-2">
                   <label for="subscribe">Subscribe to lab updates and newsletter</label>
                 </div>
-
-                <Button type="submit" variant="primary" full-width>
+                <HomeUIButton type="submit" class="w-full mt-4">
                   Send Message
-                </Button>
+                </HomeUIButton>
               </form>
             </div>
           </div>

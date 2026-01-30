@@ -46,6 +46,7 @@ export default defineNuxtConfig({
     TELEGRAM_TOKEN: process.env.TELEGRAM_TOKEN,
     secretKey: process.env.NUXT_SECRET_KEY,
     public: {
+      maintenanceMode: process.env.MAINTENANCE_MODE || 'false',
       appBaseUrl: process.env.APP_BASE_URL,
       appSiteUrl: process.env.APP_SITE_URL,
       serverBaseUrl: process.env.SERVER_BASE_URL,
@@ -170,6 +171,14 @@ export default defineNuxtConfig({
   plugins: [
   ],
 
+  routeRules: {
+    '/': {
+      middleware: ['maintenance']
+    },
+    '/maintenance': {
+      ssr: false // Optional: disable SSR for maintenance page
+    }
+  },
 
   compatibilityDate: "2024-12-07",
 });

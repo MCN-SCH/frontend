@@ -80,7 +80,7 @@ onMounted(() => {
 <template>
   <section
     id="hero"
-    class="relative min-h-screen flex items-center pt-20 md:pt-16 lg:pt-16 overflow-hidden"
+    class="relative min-h-screen flex items-center pt-20 md:pt-24 lg:pt-16 overflow-hidden"
   >
     <div
       class="absolute inset-0 bg-gradient-to-br from-white via-blue-50/50 to-white dark:from-gray-900 dark:via-gray-800/50 dark:to-gray-900"
@@ -388,12 +388,8 @@ onMounted(() => {
     </div>
 
     <!-- Scroll Indicator -->
-    <div
-      class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce sm:none md:animate-bounce"
-    >
-      <div
-        class="w-6 h-10 border-2 border-gray-400 rounded-full flex justify-center"
-      >
+    <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce hidden lg:block">
+      <div class="w-6 h-10 border-2 border-gray-400 rounded-full flex justify-center">
         <div class="w-1 h-3 bg-gray-400 rounded-full mt-2"></div>
       </div>
     </div>

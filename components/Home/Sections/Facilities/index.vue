@@ -15,7 +15,7 @@ const props = defineProps({
           subtitle="State-of-the-art facilities and equipment supporting cutting-edge research."
         />
 
-        <div class="grid md:grid-cols-4 gap-8">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
           <HomeUICard
             v-for="facility in facilities"
             :key="facility.name"
@@ -23,20 +23,20 @@ const props = defineProps({
             :description="facility.description"
           >
             <template #header>
-              <div class="h-48 bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-800 rounded-xl mb-6 flex items-center justify-center">
-                <component :is="facility.icon" class="w-20 h-20 text-gray-400 dark:text-gray-500" />
+              <div class="h-40 sm:h-48 bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-800 rounded-xl mb-6 flex items-center justify-center">
+                <component :is="facility.icon" class="w-16 h-16 sm:w-20 sm:h-20 text-gray-400 dark:text-gray-500" />
               </div>
             </template>
 
             <div class="space-y-2">
               <div v-for="spec in facility.specs" :key="spec" class="flex items-center text-sm text-gray-600 dark:text-gray-400">
                 <div class="w-2 h-2 rounded-full bg-blue-500 mr-3 flex-shrink-0"></div>
-                <span>{{ spec }}</span>
+                <span class="text-xs sm:text-sm">{{ spec }}</span>
               </div>
             </div>
 
             <template #action>
-              View Details
+              <span class="text-sm sm:text-base">View Details</span>
             </template>
           </HomeUICard>
         </div>
