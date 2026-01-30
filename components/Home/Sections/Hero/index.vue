@@ -4,13 +4,13 @@ import {
   Rocket,
   Server,
   ChevronRight,
+  ChevronLeft,
   Sparkles,
   TrendingUp,
   Users,
   Award,
   BookOpen,
   Zap,
-  ArrowRight,
   Calendar,
   Shield,
 } from 'lucide-vue-next'
@@ -101,20 +101,22 @@ onMounted(() => {
       <div class="max-w-7xl mx-auto">
         <div class="grid lg:grid-cols-2 gap-12 items-center">
           <div class="relative">
-            <div
-              class="inline-flex flex-col sm:flex-row sm:items-center gap-2 px-4 py-3 rounded-full bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-blue-200 dark:border-blue-800 text-blue-700 dark:text-blue-300 text-sm font-medium mb-6 shadow-lg"
-            >
-              <div class="flex items-center gap-2">
-                <div
-                  class="w-6 h-6 flex items-center justify-center bg-gradient-to-r from-blue-500 to-blue-600 rounded-full"
-                >
-                  <Rocket class="w-3 h-3 text-white" />
-                </div>
-                <span class="font-bold"
+            <div class="flex justify-center">
+              <div
+                class="inline-flex flex-col sm:flex-row sm:items-center gap-2 px-4 py-3 rounded-full bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-blue-200 dark:border-blue-800 text-blue-700 dark:text-blue-300 text-sm font-medium mb-6 shadow-lg"
+              >
+                <div class="flex items-center gap-2">
+                  <div
+                    class="w-6 h-6 flex items-center justify-center bg-gradient-to-r from-blue-500 to-blue-600 rounded-full"
+                  >
+                    <Rocket class="w-3 h-3 text-white" />
+                  </div>
+                  <span class="font-bold"
                   >Soonchunhyang University's Research Lab</span
-                >
+                  >
+                </div>
+                <span class="text-center sm:text-left">Since 20**</span>
               </div>
-              <span class="text-center sm:text-left">Since 20**</span>
             </div>
 
             <div class="mb-6 text-center md:text-left">
@@ -208,7 +210,8 @@ onMounted(() => {
             </div>
 
             <!-- CTA Buttons -->
-            <div class="flex flex-wrap gap-4">
+
+            <div class="flex justify-center flex-wrap gap-4">
               <HomeUIButton
                 @click="$emit('scrollTo', 'research')"
                 class="group relative overflow-hidden p-2"
@@ -262,20 +265,21 @@ onMounted(() => {
                     ></div>
                   </div>
                   <div class="flex gap-2">
-                    <el-button
+                    <button
                       @click="prevSlide"
-                      class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                      class="p-2.5 rounded-full bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-gray-200 dark:border-gray-700 hover:border-blue-500 dark:hover:border-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/30 transition-all duration-300 shadow-sm hover:shadow-md active:scale-95 group"
                       aria-label="Previous slide"
                     >
-                      <ArrowRight class="w-5 h-5 rotate-180" />
-                    </el-button>
-                    <el-button
+                      <ChevronLeft class="w-5 h-5 text-gray-600 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors" />
+                    </button>
+
+                    <button
                       @click="nextSlide"
-                      class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                      class="p-2.5 rounded-full bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-gray-200 dark:border-gray-700 hover:border-blue-500 dark:hover:border-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/30 transition-all duration-300 shadow-sm hover:shadow-md active:scale-95 group"
                       aria-label="Next slide"
                     >
-                      <ArrowRight class="w-5 h-5" />
-                    </el-button>
+                      <ChevronRight class="w-5 h-5 text-gray-600 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors" />
+                    </button>
                   </div>
                 </div>
 
