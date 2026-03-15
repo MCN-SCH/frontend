@@ -20,10 +20,17 @@
           <div class="absolute w-40 h-40 rounded-full border-2 border-[#4CC8EE] animate-pulse-ring opacity-40"></div>
 
           <!-- Logo Circle -->
-          <div class="w-28 h-28 rounded-full bg-[#4CC8EE] flex items-center justify-center shadow-2xl">
-            <span class="text-[#3853A4] text-2xl font-bold tracking-widest">
-              MCN
-            </span>
+          <div class="logo-wrapper">
+
+            <!-- Glass Background Circle -->
+            <div class="logo-bg">
+              <img
+                src="@/assets/image/logo/mcn.svg"
+                alt="MCN Lab Logo"
+                class="logo-img"
+              />
+            </div>
+
           </div>
 
         </div>
@@ -67,14 +74,14 @@ const percentage = ref(0)
 onMounted(() => {
   const interval = setInterval(() => {
     if (percentage.value < 100) {
-      percentage.value += 5
+      percentage.value += 10   // faster progress
     } else {
       clearInterval(interval)
       setTimeout(() => {
         visible.value = false
-      }, 400)
+      }, 200) // faster exit
     }
-  }, 100)
+  }, 60) // faster update
 })
 </script>
 
@@ -150,5 +157,48 @@ onMounted(() => {
 .animate-pulse-ring {
   animation: pulseRing 2.5s cubic-bezier(0, 0, 0.2, 1) infinite;
 }
+/* =========================
+   Logo Styling
+========================= */
 
+.logo-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Glass background */
+.logo-bg {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.95);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow:
+    0 10px 40px rgba(0,0,0,0.3),
+    0 0 25px rgba(76,200,238,0.6);
+  animation: floatLogo 3s ease-in-out infinite;
+}
+
+/* Logo size */
+.logo-img {
+  width: 65px;
+  height: auto;
+}
+
+/* Floating animation */
+@keyframes floatLogo {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
 </style>

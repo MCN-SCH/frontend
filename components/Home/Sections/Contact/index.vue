@@ -1,6 +1,6 @@
 <script setup>
-import { Mail, MapPin, GraduationCap } from 'lucide-vue-next';
-const emit = defineEmits(['apply']);
+import { Mail, MapPin, GraduationCap } from 'lucide-vue-next'
+const emit = defineEmits(['apply'])
 
 const contactInfo = [
   {
@@ -25,13 +25,21 @@ const contactInfo = [
     details: ['PhD, Masters, Undergraduate positions available'],
     description: 'We welcome applications from prospective researchers'
   }
-];
+]
 </script>
 
 <template>
-  <section id="contact" class="py-20">
-    <div class="container mx-auto px-6">
+  <section id="contact" class="relative py-24 overflow-hidden">
+
+    <!-- Background glow -->
+    <div class="absolute inset-0 pointer-events-none">
+      <div class="absolute w-[500px] h-[500px] bg-blue-400/20 blur-[140px] rounded-full top-0 left-0"></div>
+      <div class="absolute w-[500px] h-[500px] bg-purple-400/20 blur-[140px] rounded-full bottom-0 right-0"></div>
+    </div>
+
+    <div class="container mx-auto px-6 relative z-10">
       <div class="max-w-7xl mx-auto">
+
         <HomeUISectionHeader
           badge-text="Get In Touch"
           badge-icon="Mail"
@@ -39,121 +47,58 @@ const contactInfo = [
           subtitle="Interested in collaboration, research positions, or learning more about our work?"
         />
 
-        <div class="grid lg:grid-cols-2 gap-12">
-          <!-- Contact Info -->
-          <div>
-            <div class="bg-gradient-to-br from-blue-50 to-white dark:from-gray-800 dark:to-gray-900 rounded-2xl p-8 shadow-lg">
-              <h3 class="text-2xl font-bold mb-8">Contact Information</h3>
+        <div class="grid lg:grid-cols-3 gap-8 mt-14">
 
-              <div class="space-y-6">
-                <div v-for="info in contactInfo" :key="info.title" class="flex items-start">
-                  <div class="w-12 h-12 rounded-xl bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center mr-4 flex-shrink-0">
-                    <component :is="info.icon" class="w-6 h-6 text-blue-600 dark:text-blue-400" />
-                  </div>
-                  <div>
-                    <h4 class="font-bold text-lg mb-1">{{ info.title }}</h4>
-                    <div class="space-y-1">
-                      <p v-for="detail in info.details" :key="detail" class="text-gray-600 dark:text-gray-300">
-                        {{ detail }}
-                      </p>
-                    </div>
-                    <p v-if="info.description" class="text-sm text-gray-500 dark:text-gray-400 mt-1">
-                      {{ info.description }}
-                    </p>
-                    <HomeUIButton
-                      v-if="info.title === 'Join Our Lab'"
-                      @click="$emit('apply')"
-                      class="mt-3"
-                      size="small"
-                    >
-                      Apply Now
-                    </HomeUIButton>
-                  </div>
-                </div>
+          <div
+            v-for="info in contactInfo"
+            :key="info.title"
+            class="group relative p-[1px] rounded-2xl bg-white hover:bg-gradient-to-br hover:from-blue-400 hover:via-purple-400 hover:to-cyan-400 transition-all duration-300"
+          >
+            <!-- card -->
+            <div
+              class="h-full rounded-2xl bg-white dark:bg-gray-900 p-8 transition duration-300 group-hover:-translate-y-1 group-hover:shadow-xl"
+            >
+              <!-- icon -->
+              <div
+                class="w-14 h-14 mb-6 flex items-center justify-center rounded-xl bg-gray-100 dark:bg-gray-800"
+              >
+                <component :is="info.icon" class="w-7 h-7 text-gray-700 dark:text-gray-300"/>
               </div>
 
-              <div class="mt-8 pt-8 border-t border-gray-200 dark:border-gray-700">
-                <h4 class="font-bold text-lg mb-4">Office Hours</h4>
-                <div class="space-y-2 text-gray-600 dark:text-gray-300">
-                  <p>Monday - Friday: 9:00 AM - 6:00 PM</p>
-                  <p>Saturday: By appointment</p>
-                  <p>Sunday: Closed</p>
-                </div>
+              <h3 class="text-xl font-semibold mb-3">
+                {{ info.title }}
+              </h3>
+
+              <div class="space-y-1 mb-3">
+                <p
+                  v-for="detail in info.details"
+                  :key="detail"
+                  class="text-gray-600 dark:text-gray-400"
+                >
+                  {{ detail }}
+                </p>
               </div>
+
+              <p
+                v-if="info.description"
+                class="text-sm text-gray-500 dark:text-gray-500"
+              >
+                {{ info.description }}
+              </p>
+
+              <HomeUIButton
+                v-if="info.title === 'Join Our Lab'"
+                @click="$emit('apply')"
+                class="mt-6 w-full"
+                size="small"
+              >
+                Apply Now
+              </HomeUIButton>
             </div>
           </div>
 
-          <!-- Contact Form -->
-          <div>
-            <div class="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-lg">
-              <h3 class="text-2xl font-bold mb-6">Send Us a Message</h3>
-
-              <form class="space-y-6">
-                <div class="grid md:grid-cols-2 gap-6">
-                  <div>
-                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Name *</label>
-                    <input
-                      type="text"
-                      required
-                      class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 dark:focus:ring-blue-900 outline-none transition-all duration-300"
-                      placeholder="Your name"
-                    >
-                  </div>
-                  <div>
-                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Email *</label>
-                    <input
-                      type="email"
-                      required
-                      class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 dark:focus:ring-blue-900 outline-none transition-all duration-300"
-                      placeholder="your.email@example.com"
-                    >
-                  </div>
-                </div>
-
-                <div>
-                  <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Affiliation</label>
-                  <input
-                    type="text"
-                    class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 dark:focus:ring-blue-900 outline-none transition-all duration-300"
-                    placeholder="University / Company"
-                  >
-                </div>
-
-                <div>
-                  <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Subject *</label>
-                  <select
-                    required
-                    class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 dark:focus:ring-blue-900 outline-none transition-all duration-300"
-                  >
-                    <option value="">Select a subject</option>
-                    <option value="collaboration">Research Collaboration</option>
-                    <option value="position">Position Inquiry</option>
-                    <option value="visit">Lab Visit Request</option>
-                    <option value="other">Other</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Message *</label>
-                  <textarea
-                    rows="5"
-                    required
-                    class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 dark:focus:ring-blue-900 outline-none transition-all duration-300 resize-none"
-                    placeholder="Your message..."
-                  ></textarea>
-                </div>
-
-                <div class="flex items-center text-sm text-gray-600 dark:text-gray-400">
-                  <input type="checkbox" id="subscribe" class="mr-2">
-                  <label for="subscribe">Subscribe to lab updates and newsletter</label>
-                </div>
-                <HomeUIButton type="submit" class="w-full mt-4">
-                  Send Message
-                </HomeUIButton>
-              </form>
-            </div>
-          </div>
         </div>
+
       </div>
     </div>
   </section>

@@ -1,130 +1,222 @@
 <script setup>
-import { ref, onMounted } from 'vue';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-// Data
-import {
-  researchAreas,
-  labMembers,
-  recentPublications,
-  achievements,
-  currentProjects,
-  facilities,
-  newsUpdates,
-  upcomingEvents
-} from '@/composables/useData.js';
-import { ChevronUp } from 'lucide-vue-next'
+import { ref, onMounted } from 'vue'
+import * as THREE from 'three'
+import { gsap } from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
-useSeoMeta({
-  title: 'Home',
-  description: 'Welcome to our Research Lab - Pioneering Innovations in Science and Technology',
-})
+const techCanvas = ref(null)
 
-definePageMeta({
-  layout: 'default',
-  middleware: ['maintenance'],
-})
+/* ---------------- PARTICLE TEXTURE ---------------- */
 
+const createKoreanTechTexture = () => {
+  const size = 128
+  const canvas = document.createElement('canvas')
+  canvas.width = size
+  canvas.height = size
 
-// State
-const isMenuOpen = ref(false);
-const currentLanguage = ref('EN');
-const showKoreanText = ref(false);
-const darkMode = ref(false);
-const showScrollTop = ref(false);
-const activePub = ref(null);
-const showBibtex = ref(false);
+  const ctx = canvas.getContext('2d')
 
-// Methods
-const scrollToSection = (id) => {
-  const element = document.getElementById(id);
-  if (element) {
-    element.scrollIntoView({ behavior: 'smooth' });
-    isMenuOpen.value = false;
+  const gradient = ctx.createRadialGradient(
+    size / 2,
+    size / 2,
+    0,
+    size / 2,
+    size / 2,
+    size / 2
+  )
+
+  gradient.addColorStop(0, 'rgba(120,170,255,1)')
+  gradient.addColorStop(0.4, 'rgba(63,123,189,0.8)')
+  gradient.addColorStop(0.7, 'rgba(63,123,189,0.4)')
+  gradient.addColorStop(1, 'rgba(63,123,189,0)')
+
+  ctx.fillStyle = gradient
+  ctx.fillRect(0, 0, size, size)
+
+  return new THREE.CanvasTexture(canvas)
+}
+
+/* ---------------- NETWORK BACKGROUND ---------------- */
+
+const initNetworkBackground = () => {
+
+  if (!techCanvas.value) return
+
+  const scene = new THREE.Scene()
+
+  const camera = new THREE.PerspectiveCamera(
+    70,
+    window.innerWidth / window.innerHeight,
+    0.1,
+    1000
+  )
+
+  camera.position.z = 140
+
+  const renderer = new THREE.WebGLRenderer({
+    canvas: techCanvas.value,
+    alpha: true,
+    antialias: true
+  })
+
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+  renderer.setSize(window.innerWidth, window.innerHeight)
+  renderer.setClearColor(0x000000, 0)
+
+  /* ---------- PARTICLES ---------- */
+
+  const PARTICLE_COUNT = 220
+  const AREA = 160
+
+  const geometry = new THREE.BufferGeometry()
+
+  const positions = new Float32Array(PARTICLE_COUNT * 3)
+  const velocities = []
+
+  for (let i = 0; i < PARTICLE_COUNT; i++) {
+
+    positions[i * 3] = (Math.random() - 0.5) * AREA
+    positions[i * 3 + 1] = (Math.random() - 0.5) * AREA
+    positions[i * 3 + 2] = (Math.random() - 0.5) * AREA
+
+    velocities.push({
+      x: (Math.random() - 0.5) * 0.08,
+      y: (Math.random() - 0.5) * 0.08,
+      z: (Math.random() - 0.5) * 0.08
+    })
   }
-};
 
-const scrollToTop = () => {
-  window.scrollTo({
-    top: 0,
-    behavior: 'smooth'
-  });
-};
+  geometry.setAttribute(
+    'position',
+    new THREE.BufferAttribute(positions, 3)
+  )
 
-const toggleLanguage = () => {
-  currentLanguage.value = currentLanguage.value === 'EN' ? 'KR' : 'EN';
-  showKoreanText.value = !showKoreanText.value;
-};
+  const particleTexture = createKoreanTechTexture()
 
-const toggleDarkMode = () => {
-  darkMode.value = !darkMode.value;
-  if (darkMode.value) {
-    document.documentElement.classList.add('dark');
-  } else {
-    document.documentElement.classList.remove('dark');
+  const material = new THREE.PointsMaterial({
+    size: 6,
+    map: particleTexture,
+    transparent: true,
+    opacity: 0.9,
+    depthWrite: false,
+    blending: THREE.AdditiveBlending
+  })
+
+  const particles = new THREE.Points(geometry, material)
+  scene.add(particles)
+
+  /* ---------- NETWORK LINES ---------- */
+
+  const MAX_DISTANCE = 28
+
+  const linePositions = new Float32Array(PARTICLE_COUNT * PARTICLE_COUNT * 3)
+
+  const lineGeometry = new THREE.BufferGeometry()
+
+  lineGeometry.setAttribute(
+    'position',
+    new THREE.BufferAttribute(linePositions, 3).setUsage(THREE.DynamicDrawUsage)
+  )
+
+  const lineMaterial = new THREE.LineBasicMaterial({
+    color: 0x6ba6ff,
+    transparent: true,
+    opacity: 0.2
+  })
+
+  const lines = new THREE.LineSegments(lineGeometry, lineMaterial)
+  scene.add(lines)
+
+  /* ---------- ANIMATION ---------- */
+
+  const animate = () => {
+
+    requestAnimationFrame(animate)
+
+    const pos = geometry.attributes.position.array
+    const linePos = lines.geometry.attributes.position.array
+
+    let vertex = 0
+    let connections = 0
+
+    /* move particles */
+
+    for (let i = 0; i < PARTICLE_COUNT; i++) {
+
+      pos[i * 3] += velocities[i].x
+      pos[i * 3 + 1] += velocities[i].y
+      pos[i * 3 + 2] += velocities[i].z
+
+      if (pos[i * 3] > AREA / 2 || pos[i * 3] < -AREA / 2) velocities[i].x *= -1
+      if (pos[i * 3 + 1] > AREA / 2 || pos[i * 3 + 1] < -AREA / 2) velocities[i].y *= -1
+      if (pos[i * 3 + 2] > AREA / 2 || pos[i * 3 + 2] < -AREA / 2) velocities[i].z *= -1
+    }
+
+    /* network connections */
+
+    for (let i = 0; i < PARTICLE_COUNT; i++) {
+
+      for (let j = i + 1; j < PARTICLE_COUNT; j++) {
+
+        const dx = pos[i * 3] - pos[j * 3]
+        const dy = pos[i * 3 + 1] - pos[j * 3 + 1]
+        const dz = pos[i * 3 + 2] - pos[j * 3 + 2]
+
+        const dist = Math.sqrt(dx * dx + dy * dy + dz * dz)
+
+        if (dist < MAX_DISTANCE) {
+
+          linePos[vertex++] = pos[i * 3]
+          linePos[vertex++] = pos[i * 3 + 1]
+          linePos[vertex++] = pos[i * 3 + 2]
+
+          linePos[vertex++] = pos[j * 3]
+          linePos[vertex++] = pos[j * 3 + 1]
+          linePos[vertex++] = pos[j * 3 + 2]
+
+          connections++
+        }
+      }
+    }
+
+    lines.geometry.setDrawRange(0, connections * 2)
+
+    geometry.attributes.position.needsUpdate = true
+    lines.geometry.attributes.position.needsUpdate = true
+
+    renderer.render(scene, camera)
   }
-  localStorage.setItem('darkMode', darkMode.value);
-};
 
-const openBibtex = (pub) => {
-  activePub.value = pub;
-  showBibtex.value = true;
-};
+  animate()
+
+  /* ---------- RESPONSIVE ---------- */
+
+  window.addEventListener('resize', () => {
+
+    camera.aspect = window.innerWidth / window.innerHeight
+    camera.updateProjectionMatrix()
+
+    renderer.setSize(window.innerWidth, window.innerHeight)
+
+  })
+}
+
+/* ---------------- MOUNT ---------------- */
 
 onMounted(() => {
-  gsap.registerPlugin(ScrollTrigger);
 
-  // Set light mode as default
-  document.documentElement.classList.remove('dark');
+  gsap.registerPlugin(ScrollTrigger)
 
-  // Check saved preference
-  const savedDarkMode = localStorage.getItem('darkMode');
-  if (savedDarkMode === 'true') {
-    darkMode.value = true;
-    document.documentElement.classList.add('dark');
-  }
+  initNetworkBackground()
 
-  // Animations
-  gsap.from('.hero-title', {
-    y: 20,
-    opacity: 0,
-    duration: 0.4,
-    ease: 'power2.out'
-  });
-
-  gsap.from('.hero-subtitle', {
-    y: 15,
-    opacity: 0,
-    duration: 0.5,
-    delay: 0.1,
-    ease: 'power2.out'
-  });
-
-  // Stagger animations
-  gsap.utils.toArray('.stagger-item').forEach((el, i) => {
-    gsap.from(el, {
-      scrollTrigger: {
-        trigger: el,
-        start: 'top 90%',
-        toggleActions: 'play none none none'
-      },
-      y: 20,
-      opacity: 0,
-      duration: 0.3,
-      delay: i * 0.05,
-      ease: 'power2.out'
-    });
-  });
-
-  // Scroll to top button
-  window.addEventListener('scroll', () => {
-    showScrollTop.value = window.scrollY > 500;
-  });
-});
+})
 </script>
-
 <template>
-  <div class="min-h-screen bg-white text-gray-900 overflow-x-hidden transition-colors duration-300 dark:bg-gray-900 dark:text-white">
+  <div class="min-h-screen text-gray-900 overflow-x-hidden transition-colors duration-300 dark:bg-gray-900 dark:text-white">
+    <div class="tech-background">
+      <canvas ref="techCanvas"></canvas>
+    </div>
+
     <!-- Navigation -->
     <NavBar
       :dark-mode="darkMode"
@@ -255,5 +347,18 @@ section {
 
 .dark ::-webkit-scrollbar-thumb:hover {
   background: linear-gradient(to bottom, #2C5A8A, #3F7BBD);
+}
+
+.tech-background {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+}
+
+.tech-background canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
 }
 </style>
