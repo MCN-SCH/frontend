@@ -61,7 +61,7 @@ onBeforeUnmount(() => {
       >
         <img
           src="@/assets/image/logo/mcn.svg"
-          class="h-10 duration-300"
+          class="h-10 transition-transform duration-300 group-hover:scale-110"
         />
       </div>
 

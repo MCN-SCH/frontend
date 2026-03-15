@@ -211,7 +211,7 @@ const currentCount = computed(() => {
 <template>
   <section id="team" class="relative py-12 md:py-16 overflow-hidden">
     <!-- Background with subtle pattern -->
-    <div class="absolute inset-0 bg-gradient-to-br from-blue-50 via-white to-indigo-50 dark:from-gray-900 dark:via-gray-800 dark:to-blue-900/10">
+    <div class="absolute inset-0 bg-gradient-to-br from-blue-50 via-white to-indigo-50/10 dark:from-gray-900 dark:via-gray-800 dark:to-blue-900/10">
       <div class="absolute inset-0 opacity-[0.03]">
         <div class="absolute inset-0" style="background-image:
           radial-gradient(circle at 25% 25%, currentColor 1px, transparent 1px),

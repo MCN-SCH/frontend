@@ -16,7 +16,7 @@ const getStatusBadge = (status) => {
 </script>
 
 <template>
-  <section id="projects" class="py-20 bg-gray-50 dark:bg-gray-900">
+  <section id="projects" class="py-20 bg-gray-50/90 dark:bg-gray-900/90">
     <div class="container mx-auto px-6">
       <div class="max-w-7xl mx-auto">
         <HomeUISectionHeader

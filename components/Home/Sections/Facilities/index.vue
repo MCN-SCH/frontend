@@ -5,7 +5,7 @@ const props = defineProps({
 </script>
 
 <template>
-  <section id="facilities" class="py-20">
+  <section id="facilities" class="py-20 bg-white dark:bg-gray-900">
     <div class="container mx-auto px-6">
       <div class="max-w-7xl mx-auto">
         <HomeUISectionHeader

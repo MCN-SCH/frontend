@@ -80,7 +80,7 @@ onMounted(() => {
 <template>
   <section
     id="hero"
-    class="relative min-h-screen flex items-center pt-20 md:pt-24 lg:pt-16 overflow-hidden"
+    class="relative min-h-screen flex items-center pt-24 md:pt-24 lg:pt-16 overflow-hidden"
   >
     <div
       class="absolute inset-0 bg-gradient-to-br from-white via-blue-50/50 to-white dark:from-gray-900 dark:via-gray-800/50 dark:to-gray-900"

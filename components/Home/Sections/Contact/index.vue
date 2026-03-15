@@ -29,7 +29,7 @@ const contactInfo = [
 </script>
 
 <template>
-  <section id="contact" class="relative py-24 overflow-hidden">
+  <section id="contact" class="relative py-24 overflow-hidden bg-white dark:bg-gray-900/90">
 
     <!-- Background glow -->
     <div class="absolute inset-0 pointer-events-none">
