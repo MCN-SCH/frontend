@@ -1,4 +1,5 @@
 <template>
+  <SplashScreen />
   <main ref="mainContent">
     <slot />
   </main>

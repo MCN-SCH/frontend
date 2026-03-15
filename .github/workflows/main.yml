@@ -9,26 +9,29 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
       - name: Telegram Notify
         uses: appleboy/telegram-action@master
         with:
           to: ${{ secrets.TELEGRAM_TO }}
           token: ${{ secrets.TELEGRAM_TOKEN }}
-          format: markdown
+          format: html
           message: |
-            *Pull Request Notification* 🚀
+            <b>🚀 Pull Request Notification</b>
             -----------------------------------
-            *Repository:* ${{ github.repository }}
-            *PR Number:* #${{ github.event.pull_request.number }}
-            *Title:* ${{ github.event.pull_request.title }}
-            *Author:* ${{ github.event.pull_request.user.login }}
-            *Branch:* ${{ github.event.pull_request.head.ref }} → ${{ github.event.pull_request.base.ref }}
-            *Status:* ${{ github.event.pull_request.state }}
-            *Created At:* ${{ github.event.pull_request.created_at }}
-            *Last Updated:* ${{ github.event.pull_request.updated_at }}
 
-            *Commits in PR:* ${{ github.event.pull_request.commits }}
+            <b>Repository:</b> ${{ github.repository }}
+            <b>PR Number:</b> #${{ github.event.pull_request.number }}
+            <b>Title:</b> ${{ github.event.pull_request.title }}
+            <b>Author:</b> ${{ github.event.pull_request.user.login }}
+            <b>Branch:</b> ${{ github.event.pull_request.head.ref }} → ${{ github.event.pull_request.base.ref }}
+            <b>Status:</b> ${{ github.event.pull_request.state }}
 
-            *View PR:* [Click here](${{ github.event.pull_request.html_url }})
+            <b>Created At:</b> ${{ github.event.pull_request.created_at }}
+            <b>Last Updated:</b> ${{ github.event.pull_request.updated_at }}
+
+            <b>Commits in PR:</b> ${{ github.event.pull_request.commits }}
+
+            <b>View PR:</b>
+            <a href="${{ github.event.pull_request.html_url }}">Open Pull Request</a>

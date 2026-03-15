@@ -109,7 +109,7 @@ onBeforeUnmount(() => {
 <template>
   <header
     :class="[
-      'fixed z-50 transition-all duration-500 ease-out',
+      'fixed z-40 transition-all duration-500 ease-out',
       'left-3 right-3 sm:left-4 sm:right-4 top-3 sm:top-4',
       isHidden ? '-translate-y-40 opacity-0' : 'opacity-100',
       isScrolled

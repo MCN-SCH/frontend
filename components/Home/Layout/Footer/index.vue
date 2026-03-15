@@ -1,16 +1,67 @@
 <script setup>
-import { Cpu } from 'lucide-vue-next';
+import { Cpu, Instagram, Twitter, Youtube, MessageCircle, Sparkles } from 'lucide-vue-next';
+import { ElCarousel, ElCarouselItem } from 'element-plus';
 
 const currentYear = new Date().getFullYear();
+
+// Lab highlights carousel
+const labHighlights = [
+  {
+    title: "AI Research Breakthrough",
+    description: "Published in Nature Communications",
+    tag: "Latest"
+  },
+  {
+    title: "Hackathon Winners 2024",
+    description: "1st Place in National AI Competition",
+    tag: "Achievement"
+  },
+  {
+    title: "Industry Collaboration",
+    description: "Partnership with Samsung Research",
+    tag: "News"
+  },
+  {
+    title: "Conference Speaker",
+    description: "Keynote at ICML 2024",
+    tag: "Recognition"
+  }
+];
+
+// Quick links with icons
+const quickLinks = [
+  { name: "Research Areas", icon: "🔬", color: "text-purple-400" },
+  { name: "Publications", icon: "📚", color: "text-blue-400" },
+  { name: "People", icon: "👥", color: "text-green-400" },
+  { name: "Projects", icon: "🚀", color: "text-yellow-400" },
+  { name: "Events", icon: "📅", color: "text-pink-400" },
+  { name: "Recruitment", icon: "💼", color: "text-cyan-400" }
+];
+
+// Social media platforms
+const socialMedia = [
+  { icon: Instagram, name: "Instagram", color: "hover:bg-gradient-to-r from-purple-500 to-pink-500", url: "#" },
+  { icon: Twitter, name: "Twitter", color: "hover:bg-gradient-to-r from-blue-400 to-cyan-400", url: "#" },
+  { icon: Youtube, name: "YouTube", color: "hover:bg-gradient-to-r from-red-500 to-orange-500", url: "#" },
+  { icon: MessageCircle, name: "KakaoTalk", color: "hover:bg-gradient-to-r from-yellow-300 to-yellow-500", url: "#" }
+];
 </script>
 
 <template>
-  <footer class="py-12 bg-gray-900 text-white">
-    <div class="container mx-auto px-6">
+  <footer class="relative overflow-hidden bg-gradient-to-b from-gray-900 to-black text-white pt-12">
+    <!-- Korean traditional pattern overlay -->
+    <div class="absolute inset-0 opacity-5">
+    </div>
+
+    <!-- Animated gradient border -->
+    <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-purple-500 via-pink-500 to-blue-500 animate-gradient-x"></div>
+
+    <div class="container mx-auto px-4 sm:px-6 relative z-10">
       <div class="max-w-6xl mx-auto">
-        <div class="grid md:grid-cols-4 gap-8 mb-8">
-          <div>
-            <div class="flex items-center space-x-3 mb-6">
+        <div class="grid lg:grid-cols-12 gap-8 mb-12">
+          <!-- Logo and Description -->
+          <div class="lg:col-span-4">
+            <div class="mb-6">
               <div>
                 <img
                   src="@/assets/image/logo/mcn.svg"
@@ -19,52 +70,198 @@ const currentYear = new Date().getFullYear();
                 />
               </div>
             </div>
-            <p class="text-gray-400 text-sm">
-              Advancing computing research through innovation and collaboration.
+            <p class="text-gray-300 mb-6 leading-relaxed">
+              Blending Korean heritage with cutting-edge research in AI, HCI, and Multimedia Computing.
+              We innovate at the intersection of tradition and technology.
             </p>
+
+            <!-- Quick Access Grid -->
+            <div class="mb-8">
+              <h4 class="font-bold text-lg mb-4 flex items-center">
+                <span class="mr-2">⚡</span> Quick Access
+              </h4>
+              <div class="grid grid-cols-2 gap-3">
+                <a
+                  v-for="link in quickLinks"
+                  :key="link.name"
+                  href="#"
+                  class="group flex items-center space-x-2 p-3 rounded-lg bg-gray-800/50 hover:bg-gray-700/50 border border-gray-700/50 hover:border-cyan-500/50 transition-all duration-300"
+                >
+                  <span class="text-xl" :class="link.color">{{ link.icon }}</span>
+                  <span class="text-sm group-hover:text-cyan-300 transition-colors">{{ link.name }}</span>
+                </a>
+              </div>
+            </div>
           </div>
 
-          <div>
-            <h4 class="font-bold text-lg mb-4">Quick Links</h4>
-            <ul class="space-y-2">
-              <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Research Areas</a></li>
-              <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Publications</a></li>
-              <li><a href="#" class="text-gray-400 hover:text-white transition-colors">People</a></li>
-              <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Projects</a></li>
-            </ul>
+          <!-- Contact and Location -->
+          <div class="lg:col-span-4">
+            <div class="mb-4">
+              <h4 class="font-bold text-lg mb-4 flex items-center">
+                <span class="mr-2">📍</span> Find Us
+              </h4>
+              <div class="space-y-4">
+                <div class="flex items-start space-x-3 p-4 rounded-xl bg-gradient-to-r from-gray-800/50 to-gray-900/50 border border-gray-700/30">
+                  <div class="mt-1">
+                    <div class="w-2 h-2 bg-cyan-400 rounded-full"></div>
+                  </div>
+                  <div>
+                    <p class="font-medium mb-1">Multi Media Building</p>
+                    <p class="text-sm text-gray-400">Soonchunhyang University</p>
+                    <p class="text-sm text-gray-400">Asan, Chungcheongnam-do, South Korea</p>
+                  </div>
+                </div>
+
+                <div class="p-4 rounded-xl bg-gradient-to-r from-gray-800/50 to-gray-900/50 border border-gray-700/30">
+                  <h5 class="font-medium mb-2 flex items-center">
+                    <span class="mr-2">📧</span> Contact Info
+                  </h5>
+                  <ul class="space-y-2 text-sm">
+                    <li class="flex items-center space-x-2 text-gray-300">
+                      <span class="text-cyan-400">→</span>
+                      <span>Email: team@lab.sch.ac.kr</span>
+                    </li>
+                    <li class="flex items-center space-x-2 text-gray-300">
+                      <span class="text-cyan-400">→</span>
+                      <span>Phone: +82 41-530-XXXX</span>
+                    </li>
+                    <li class="flex items-center space-x-2 text-gray-300">
+                      <span class="text-cyan-400">→</span>
+                      <span>Office: MM-402 (4th Floor)</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <!-- Newsletter -->
+            <div class="p-4 rounded-xl bg-gradient-to-r from-blue-900/20 to-purple-900/20 border border-blue-500/20">
+              <h5 class="font-medium mb-3">Newsletters</h5>
+              <div class="flex space-x-2">
+                <input
+                  type="email"
+                  placeholder="your.email@example.com"
+                  class="flex-1 px-4 py-2 bg-gray-800/50 border border-gray-700 rounded-lg text-sm focus:outline-none focus:border-cyan-500 transition-colors"
+                />
+                <button class="px-4 py-2 bg-gradient-to-r from-cyan-500 to-blue-600 text-white rounded-lg text-sm font-medium hover:opacity-90 transition-opacity">
+                  Subscribe
+                </button>
+              </div>
+            </div>
           </div>
 
-          <div>
-            <h4 class="font-bold text-lg mb-4">Resources</h4>
-            <ul class="space-y-2">
-              <li><a href="#" class="text-gray-400 hover:text-white transition-colors">GitHub</a></li>
-              <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Google Scholar</a></li>
-              <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Thesis Templates</a></li>
-              <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Research Guides</a></li>
-            </ul>
-          </div>
+          <!-- Resources and Social -->
+          <div class="lg:col-span-4">
+            <!-- Resources -->
+            <div class="mb-8">
+              <h4 class="font-bold text-lg mb-4 flex items-center">
+                <span class="mr-2">📁</span> Resources
+              </h4>
+              <div class="grid grid-cols-2 gap-3">
+                <a href="#" class="group p-3 rounded-lg bg-gray-800/50 hover:bg-gradient-to-r hover:from-blue-900/30 hover:to-cyan-900/30 border border-gray-700/50 hover:border-blue-500/50 transition-all duration-300">
+                  <div class="text-blue-400 mb-1">📊</div>
+                  <p class="text-sm font-medium group-hover:text-blue-300 transition-colors">Research Data</p>
+                  <p class="text-xs text-gray-400">Datasets & Tools</p>
+                </a>
+                <a href="#" class="group p-3 rounded-lg bg-gray-800/50 hover:bg-gradient-to-r hover:from-purple-900/30 hover:to-pink-900/30 border border-gray-700/50 hover:border-purple-500/50 transition-all duration-300">
+                  <div class="text-purple-400 mb-1">🎓</div>
+                  <p class="text-sm font-medium group-hover:text-purple-300 transition-colors">Thesis Guide</p>
+                  <p class="text-xs text-gray-400">Templates & Tips</p>
+                </a>
+                <a href="#" class="group p-3 rounded-lg bg-gray-800/50 hover:bg-gradient-to-r hover:from-green-900/30 hover:to-emerald-900/30 border border-gray-700/50 hover:border-green-500/50 transition-all duration-300">
+                  <div class="text-green-400 mb-1">👨‍💻</div>
+                  <p class="text-sm font-medium group-hover:text-green-300 transition-colors">GitHub</p>
+                  <p class="text-xs text-gray-400">Open Source Projects</p>
+                </a>
+                <a href="#" class="group p-3 rounded-lg bg-gray-800/50 hover:bg-gradient-to-r hover:from-yellow-900/30 hover:to-orange-900/30 border border-gray-700/50 hover:border-yellow-500/50 transition-all duration-300">
+                  <div class="text-yellow-400 mb-1">📖</div>
+                  <p class="text-sm font-medium group-hover:text-yellow-300 transition-colors">Lab Wiki</p>
+                  <p class="text-xs text-gray-400">Internal Docs</p>
+                </a>
+              </div>
+            </div>
 
-          <div>
-            <h4 class="font-bold text-lg mb-4">Connect</h4>
-            <div class="flex space-x-4">
-              <a href="#" class="w-10 h-10 rounded-full bg-gray-800 hover:bg-blue-600 flex items-center justify-center transition-colors">
-                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
-              </a>
-              <a href="#" class="w-10 h-10 rounded-full bg-gray-800 hover:bg-blue-600 flex items-center justify-center transition-colors">
-                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
-              </a>
-              <a href="#" class="w-10 h-10 rounded-full bg-gray-800 hover:bg-blue-600 flex items-center justify-center transition-colors">
-                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/></svg>
-              </a>
+            <!-- Social Media -->
+            <div>
+              <h4 class="font-bold text-lg mb-4 flex items-center">
+                <span class="mr-2">🌐</span> Connect With Us
+              </h4>
+              <div class="grid grid-cols-4 gap-3">
+                <a
+                  v-for="social in socialMedia"
+                  :key="social.name"
+                  :href="social.url"
+                  :class="social.color"
+                  class="flex flex-col items-center justify-center p-4 rounded-xl bg-gray-800/50 border border-gray-700/50 transition-all duration-300 group hover:scale-105"
+                >
+                  <component
+                    :is="social.icon"
+                    class="w-6 h-6 mb-2 group-hover:scale-110 transition-transform"
+                  />
+                  <span class="text-xs opacity-75 group-hover:opacity-100">{{ social.name }}</span>
+                </a>
+              </div>
             </div>
           </div>
         </div>
 
-        <div class="pt-8 border-t border-gray-800 text-center text-gray-400 text-sm">
-          <p>© {{ currentYear }} MCN Research Lab, Soonchunhyang University. All rights reserved.</p>
-          <p class="mt-2">Multi Media Building, Soonchunhyang University, Asan, South Korea</p>
+        <!-- Footer Bottom -->
+        <div class="pt-8 border-t border-gray-800/50 text-center">
+          <div class="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+            <p class="text-gray-400 text-sm">
+              © {{ currentYear }} Mobile Computing & Networking Lab, Soonchunhyang University.
+              All rights reserved.
+            </p>
+            <div class="flex items-center space-x-6">
+              <a href="#" class="text-gray-400 hover:text-cyan-300 text-sm transition-colors">Privacy Policy</a>
+              <a href="#" class="text-gray-400 hover:text-cyan-300 text-sm transition-colors">Terms of Use</a>
+              <a href="#" class="text-gray-400 hover:text-cyan-300 text-sm transition-colors">Accessibility</a>
+              <span class="text-xs px-3 py-1 rounded-full bg-gradient-to-r from-gray-800 to-gray-900 border border-gray-700">
+                Made in Korea
+              </span>
+            </div>
+          </div>
+          <p class="my-4 text-xs text-gray-500">
+            Innovating with Korean heritage • Embracing global technology • Building the future together
+          </p>
         </div>
       </div>
     </div>
+
+    <!-- Floating decorative elements -->
+    <div class="absolute bottom-4 right-4 w-24 h-24 bg-gradient-to-r from-cyan-500/10 to-blue-500/10 rounded-full blur-xl"></div>
+    <div class="absolute top-20 left-4 w-16 h-16 bg-gradient-to-r from-purple-500/10 to-pink-500/10 rounded-full blur-xl"></div>
   </footer>
 </template>
+
+<style>
+@keyframes gradient-x {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.animate-gradient-x {
+  background-size: 200% 200%;
+  animation: gradient-x 3s ease infinite;
+}
+
+/* Custom scrollbar for carousel */
+.el-carousel__arrow {
+  background: rgba(255, 255, 255, 0.1) !important;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+.el-carousel__arrow:hover {
+  background: rgba(255, 255, 255, 0.2) !important;
+}
+
+/* Smooth transitions */
+* {
+  transition: background-color 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
+}
+</style>
