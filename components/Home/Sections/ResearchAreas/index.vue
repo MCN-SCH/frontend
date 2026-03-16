@@ -31,7 +31,7 @@ const prevSlide = () => {
 </script>
 
 <template>
-  <section id="research" class="py-16 bg-white/50 dark:bg-gray-900/85 relative transition-colors duration-300">
+  <section id="research" class="py-16 bg-gray-50/90 dark:bg-gray-900/90 relative transition-colors duration-300">
     <div class="container mx-auto px-4 md:px-6">
       <!-- Compact Header -->
       <div class="max-w-7xl mx-auto mb-12">
