@@ -11,136 +11,47 @@ export const useAuthStore = defineStore('auth', () => {
 
   const login = async (credentials) => {
     try {
+      const res = await authService.login(credentials)
+      console.log(res)
 
-      const data = await authService.login(credentials)
-      console.log(data)
-      const { data: userData, token: authToken } = data || {}
-      if (!authToken) {
+      const { data: userData, token } = res || {}
+
+      if (!token?.access_token) {
         throw new Error('Invalid Credentials')
       }
 
-      user.value = userData
-      token.value = authToken
-      const cookieOptions = { secure: true, sameSite: 'Strict' }
-
-      cookies.set('access_token', authToken, cookieOptions)
-      cookies.set('user', JSON.stringify(userData), cookieOptions)
-      cookies.set('tokenType', 'Bearer', cookieOptions)
-
-      return data
-    } catch (error) {
-      throw new Error(`Login failed: ${error.message || 'Unknown error'}`)
-    }
-  }
-
-  const register = async (credentials) => {
-    try {
-
-      const data = await authService.register(credentials)
-      console.log(data)
-      const { data: userData, token: authToken } = data || {}
-      if (!authToken) {
-        throw new Error('Invalid Credentials')
-      }
+      const {
+        access_token,
+        refresh_token,
+        token_type,
+        expires_in,
+        device_id
+      } = token
 
       user.value = userData
-      token.value = authToken
-      const cookieOptions = { secure: true, sameSite: 'Strict' }
+      token.value = access_token
 
-      cookies.set('access_token', authToken, cookieOptions)
+      const cookieOptions = {
+        secure: true,
+        sameSite: 'Strict',
+        path: '/',
+        maxAge: expires_in // optional but recommended
+      }
+
+      // Auth cookies
+      cookies.set('access_token', access_token, cookieOptions)
+      cookies.set('refresh_token', refresh_token, cookieOptions)
+      cookies.set('token_type', token_type, cookieOptions)
+
+      // Device tracking
+      cookies.set('device_id', device_id, cookieOptions)
+
+      // User info
       cookies.set('user', JSON.stringify(userData), cookieOptions)
-      cookies.set('tokenType', 'Bearer', cookieOptions)
 
-      return data
+      return res
     } catch (error) {
       throw new Error(`Login failed: ${error.message || 'Unknown error'}`)
-    }
-  }
-
-  //getMe function
-  const getMe = async () => {
-    try {
-      const { data } = await authService.getMe()
-      if (!data) {
-        throw new Error('No data returned')
-      }
-      user.value = data
-      return data
-    } catch (error) {
-      ElMessage.error(error.message || 'Login failed')
-      throw new Error(`Login failed: ${error.message || 'Unknown error'}`)
-    }
-  }
-
-  const logout = async () => {
-    user.value = null
-    token.value = null
-    await authService.logout()
-
-    cookies.remove('access_token')
-    cookies.remove('user')
-    cookies.remove('tokenType')
-  }
-
-  //telegramChat
-  const telegramChat = async (credentials) => {
-    try {
-      const data = await authService.telegramChat(credentials)
-      console.log(data)
-      return data
-    } catch (error) {
-      ElMessage.error(error.message || 'Login failed')
-      throw new Error(`Login failed: ${error.message || 'Unknown error'}`)
-    }
-  }
-
-  //sendCode get
-  const sendCode = async () => {
-    try {
-      const { data } = await authService.sendCode()
-      if (!data) {
-        throw new Error('No data returned')
-      }
-
-
-      user.value = data
-      return data
-    } catch (error) {
-      ElMessage.error(error.message || 'Failed')
-      throw new Error(`Failed: ${error.message || 'Unknown error'}`)
-    }
-  }
-
-  //verifyCode
-  const verifyCode = async (credentials) => {
-    try {
-      const { data } = await authService.verifyCode(credentials)
-      if (!data) {
-        throw new Error('No data returned')
-      }
-
-      user.value = data;
-      const cookieOptions = { secure: true, sameSite: 'Strict' }
-      cookies.set('user', JSON.stringify(data), cookieOptions)
-
-      return data
-    } catch (error) {
-      ElMessage.error(error.message || 'Failed')
-      throw new Error(`Failed: ${error.message || 'Unknown error'}`)
-    }
-  }
-
-  const changePassword = async (credentials) => {
-    try {
-      const { data } = await authService.changePassword(credentials)
-      if (!data) {
-        throw new Error('No data returned')
-      }
-      user.value = data;
-      return data
-    } catch (error) {
-      ElMessage.error(error.message || 'Failed')
-      throw new Error(`Failed: ${error.message || 'Unknown error'}`)
     }
   }
 
@@ -148,12 +59,5 @@ export const useAuthStore = defineStore('auth', () => {
     user: computed(() => user.value),
     token,
     login,
-    logout,
-    register,
-    getMe,
-    telegramChat,
-    sendCode,
-    verifyCode,
-    changePassword,
   }
 })

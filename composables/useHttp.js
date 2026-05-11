@@ -1,6 +1,9 @@
+import { useProtectedRoute } from '~/composables/useProtectedRoute.js'
+
 export const useHttp = async (url, options = {}) => {
   const config = useRuntimeConfig()
-  const baseURL = `${config.public.serverApiUrl}/${config.public.apiVersion}`
+  const { generateRouteKey } = useProtectedRoute()
+  const baseURL = `${config.public.serverApiUrl}/${config.public.apiVersion}/${generateRouteKey()}`
   const cookie = useCookie('access_token')
   const token = cookie.value
 

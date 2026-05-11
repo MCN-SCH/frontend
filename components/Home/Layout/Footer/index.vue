@@ -1,6 +1,10 @@
 <script setup>
-import { Cpu, Instagram, Twitter, Youtube, MessageCircle, Sparkles } from 'lucide-vue-next';
-import { ElCarousel, ElCarouselItem } from 'element-plus';
+import {
+  Avatar,
+  Promotion,
+  VideoPlay,
+  ChatDotRound,
+} from '@element-plus/icons-vue';
 
 const currentYear = new Date().getFullYear();
 
@@ -28,7 +32,7 @@ const labHighlights = [
   }
 ];
 
-// Quick links with icons
+// Quick links
 const quickLinks = [
   { name: "Research Areas", icon: "🔬", color: "text-purple-400" },
   { name: "Publications", icon: "📚", color: "text-blue-400" },
@@ -40,10 +44,30 @@ const quickLinks = [
 
 // Social media platforms
 const socialMedia = [
-  { icon: Instagram, name: "Instagram", color: "hover:bg-gradient-to-r from-purple-500 to-pink-500", url: "#" },
-  { icon: Twitter, name: "Twitter", color: "hover:bg-gradient-to-r from-blue-400 to-cyan-400", url: "#" },
-  { icon: Youtube, name: "YouTube", color: "hover:bg-gradient-to-r from-red-500 to-orange-500", url: "#" },
-  { icon: MessageCircle, name: "KakaoTalk", color: "hover:bg-gradient-to-r from-yellow-300 to-yellow-500", url: "#" }
+  {
+    icon: Avatar,
+    name: "Instagram",
+    color: "hover:bg-gradient-to-r from-purple-500 to-pink-500",
+    url: "#"
+  },
+  {
+    icon: Promotion,
+    name: "Twitter",
+    color: "hover:bg-gradient-to-r from-blue-400 to-cyan-400",
+    url: "#"
+  },
+  {
+    icon: VideoPlay,
+    name: "YouTube",
+    color: "hover:bg-gradient-to-r from-red-500 to-orange-500",
+    url: "#"
+  },
+  {
+    icon: ChatDotRound,
+    name: "KakaoTalk",
+    color: "hover:bg-gradient-to-r from-yellow-300 to-yellow-500",
+    url: "#"
+  }
 ];
 </script>
 
@@ -57,7 +81,7 @@ const socialMedia = [
     <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-purple-500 via-pink-500 to-blue-500 animate-gradient-x"></div>
 
     <div class="container mx-auto px-4 sm:px-6 relative z-10">
-      <div class="max-w-6xl mx-auto">
+      <div class="max-w-7xl mx-auto">
         <div class="grid lg:grid-cols-12 gap-8 mb-12">
           <!-- Logo and Description -->
           <div class="lg:col-span-4">
@@ -194,10 +218,9 @@ const socialMedia = [
                   :class="social.color"
                   class="flex flex-col items-center justify-center p-4 rounded-xl bg-gray-800/50 border border-gray-700/50 transition-all duration-300 group hover:scale-105"
                 >
-                  <component
-                    :is="social.icon"
-                    class="w-6 h-6 mb-2 group-hover:scale-110 transition-transform"
-                  />
+                  <el-icon class="w-6 h-6 mb-2 group-hover:scale-110 transition-transform">
+                    <component :is="social.icon" />
+                  </el-icon>
                   <span class="text-xs opacity-75 group-hover:opacity-100">{{ social.name }}</span>
                 </a>
               </div>

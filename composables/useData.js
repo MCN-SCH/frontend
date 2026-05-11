@@ -51,10 +51,11 @@ export const researchAreas = [
 export const labMembers = [
   {
     id: 1,
-    name: 'Dr. Jane Kim',
+    name: 'Professor Kim Seokhoon',
     role: 'Professor, Lab Director',
-    education: 'Ph.D. in Computer Science, Stanford University',
+    education: 'Ph.D. in Computer Engineering from Kyunghee University.',
     bio: 'Leading research in artificial intelligence and machine learning with applications in healthcare.',
+    image: '/images/members/seokhoon_kim.jpg',
     expertise: [
       'Machine Learning',
       'Deep Learning',
@@ -74,6 +75,7 @@ export const labMembers = [
     role: 'Postdoctoral Researcher',
     education: 'Ph.D. in Electrical Engineering, KAIST',
     bio: 'Researching neuromorphic computing and brain-inspired AI systems.',
+    image: '/members/minho-park.jpg',
     expertise: [
       'Neuromorphic Computing',
       'Spiking Neural Networks',
@@ -90,6 +92,7 @@ export const labMembers = [
     role: 'PhD Student',
     education: 'M.S. in Computer Science, Soonchunhyang University',
     bio: 'Developing explainable AI methods for medical diagnostics.',
+    image: '/members/soojin-lee.jpg',
     expertise: [
       'Explainable AI',
       'Medical Imaging',
@@ -107,6 +110,7 @@ export const labMembers = [
     role: 'Masters Student',
     education: 'B.S. in Computer Engineering, POSTECH',
     bio: 'Working on federated learning for privacy-preserving healthcare applications.',
+    image: '/members/jiwon-choi.jpg',
     expertise: [
       'Federated Learning',
       'Privacy',
@@ -125,6 +129,7 @@ export const labMembers = [
     education:
       'B.S. in Computer Science, Soonchunhyang University (Expected 2024)',
     bio: 'Assisting in data preprocessing and model evaluation for various AI projects.',
+    image: '/members/yongjun-kim.jpg',
     expertise: [
       'Python',
       'Data Analysis',
@@ -146,6 +151,7 @@ export const labMembers = [
     education: 'Ph.D. in Computer Science, Soonchunhyang University',
     currentPosition: 'Research Scientist at Google Brain',
     bio: 'Former PhD student specializing in reinforcement learning and robotics.',
+    image: '/members/seunghee-han.jpg',
     alumniContribution:
       'Developed novel RL algorithms for robotic manipulation, published 8 papers during PhD.',
     expertise: [
@@ -170,6 +176,7 @@ export const labMembers = [
     education: 'Ph.D. in Computer Vision, KAIST',
     currentPosition: 'Assistant Professor at Yonsei University',
     bio: 'Former postdoc working on 3D computer vision and autonomous driving.',
+    image: '/members/hyunwoo-lee.jpg',
     alumniContribution:
       'Led the autonomous vehicle perception project, secured national research grant.',
     expertise: [
@@ -193,6 +200,7 @@ export const labMembers = [
     education: 'M.S. in Computer Science, Soonchunhyang University',
     currentPosition: 'AI Engineer at Samsung Research',
     bio: 'Former Masters student focusing on natural language processing.',
+    image: '/members/minji-park.jpg',
     alumniContribution:
       "Developed Korean language models for Samsung's Bixby assistant.",
     expertise: [
@@ -216,6 +224,7 @@ export const labMembers = [
     education: 'Ph.D. in Computer Science, Soonchunhyang University',
     currentPosition: 'Senior AI Researcher at Naver AI Lab',
     bio: 'Former PhD student working on multimodal learning and vision-language models.',
+    image: '/members/jaeho-kim.jpg',
     alumniContribution:
       'Developed Korean multimodal datasets and models used widely in industry.',
     expertise: [
@@ -239,6 +248,7 @@ export const labMembers = [
     education: 'B.S. in Computer Science, Soonchunhyang University',
     currentPosition: 'PhD Student at MIT CSAIL',
     bio: 'Former undergraduate researcher working on fairness in machine learning.',
+    image: '/members/sora-yoon.jpg',
     alumniContribution:
       'Published first-author paper on algorithmic fairness as an undergraduate.',
     expertise: [
@@ -262,6 +272,7 @@ export const labMembers = [
     education: 'Ph.D. in Robotics, Carnegie Mellon University',
     currentPosition: 'Professor at KAIST Robotics Department',
     bio: 'Former visiting scholar collaborating on robot learning projects.',
+    image: '/members/taeyoung-kim.jpg',
     alumniContribution:
       'Established international collaboration between SNU and CMU robotics labs.',
     expertise: [
@@ -285,6 +296,7 @@ export const labMembers = [
     education: 'M.S. in Computer Science, Soonchunhyang University',
     currentPosition: 'Data Scientist at Coupang',
     bio: 'Former Masters student working on recommendation systems and personalization.',
+    image: '/members/hyejin-cho.jpg',
     alumniContribution:
       'Developed novel recommendation algorithms now used in production at Coupang.',
     expertise: [
@@ -308,6 +320,7 @@ export const labMembers = [
     education: 'Ph.D. in Computer Science, Soonchunhyang University',
     currentPosition: 'Founder & CEO of DeepLearning AI Startup',
     bio: 'Former PhD student working on efficient deep learning models for edge devices.',
+    image: '/members/youngmin-park.jpg',
     alumniContribution:
       'Founded successful AI startup based on PhD research, raised $10M in funding.',
     expertise: [
@@ -332,6 +345,7 @@ export const labMembers = [
     education: 'B.S. in Electrical Engineering, Soonchunhyang University',
     currentPosition: 'Software Engineer at Meta AI',
     bio: 'Former undergraduate researcher working on AI for social good applications.',
+    image: '/members/jieun-lee.jpg',
     alumniContribution:
       'Developed AI tools for disaster response that won international competitions.',
     expertise: [

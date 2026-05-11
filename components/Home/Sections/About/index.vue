@@ -84,12 +84,12 @@ const patterns = {
           </div>
 
           <h2 class="text-5xl font-bold mb-6 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
-            Advancing Korea's<br>Digital Future
+            Advancing<br>Digital Future
           </h2>
 
           <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed">
             At the <span class="font-bold text-blue-700 dark:text-blue-300">Mobile Computing & Networks Lab</span>,
-            we blend <span class="font-semibold text-purple-600 dark:text-purple-400">Korean innovation</span> with
+            we blend <span class="font-semibold text-purple-600 dark:text-purple-400">Innovation</span> with
             <span class="font-semibold text-teal-600 dark:text-teal-400">global research excellence</span> to shape tomorrow's computing landscape.
           </p>
         </div>
@@ -152,7 +152,7 @@ const patterns = {
               </div>
 
               <p class="text-gray-700 dark:text-gray-300 text-lg leading-relaxed mb-6">
-                To pioneer research that bridges <span class="font-semibold text-blue-600 dark:text-blue-400">Korean technological heritage</span> with
+                To pioneer research that bridges <span class="font-semibold text-blue-600 dark:text-blue-400">Technological heritage</span> with
                 <span class="font-semibold text-purple-600 dark:text-purple-400">global computing innovation</span>, creating solutions that transform industries and society.
               </p>
 
@@ -197,12 +197,12 @@ const patterns = {
 
           <div class="grid grid-cols-2 md:grid-cols-4 gap-8 relative z-10">
             <div class="text-center">
-              <div class="text-4xl font-bold text-white mb-2">50+</div>
+              <div class="text-4xl font-bold text-white mb-2">29+</div>
               <div class="text-blue-100">Research Papers</div>
             </div>
             <div class="text-center">
-              <div class="text-4xl font-bold text-white mb-2">15+</div>
-              <div class="text-blue-100">Industry Partners</div>
+              <div class="text-4xl font-bold text-white mb-2">5+</div>
+              <div class="text-blue-100">Partners</div>
             </div>
             <div class="text-center">
               <div class="text-4xl font-bold text-white mb-2">10+</div>

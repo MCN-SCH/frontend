@@ -20,8 +20,7 @@ const menuItems = [
 </script>
 
 <template>
-  <nav class="fixed w-full z-50 bg-white/95 backdrop-blur-md border-b border-gray-100 shadow-sm dark:bg-gray-900/95 dark:border-gray-800">
-    <div class="container mx-auto px-6 py-3">
+  <nav class="fixed w-full z-50 backdrop-blur-xl bg-white/30 dark:bg-gray-900/30 border-b border-white/20 dark:border-white/10 shadow-lg">    <div class="container mx-auto px-6 py-3">
       <div class="flex items-center justify-between">
         <!-- Logo -->
         <div class="flex items-center space-x-3 cursor-pointer group" @click="$emit('scrollTo', 'hero')">

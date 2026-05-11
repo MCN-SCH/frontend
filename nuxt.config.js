@@ -1,5 +1,5 @@
 export default defineNuxtConfig({
-  ssr: false,
+  ssr: true,
   devtools: { enabled: false },
 
   /* ----------------------------------
@@ -46,6 +46,8 @@ export default defineNuxtConfig({
     TELEGRAM_TOKEN: process.env.TELEGRAM_TOKEN,
     secretKey: process.env.NUXT_SECRET_KEY,
     public: {
+      routeSecret: process.env.ROUTE_SECRET,
+      timezone: process.env.TIMEZONE,
       maintenanceMode: process.env.MAINTENANCE_MODE || 'false',
       appBaseUrl: process.env.APP_BASE_URL,
       appSiteUrl: process.env.APP_SITE_URL,

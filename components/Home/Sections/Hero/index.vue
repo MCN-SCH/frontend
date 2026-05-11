@@ -107,7 +107,8 @@ onMounted(() => {
               >
                 <div class="flex items-center gap-2">
                   <div
-                    class="w-6 h-6 flex items-center justify-center bg-gradient-to-r from-blue-500 to-blue-600 rounded-full"
+                    @click="navigateTo('/portal')"
+                    class="w-6 h-6 flex items-center justify-center bg-gradient-to-r from-blue-500 to-blue-600 rounded-full cursor-pointer transition-transform transform hover:scale-110 active:scale-95"
                   >
                     <Rocket class="w-3 h-3 text-white" />
                   </div>
