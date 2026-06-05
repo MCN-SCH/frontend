@@ -13,7 +13,7 @@
     </div>
 
     <!-- Main Layout -->
-    <div v-else class="app-layout">
+    <div class="app-layout">
       <SideBarAdmin class="sidebar" />
 
       <main class="main-content">
@@ -33,27 +33,22 @@ definePageMeta({
 const loading = ref(true)
 const { value: user } = useCookie('user')
 const role = user?.role
+const deviceCookie = useCookie('device_id')
 
 onMounted(() => {
   // Simulate async check
   setTimeout(() => {
-    if (role !== 1) {
-      console.log('Unauthorized access: Borrower role required')
-      navigateTo('/unauthorized')
-    } else {
-      loading.value = false
-    }
+    // if (role !== 1) {
+    //   console.log('Unauthorized access: Borrower role required')
+    //   navigateTo('/unauthorized')
+    // } else {
+    //   loading.value = false
+    // }
 
     loading.value = false
   }, 1000) // Reduced delay for better UX
 })
 
-// Handle route changes
-const route = useRoute()
-watch(() => route.path, () => {
-  if (loading.value) return
-  // Add any route-specific logic here
-})
 </script>
 
 <style scoped>
@@ -102,7 +97,6 @@ watch(() => route.path, () => {
 }
 
 .sidebar {
-  flex: 0 0 250px; /* Fixed width sidebar */
   height: 100vh;
   position: sticky;
   top: 0;

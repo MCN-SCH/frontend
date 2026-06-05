@@ -4,6 +4,11 @@ import { ElButton, ElCard, ElInput, ElDivider, ElMessage } from 'element-plus'
 import { Lock, User } from 'lucide-vue-next'
 import { useAuthStore } from '~/store/auth.js'
 
+definePageMeta({
+  layout: 'auth',
+  middleware: ['redirect-if-authenticated']
+})
+
 const form = ref({
   username: '',
   password: '',
@@ -38,7 +43,7 @@ const goToAdminPage = async () => {
     ElMessage.success('Login successful')
     loading.value = false
 
-    navigateTo(`/portal/${deviceId}`)
+    navigateTo(`/portal/otp`)
   } catch (err) {
     console.error(err)
     ElMessage.error('Login failed')
@@ -111,6 +116,7 @@ const goToAdminPage = async () => {
             placeholder="Enter your username"
             size="large"
             class="custom-input"
+            type="text"
           >
             <template #prefix>
               <User class="w-4 h-4 text-slate-400" />
@@ -148,6 +154,7 @@ const goToAdminPage = async () => {
           class="w-full !h-12 !rounded-xl
           !bg-indigo-600 hover:!bg-indigo-500
           !border-none !text-white !font-semibold"
+          @keyup.enter="goToAdminPage"
           @click="goToAdminPage"
         >
           Login

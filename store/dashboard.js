@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import DashboardService from '~/services/DashboardService.js'
+import DashboardService from '~/services/Services.js'
 
 export const useDashboardStore = defineStore('dashboard', () => {
   const product = ref({})
@@ -7,7 +7,7 @@ export const useDashboardStore = defineStore('dashboard', () => {
 
   const getDashboard = async (params) => {
     try {
-      const { data } = await dashboardService.index(params)
+      const { data } = await dashboardService.dashboard(params)
       const products = data || {}
       product.value = products
       return products

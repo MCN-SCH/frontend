@@ -1,4 +1,5 @@
 import { useProtectedRoute } from '~/composables/useProtectedRoute.js'
+import { useAuthStore } from '~/store/auth.js'
 
 export const useHttp = async (url, options = {}) => {
   const config = useRuntimeConfig()
