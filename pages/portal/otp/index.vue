@@ -1,15 +1,7 @@
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue'
 import { ElMessage, ElNotification } from 'element-plus'
 import { useAuthStore } from '~/store/auth.js'
 
-const deviceCookie = useCookie('device_id')
-const deviceId = deviceCookie.value
-
-if (!deviceId) {
-  ElMessage.error('User information not found. Please log in again.')
-  navigateTo('/portal')
-}
 
 const authStore = useAuthStore()
 const { sendCode, verifyCode } = authStore
@@ -94,6 +86,15 @@ const clearCountdown = () => {
 
 onUnmounted(() => {
   clearCountdown()
+
+  const deviceCookie = useCookie('device_id')
+  const deviceId = deviceCookie.value
+
+  if (!deviceId) {
+    ElMessage.error('User information not found. Please log in again.')
+    navigateTo('/portal')
+  }
+
 })
 </script>
 
