@@ -48,6 +48,7 @@
     "@pinia/nuxt": "^0.5.1",
     "@vee-validate/nuxt": "^4.10.8",
     "@vee-validate/yup": "^4.10.8",
+    "@vueuse/core": "^14.3.0",
     "@vueuse/nuxt": "^10.7.0",
     "bcrypt-nodejs": "0.0.3",
     "chart.js": "^4.4.1",

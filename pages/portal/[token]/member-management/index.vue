@@ -1,5 +1,8 @@
 <script setup>
 import { computed, onMounted, ref, watch } from 'vue'
+import { useDebounceFn } from '@vueuse/core'
+import { ElMessage, ElMessageBox } from 'element-plus'
+import { Setting } from '@element-plus/icons-vue'
 import { useMemberStore } from '~/store/member.js'
 
 definePageMeta({
@@ -8,15 +11,26 @@ definePageMeta({
 })
 
 const store = useMemberStore()
-const { index } = store
+const { index, resetPassword } = store
 
 const data = ref(null)
 const loading = ref(false)
 
 const search = ref('')
 const currentPage = ref(1)
-const pageSize = ref(10)
 
+const viewDialogVisible = ref(false)
+const selectedUser = ref(null)
+
+const roleLabels = {
+  '1': 'Admin',
+  '2': 'Professor',
+  '3': 'Researcher',
+  '4': 'PhD Student',
+  '5': 'Master Student',
+  '6': 'Undergraduate Student',
+  '7': 'Alumni',
+}
 
 const fetchMembers = async (page = currentPage.value) => {
   loading.value = true
@@ -25,17 +39,81 @@ const fetchMembers = async (page = currentPage.value) => {
     currentPage.value = page
 
     data.value = await index({
-      page: currentPage.value
+      page,
+      search: search.value,
     })
-  } catch (err) {
-    console.error('Failed to fetch members:', err)
+  } catch (error) {
+    console.error(error)
   } finally {
     loading.value = false
   }
 }
 
+const debouncedSearch = useDebounceFn(() => {
+  currentPage.value = 1
+  fetchMembers()
+}, 500)
+
+watch(search, () => {
+  debouncedSearch()
+})
+
 const users = computed(() => data.value?.users?.data || [])
 const pagination = computed(() => data.value?.users || {})
+const deviceCookie = useCookie('device_id')
+
+const deviceId = deviceCookie.value
+
+const createMember = () => {
+  navigateTo(`/portal/${deviceId}/member-management/create`)
+}
+
+const viewMember = (user) => {
+  selectedUser.value = user
+  viewDialogVisible.value = true
+}
+
+const editMember = (user) => {
+  navigateTo(`/portal/${deviceId}/member-management/${user.id}`)
+}
+
+const deleteMember = async (user) => {
+  try {
+    await ElMessageBox.confirm(
+      `Delete ${user.member?.name || 'this member'}?`,
+      'Warning',
+      {
+        type: 'warning',
+      }
+    )
+
+    // await store.destroy(user.id)
+
+    ElMessage.success('Member deleted')
+
+    fetchMembers(currentPage.value)
+  } catch {
+    //
+  }
+}
+
+const resetNewPassword = async (user) => {
+  try {
+    await ElMessageBox.confirm(
+      `Send new reset password for ${user.member?.name} to their email?`,
+      'Confirm Reset Password',
+      {
+        type: 'warning',
+      }
+    )
+
+    await resetPassword(user.id)
+
+    ElMessage.info(`Send New Reset password for ${user.member?.name} to Email: ${user.email}`)
+  } catch {
+      //
+  }
+}
 
 onMounted(() => {
   fetchMembers()
@@ -44,10 +122,11 @@ onMounted(() => {
 
 <template>
   <div class="p-6">
-    <div class="flex justify-between items-center mb-6">
-      <h1 class="text-2xl font-bold">Member Management</h1>
+    <div class="flex flex-col md:flex-row justify-between gap-4 mb-6">
+      <h1 class="text-2xl font-bold">
+        Member Management
+      </h1>
 
-      <el-button type="primary" @click="fetchMembers"> Refresh </el-button>
     </div>
 
     <!-- Statistics -->
@@ -80,6 +159,30 @@ onMounted(() => {
       </el-card>
     </div>
 
+    <div class="flex flex-col md:flex-row justify-end gap-4 mb-6">
+      <div class="flex flex-wrap gap-2">
+        <el-input
+          v-model="search"
+          clearable
+          placeholder="Search member..."
+          style="width: 300px"
+        />
+
+        <el-button
+          type="success"
+          @click="createMember"
+        >
+          Create Member
+        </el-button>
+
+        <el-button
+          type="primary"
+          @click="fetchMembers"
+        >
+          Refresh
+        </el-button>
+      </div>
+    </div>
     <!-- Table -->
     <el-table
       v-loading="loading"
@@ -89,9 +192,37 @@ onMounted(() => {
       empty-text="No members found"
     >
       <!-- Row Index -->
-      <el-table-column label="#" width="70">
-        <template #default="{ $index }">
-          {{ (pagination.current_page - 1) * pagination.per_page + $index + 1 }}
+      <el-table-column
+        label="Actions"
+        width="90"
+        fixed="right"
+      >
+        <template #default="{ row }">
+          <el-dropdown trigger="click">
+            <el-button circle>
+              <el-icon>
+                <Setting />
+              </el-icon>
+            </el-button>
+
+            <template #dropdown>
+              <el-dropdown-menu>
+                <el-dropdown-item @click="viewMember(row)">
+                  View
+                </el-dropdown-item>
+
+                <el-dropdown-item @click="editMember(row)">
+                  Edit
+                </el-dropdown-item>
+
+                <el-dropdown-item
+                  @click="resetNewPassword(row)"
+                >
+                  Reset Password
+                </el-dropdown-item>
+              </el-dropdown-menu>
+            </template>
+          </el-dropdown>
         </template>
       </el-table-column>
 
@@ -171,6 +302,83 @@ onMounted(() => {
       />
     </div>
   </div>
+
+  <el-dialog
+    v-model="viewDialogVisible"
+    title="Member Information"
+    width="700px"
+  >
+    <template v-if="selectedUser">
+      <div class="flex flex-col items-center mb-6">
+        <el-avatar
+          :size="100"
+          :src="selectedUser.member?.image || ''"
+        />
+
+        <div class="text-xl font-semibold mt-3">
+          {{ selectedUser.member?.name || '-' }}
+        </div>
+
+        <div class="text-gray-500">
+          @{{ selectedUser.member?.username || '-' }}
+        </div>
+      </div>
+
+      <el-descriptions
+        border
+        :column="1"
+      >
+        <el-descriptions-item label="Name">
+          {{ selectedUser.member?.name || '-' }}
+        </el-descriptions-item>
+
+        <el-descriptions-item label="Username">
+          {{ selectedUser.member?.username || '-' }}
+        </el-descriptions-item>
+
+        <el-descriptions-item label="Email">
+          {{ selectedUser.email || '-' }}
+        </el-descriptions-item>
+
+        <el-descriptions-item label="Phone">
+          {{ selectedUser.phone || '-' }}
+        </el-descriptions-item>
+
+        <el-descriptions-item label="Role">
+          {{ roleLabels[selectedUser.role] || '-' }}
+        </el-descriptions-item>
+
+        <el-descriptions-item label="Status">
+          <el-tag
+            :type="selectedUser.status === '1' ? 'success' : 'danger'"
+          >
+            {{ selectedUser.status === '1' ? 'Active' : 'Inactive' }}
+          </el-tag>
+        </el-descriptions-item>
+
+        <el-descriptions-item label="Created At">
+          {{
+            selectedUser.created_at
+              ? new Date(selectedUser.created_at).toLocaleString()
+              : '-'
+          }}
+        </el-descriptions-item>
+      </el-descriptions>
+    </template>
+
+    <template #footer>
+      <el-button @click="viewDialogVisible = false">
+        Close
+      </el-button>
+
+      <el-button
+        type="primary"
+        @click="editMember(selectedUser)"
+      >
+        Edit Member
+      </el-button>
+    </template>
+  </el-dialog>
 </template>
 
 <style scoped>

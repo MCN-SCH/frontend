@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import DashboardService from '~/services/Services.js'
+import DashboardService from '~/services/DashboardService.js'
 
 export const useDashboardStore = defineStore('dashboard', () => {
   const product = ref({})

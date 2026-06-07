@@ -1,13 +1,12 @@
-import Services from '~/services/Services.js'
 import { useCookies } from 'vue3-cookies'
 import { ElMessage } from 'element-plus'
-
-const authService = Services.getInstance()
+import AuthServices from '~/services/AuthServices.js'
 
 export const useAuthStore = defineStore('auth', () => {
   const { cookies } = useCookies()
   const user = ref(null)
   const token = ref(null)
+  const authService = AuthServices.getInstance()
 
   const login = async (credentials) => {
     try {
@@ -25,7 +24,7 @@ export const useAuthStore = defineStore('auth', () => {
         token_type,
         expires_in,
         device_id,
-        expires_at
+        expires_at,
       } = token
 
       user.value = userData
@@ -35,7 +34,7 @@ export const useAuthStore = defineStore('auth', () => {
         secure: true,
         sameSite: 'Strict',
         path: '/',
-        maxAge: expires_in // optional but recommended
+        maxAge: expires_in, // optional but recommended
       }
 
       // Auth cookies
@@ -53,6 +52,17 @@ export const useAuthStore = defineStore('auth', () => {
       return res
     } catch (error) {
       throw new Error(`Login failed: ${error.message || 'Unknown error'}`)
+    }
+  }
+
+  //register function
+  const register = async (credentials) => {
+    try {
+      return await authService.register(credentials)
+    } catch (error) {
+      throw new Error(
+        `Registration failed: ${error.message || 'Unknown error'}`,
+      )
     }
   }
 
@@ -86,9 +96,12 @@ export const useAuthStore = defineStore('auth', () => {
     token.value = null
     await authService.logout()
 
-    cookies.remove('access_token')
-    cookies.remove('user')
-    cookies.remove('tokenType')
+    cookies.remove('device_id')
+    cookies.remove('expires_at')
+    cookies.remove('expires_in')
+    cookies.remove('mcn')
+    cookies.remove('refresh_token')
+    cookies.remove('token_type')
   }
 
   const verifyCode = async (credentials) => {
@@ -101,7 +114,7 @@ export const useAuthStore = defineStore('auth', () => {
         secure: true,
         sameSite: 'Strict',
         path: '/',
-        maxAge: 60 * 60 * 24 * 7 // 1 week
+        maxAge: 60 * 60 * 24 * 7, // 1 week
       }
 
       //remove previous cookie if exists
@@ -120,7 +133,7 @@ export const useAuthStore = defineStore('auth', () => {
       const refreshToken = cookies.get('refresh_token')
 
       const { data } = await authService.refreshToken({
-        refresh_token: refreshToken
+        refresh_token: refreshToken,
       })
 
       console.log('Refresh token response:', data.access_token)
@@ -133,14 +146,14 @@ export const useAuthStore = defineStore('auth', () => {
         refresh_token: newRefreshToken,
         token_type,
         expires_in,
-        expires_at
+        expires_at,
       } = data
 
       const cookieOptions = {
         secure: true,
         sameSite: 'Strict',
         path: '/',
-        maxAge: expires_in
+        maxAge: expires_in,
       }
 
       // update state
@@ -168,7 +181,7 @@ export const useAuthStore = defineStore('auth', () => {
       cookies.remove('mcn')
 
       throw new Error(
-        `Refresh token failed: ${error.message || 'Unknown error'}`
+        `Refresh token failed: ${error.message || 'Unknown error'}`,
       )
     }
   }
@@ -181,6 +194,7 @@ export const useAuthStore = defineStore('auth', () => {
     getMe,
     logout,
     verifyCode,
-    refreshToken
+    refreshToken,
+    register
   }
 })

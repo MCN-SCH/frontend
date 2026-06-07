@@ -1,10 +1,6 @@
-import { useProtectedRoute } from '~/composables/useProtectedRoute.js'
-import { useAuthStore } from '~/store/auth.js'
-
 export const useHttp = async (url, options = {}) => {
   const config = useRuntimeConfig()
-  const { generateRouteKey } = useProtectedRoute()
-  const baseURL = `${config.public.serverApiUrl}/${config.public.apiVersion}/${generateRouteKey()}`
+  const baseURL = `${config.public.serverApiUrl}/${config.public.apiVersion}`
   const cookie = useCookie('access_token')
   const token = cookie.value
 
@@ -32,7 +28,6 @@ export const useHttp = async (url, options = {}) => {
   try {
     return await $fetch(url, { baseURL, ...options })
   } catch (error) {
-    console.error('HTTP Request failed:', error)
 
     // Handle error message display based on your API's error structure
     if (error.data) {

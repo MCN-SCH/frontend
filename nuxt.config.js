@@ -1,5 +1,5 @@
 export default defineNuxtConfig({
-  ssr: false,
+  ssr: true,
   devtools: { enabled: false },
 
   /* ----------------------------------
@@ -147,19 +147,26 @@ export default defineNuxtConfig({
 
   security: {
     headers: {
-      crossOriginEmbedderPolicy: "require-corp",
+      // crossOriginEmbedderPolicy: "require-corp",
+      crossOriginEmbedderPolicy: false,
       crossOriginOpenerPolicy: "same-origin",
       crossOriginResourcePolicy: "same-origin",
 
       contentSecurityPolicy: {
         "default-src": ["'self'"],
-        "img-src": ["'self'", "data:", "https:"],
+        'img-src': [
+          "'self'",
+          'data:',
+          'https:',
+          'http://localhost:8000'
+        ],
         "script-src": ["'self'", "'unsafe-inline'"],
         "style-src": ["'self'", "'unsafe-inline'"],
         "connect-src": [
           "'self'",
           process.env.SERVER_API_URL || "",
         ],
+
       },
     },
     csrf: true,

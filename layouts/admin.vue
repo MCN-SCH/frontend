@@ -1,151 +1,147 @@
-<template>
-  <div class="app-container">
-    <!-- Loading Overlay -->
-    <div v-if="loading" class="loading-overlay">
-      <div class="loading-content">
-        <img
-          class="loading-gif"
-          src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExczlodmc1azdsMWoxN29xOTBtY3pqampvMTlhYWk0NjlhbmwwNmljMSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/ZLSlxoLbVvdrSFz599/giphy.gif"
-          alt="Loading..."
-        />
-        <p class="loading-text">Loading...</p>
+  <template>
+    <div class="app-container">
+      <!-- Loading Overlay -->
+      <div v-if="loading" class="loading-overlay">
+        <div class="loading-content">
+          <img
+            class="loading-gif"
+            src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExczlodmc1azdsMWoxN29xOTBtY3pqampvMTlhYWk0NjlhbmwwNmljMSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/ZLSlxoLbVvdrSFz599/giphy.gif"
+            alt="Loading..."
+          />
+          <p class="loading-text">Loading...</p>
+        </div>
+      </div>
+
+      <!-- Main Layout -->
+      <div class="app-layout">
+        <SideBarAdmin />
+
+        <main class="main-content">
+          <slot />
+        </main>
       </div>
     </div>
+  </template>
 
-    <!-- Main Layout -->
-    <div class="app-layout">
-      <SideBarAdmin class="sidebar" />
+  <script setup>
+  definePageMeta({
+    middleware: ['authenticated'],
+  })
 
-      <main class="main-content">
-        <div class="content-wrapper">
-          <slot />
-        </div>
-      </main>
-    </div>
-  </div>
-</template>
+  const loading = ref(true)
+  const { value: user } = useCookie('user')
+  const role = user?.role
+  const deviceCookie = useCookie('device_id')
 
-<script setup>
-definePageMeta({
-  middleware: ['authenticated'],
-})
+  onMounted(() => {
+    // Simulate async check
+    setTimeout(() => {
+      // if (role !== 1) {
+      //   console.log('Unauthorized access: Borrower role required')
+      //   navigateTo('/unauthorized')
+      // } else {
+      //   loading.value = false
+      // }
 
-const loading = ref(true)
-const { value: user } = useCookie('user')
-const role = user?.role
-const deviceCookie = useCookie('device_id')
+      loading.value = false
+    }, 1000) // Reduced delay for better UX
+  })
 
-onMounted(() => {
-  // Simulate async check
-  setTimeout(() => {
-    // if (role !== 1) {
-    //   console.log('Unauthorized access: Borrower role required')
-    //   navigateTo('/unauthorized')
-    // } else {
-    //   loading.value = false
-    // }
+  </script>
 
-    loading.value = false
-  }, 1000) // Reduced delay for better UX
-})
-
-</script>
-
-<style scoped>
-.app-container {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
-
-.loading-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: rgba(255, 255, 255, 0.9);
-  z-index: 1000;
-  backdrop-filter: blur(2px);
-}
-
-.loading-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1rem;
-}
-
-.loading-gif {
-  width: 80px;
-  height: 80px;
-  object-fit: contain;
-}
-
-.loading-text {
-  font-size: 1.2rem;
-  color: #333;
-  font-weight: 500;
-}
-
-.app-layout {
-  display: flex;
-  min-height: 100vh;
-}
-
-.sidebar {
-  height: 100vh;
-  position: sticky;
-  top: 0;
-  overflow-y: auto;
-}
-
-.main-content {
-  flex: 1;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
-
-.content-wrapper {
-  flex: 1;
-  padding: 2rem;
-  width: 100%;
-  margin: 0 auto;
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  .app-layout {
+  <style scoped>
+  .app-container {
+    min-height: 100vh;
+    display: flex;
     flex-direction: column;
   }
 
-  .sidebar {
+  .loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
     width: 100%;
-    height: auto;
-    position: static;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.9);
+    z-index: 1000;
+    backdrop-filter: blur(2px);
   }
 
-  .content-wrapper {
-    padding: 1.5rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .content-wrapper {
-    padding: 1rem;
+  .loading-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
   }
 
   .loading-gif {
-    width: 60px;
-    height: 60px;
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
   }
 
   .loading-text {
-    font-size: 1rem;
+    font-size: 1.2rem;
+    color: #333;
+    font-weight: 500;
   }
-}
-</style>
+
+  .app-layout {
+    display: flex;
+    min-height: 100vh;
+  }
+
+  .sidebar {
+    height: 100vh;
+    position: sticky;
+    top: 0;
+    overflow-y: auto;
+  }
+
+  .main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    min-height: 100vh;
+  }
+
+  .content-wrapper {
+    flex: 1;
+    padding: 2rem;
+    width: 100%;
+    margin: 0 auto;
+  }
+
+  .app-layout {
+    display: flex;
+    min-height: 100vh;
+  }
+
+  .sidebar {
+    flex-shrink: 0;
+  }
+
+  .main-content {
+    flex: 1;
+    overflow-x: auto;
+  }
+
+  @media (max-width: 480px) {
+    .content-wrapper {
+      padding: 1rem;
+    }
+
+    .loading-gif {
+      width: 60px;
+      height: 60px;
+    }
+
+    .loading-text {
+      font-size: 1rem;
+    }
+  }
+  </style>

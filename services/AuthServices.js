@@ -1,20 +1,25 @@
-import BaseService from './BaseService'
+import BaseService from './BaseService.js'
 
 let instance = null
-class Services extends BaseService {
+class AuthServices extends BaseService {
   constructor () {
     super('')
   }
 
   static getInstance () {
     if (!instance) {
-      instance = new Services()
+      instance = new AuthServices()
     }
     return instance
   }
 
   async login (req) {
     return await this._post(`${this._prefix}/login`, req)
+  }
+
+  //register
+  async register (req) {
+    return await this._post(`${this._prefix}/register`, req)
   }
 
   async getMe () {
@@ -42,21 +47,6 @@ class Services extends BaseService {
   async refreshToken (req) {
     return await this._post(`${this._prefix}/refresh`, req)
   }
-
-  //dashboard
-  async dashboard (params) {
-    return await this._get(`${this._prefix}/dashboard`, params)
-  }
-
-  //Member
-  async member (payload = {}) {
-    const filteredParams = Object.fromEntries(
-      Object.entries(payload).filter(([_, value]) => value != null),
-    )
-    const queryParams = new URLSearchParams(filteredParams).toString()
-
-    return await this._get(`${this._prefix}/member${queryParams}`, {})
-    }
 }
 
-export default Services
+export default AuthServices

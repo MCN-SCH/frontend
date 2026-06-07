@@ -21,17 +21,16 @@ import {
   Clock
 } from '@element-plus/icons-vue'
 
-import { ElMessage } from 'element-plus'
-
 const route = useRoute()
 
-const isOpen = ref(true)
 const activeSubmenu = ref(null)
 
 const deviceCookie = useCookie('device_id')
 
 const deviceId = deviceCookie.value
 
+const isOpen = ref(true)
+const isMobileMenuOpen = ref(false)
 
 const menuItems = [
   { icon: House, label: 'Dashboard', to: `/portal/${deviceId}/` },
@@ -117,9 +116,16 @@ onUnmounted(() => {
 </script>
 
 <template>
+
   <aside
-    class="h-screen flex flex-col bg-white border-r border-slate-200 shadow-lg transition-all duration-300"
-    :class="isOpen ? 'w-64' : 'w-20'"
+    class="fixed md:relative top-0 left-0 z-50 h-screen bg-white border-r border-slate-200 shadow-lg transition-all duration-300 flex flex-col"
+    :class="[
+    isOpen ? 'md:w-64' : 'md:w-20',
+
+    isMobileMenuOpen
+      ? 'translate-x-0 w-64'
+      : '-translate-x-full md:translate-x-0'
+  ]"
   >
     <!-- Header -->
     <div
@@ -280,6 +286,19 @@ onUnmounted(() => {
       </template>
     </div>
   </aside>
+
+  <div
+    v-if="isMobileMenuOpen"
+    class="fixed inset-0 bg-black/40 z-40 md:hidden"
+    @click="isMobileMenuOpen = false"
+  />
+  <el-button
+    v-if="!isMobileMenuOpen"
+    class="fixed top-4 left-4 z-100 md:hidden"
+    :icon="Menu"
+    circle
+    @click="isMobileMenuOpen = true"
+  />
 </template>
 
 <style scoped>

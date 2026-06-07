@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import MemberService from '~/services/Services.js'
+import MemberService from '~/services/MemberService.js'
 
 export const useMemberStore = defineStore('member', () => {
   const product = ref({})
@@ -7,8 +7,7 @@ export const useMemberStore = defineStore('member', () => {
 
   const index = async (params) => {
     try {
-      console.log('Member Store - Index Params:', params)
-      const { data } = await service.member(params)
+      const { data } = await service.index(params)
       const products = data || {}
       product.value = products
       return products
@@ -18,8 +17,48 @@ export const useMemberStore = defineStore('member', () => {
     }
   }
 
+  //show
+  const show = async (id) => {
+    try {
+      const { data } = await service.show(id)
+      const products = data || {}
+      product.value = products
+      return products
+    } catch (error) {
+      ElMessage.error(error.message || 'Get failed')
+      throw new Error(`Get failed: ${error.message || 'Unknown error'}`)
+    }
+  }
+
+  //update
+  const update = async (id, params) => {
+    try {
+      const { data } = await service.update(id, params)
+      const products = data || {}
+      product.value = products
+      return products
+    } catch (error) {
+      throw new Error(`Update failed: ${error.message || 'Unknown error'}`)
+    }
+  }
+
+  //reset password
+  const resetPassword = async (id, params) => {
+    try {
+      const { data } = await service.resetPassword(id, params)
+      const products = data || {}
+      product.value = products
+      return products
+    } catch (error) {
+      throw new Error(`Reset password failed: ${error.message || 'Unknown error'}`)
+    }
+  }
+
   return {
     product: computed(() => product.value),
-    index
+    index,
+    update,
+    show,
+    resetPassword
   }
 })
