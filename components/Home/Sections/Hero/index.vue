@@ -112,9 +112,9 @@ onMounted(() => {
                   >
                     <Rocket class="w-3 h-3 text-white" />
                   </div>
-                  <span class="font-bold">Soonchunhyang University's Research Lab</span>
+                  <span class="font-bold">{{ $t('badge') }}</span>
                 </div>
-                <span class="text-center sm:text-left">Since 20**</span>
+                <span class="text-center sm:text-left">{{ $t('since') }}</span>
               </div>
             </div>
 
@@ -123,13 +123,13 @@ onMounted(() => {
                 class="text-3xl md:text-5xl lg:text-6xl font-black mb-4 leading-tight"
               >
                 <span class="block text-gray-900 dark:text-white"
-                  >Mobile Computing</span
+                  >{{ $t('mobile_computing') }}</span
                 >
                 <span class="block">
                   <span
                     class="bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-400 bg-clip-text text-transparent"
                   >
-                    & Networking Lab
+                    {{ $t('networking_lab') }}
                   </span>
                   <Sparkles
                     class="w-8 h-8 md:w-10 md:h-10 inline-block ml-3 text-yellow-400"
@@ -142,7 +142,7 @@ onMounted(() => {
                 <div
                   class="w-12 h-0.5 bg-gradient-to-r from-blue-500 to-transparent"
                 ></div>
-                <span>SCHU MCN Laboratory</span>
+                <span>{{ $t('schu_mcn_laboratory') }}</span>
               </div>
             </div>
 
@@ -152,7 +152,7 @@ onMounted(() => {
               <span
                 class="block text-blue-600 dark:text-blue-400 font-bold mt-2"
               >
-                AI • 6G • Cloud • IoT • Security
+                {{ $t('AI_6G_Cloud_IoT_Security') }}
               </span>
             </p>
 

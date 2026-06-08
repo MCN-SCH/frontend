@@ -1,15 +1,130 @@
 <script setup>
 import { ref, computed } from 'vue'
-import { Search, BookOpen, Briefcase, Calendar } from 'lucide-vue-next'
+import {
+  Search,
+  BookOpen,
+  Briefcase,
+  GraduationCap,
+  Mail,
+  Globe,
+  Phone
+} from 'lucide-vue-next'
 
 const props = defineProps({
-  labMembers: Array
+  labMembers: {
+    type: Array,
+    default: () => []
+  }
 })
+
+const safeString = (value, fallback = '-') => {
+  if (value === null || value === undefined || value === '') {
+    return fallback
+  }
+
+  return String(value)
+}
+
+const safeNumber = (value, fallback = 0) => {
+  const num = Number(value)
+
+  return Number.isNaN(num)
+    ? fallback
+    : num
+}
+
+const formatDate = (date) => {
+  if (!date) {
+    return '-'
+  }
+
+  try {
+    return new Date(date).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    })
+  } catch {
+    return '-'
+  }
+}
+
+const safeArray = (value) => {
+  if (!value) return []
+  if (Array.isArray(value)) return value
+
+  try {
+    const parsed = JSON.parse(value)
+    return Array.isArray(parsed) ? parsed : []
+  } catch {
+    return []
+  }
+}
+
+const members = computed(() => {
+  return (props.labMembers || []).map(member => ({
+    ...member,
+
+    name: safeString(member?.name),
+    position: safeString(member?.position),
+    affiliation: safeString(member?.affiliation),
+
+    total_publications: safeNumber(member?.total_publications),
+    total_projects: safeNumber(member?.total_projects),
+
+    research_domains: safeArray(member?.research_domains),
+    academic_profiles: safeArray(member?.academic_profiles),
+
+    image: member?.image || '',
+    role: safeNumber(member?.role),
+    is_active: Boolean(member?.is_active)
+  }))
+})
+
+/*
+|--------------------------------------------------------------------------
+| Constants
+|--------------------------------------------------------------------------
+*/
+
+const ROLE = {
+  ADMIN: 1,
+  PROFESSOR: 2,
+  RESEARCHER: 3,
+  PHD_STUDENT: 4,
+  MASTER_STUDENT: 5,
+  UNDERGRADUATE_STUDENT: 6,
+  ALUMNI: 7
+}
+
+const STATUS = {
+  ACTIVE: 1,
+  INACTIVE: 0
+}
+
+/*
+|--------------------------------------------------------------------------
+| Search & Tabs
+|--------------------------------------------------------------------------
+*/
 
 const searchQuery = ref('')
 const activeTab = ref('all')
 
-// Dialog
+const tabs = [
+  { key: 'all', label: 'All Members' },
+  { key: 'professor', label: 'Professors' },
+  { key: 'researcher', label: 'Researchers' },
+  { key: 'students', label: 'Students' },
+  { key: 'alumni', label: 'Alumni' }
+]
+
+/*
+|--------------------------------------------------------------------------
+| Dialog
+|--------------------------------------------------------------------------
+*/
+
 const dialogVisible = ref(false)
 const selectedMember = ref(null)
 
@@ -18,96 +133,169 @@ const openDialog = (member) => {
   dialogVisible.value = true
 }
 
-// Tabs
-const tabs = [
-  { key: 'all', label: 'All' },
-  { key: 'professor', label: 'Professor' },
-  { key: 'phd', label: 'PhD' },
-  { key: 'master', label: 'Master' },
-  { key: 'alumni', label: 'Alumni' }
-]
+/*
+|--------------------------------------------------------------------------
+| Helpers
+|--------------------------------------------------------------------------
+*/
 
-// Helpers
-const isProfessor = (m) => {
-  const r = m.role.toLowerCase()
-  return r.includes('professor') || r.includes('director') || r.includes('pi')
+const parseArray = (value) => {
+  if (!value) return []
+
+  if (Array.isArray(value)) {
+    return value
+  }
+
+  try {
+    return JSON.parse(value)
+  } catch {
+    return []
+  }
 }
 
-const isAlumni = (m) => {
-  return m.role.toLowerCase().includes('alumni') || m.status === 'alumni'
+const roleLabel = (role) => {
+  const labels = {
+    1: 'Administrator',
+    2: 'Professor',
+    3: 'Researcher',
+    4: 'PhD Student',
+    5: 'Master Student',
+    6: 'Undergraduate Student',
+    7: 'Alumni'
+  }
+
+  return labels[role] || 'Member'
 }
 
-// Filter
+const isProfessor = (member) =>
+  Number(member.role) === ROLE.PROFESSOR
+
+const isResearcher = (member) =>
+  Number(member.role) === ROLE.RESEARCHER
+
+const isStudent = (member) =>
+  [
+    ROLE.PHD_STUDENT,
+    ROLE.MASTER_STUDENT,
+    ROLE.UNDERGRADUATE_STUDENT
+  ].includes(Number(member.role))
+
+const isAlumni = (member) =>
+  Number(member.role) === ROLE.ALUMNI
+
+/*
+|--------------------------------------------------------------------------
+| Counts
+|--------------------------------------------------------------------------
+*/
+
+const counts = computed(() => ({
+  all: members.value.filter(m => m.role !== ROLE.ALUMNI).length,
+  professor: members.value.filter(m => m.role === ROLE.PROFESSOR).length,
+  researcher: members.value.filter(m => m.role === ROLE.RESEARCHER).length,
+  students: members.value.filter(isStudent).length,
+  alumni: members.value.filter(m => m.role === ROLE.ALUMNI).length
+}))
+
+/*
+|--------------------------------------------------------------------------
+| Filter
+|--------------------------------------------------------------------------
+*/
+
 const filteredMembers = computed(() => {
-  let members = [...props.labMembers]
+  let list = [...members.value]
 
-  members = members.filter(m => {
-    const role = m.role.toLowerCase()
+  list = list.filter(member => {
+    switch (activeTab.value) {
+      case 'professor':
+        return isProfessor(member)
 
-    if (activeTab.value === 'all') return !isAlumni(m)
-    if (activeTab.value === 'professor') return isProfessor(m)
-    if (activeTab.value === 'phd') return role.includes('phd') && !isAlumni(m)
-    if (activeTab.value === 'master') return role.includes('master') && !isAlumni(m)
-    if (activeTab.value === 'alumni') return isAlumni(m)
+      case 'researcher':
+        return isResearcher(member)
 
-    return true
+      case 'students':
+        return isStudent(member)
+
+      case 'alumni':
+        return isAlumni(member)
+
+      default:
+        return !isAlumni(member)
+    }
   })
 
-  if (!searchQuery.value.trim()) return members
+  if (!searchQuery.value?.trim()) return list
 
-  const q = searchQuery.value.toLowerCase()
-  return members.filter(m =>
-    m.name.toLowerCase().includes(q) ||
-    m.role.toLowerCase().includes(q)
+  const keyword = searchQuery.value.toLowerCase()
+
+  return list.filter(member =>
+    (member.name || '').toLowerCase().includes(keyword) ||
+    roleLabel(member.role).toLowerCase().includes(keyword) ||
+    (member.position || '').toLowerCase().includes(keyword) ||
+    (member.affiliation || '').toLowerCase().includes(keyword)
   )
 })
+/*
+|--------------------------------------------------------------------------
+| Sort
+|--------------------------------------------------------------------------
+*/
 
-// Count
-const counts = computed(() => ({
-  all: props.labMembers.filter(m => !isAlumni(m)).length,
-  professor: props.labMembers.filter(m => isProfessor(m)).length,
-  phd: props.labMembers.filter(m => m.role.toLowerCase().includes('phd') && !isAlumni(m)).length,
-  master: props.labMembers.filter(m => m.role.toLowerCase().includes('master') && !isAlumni(m)).length,
-  alumni: props.labMembers.filter(m => isAlumni(m)).length
-}))
+const sortedMembers = computed(() => {
+  return [...filteredMembers.value].sort(
+    (a, b) => (a.order ?? 0) - (b.order ?? 0)
+  )
+})
 </script>
 
 <template>
-  <section id="team" class="relative py-12 md:py-16 overflow-hidden">
-
-    <!-- ✅ YOUR BACKGROUND (UNCHANGED) -->
+  <section
+    id="team"
+    class="relative py-12 md:py-16 overflow-hidden"
+  >
+    <!-- Background -->
     <div class="absolute inset-0 bg-gradient-to-br from-blue-50 via-white to-indigo-50/10 dark:from-gray-900 dark:via-gray-800 dark:to-blue-900/10">
       <div class="absolute inset-0 opacity-[0.03]">
-        <div class="absolute inset-0" style="background-image:
-          radial-gradient(circle at 25% 25%, currentColor 1px, transparent 1px),
-          radial-gradient(circle at 75% 75%, currentColor 1px, transparent 1px);
-          background-size: 60px 60px;">
-        </div>
+        <div
+          class="absolute inset-0"
+          style="
+            background-image:
+            radial-gradient(circle at 25% 25%, currentColor 1px, transparent 1px),
+            radial-gradient(circle at 75% 75%, currentColor 1px, transparent 1px);
+            background-size: 60px 60px;
+          "
+        />
       </div>
     </div>
 
     <div class="relative z-10 max-w-7xl mx-auto px-4">
 
-      <!-- HEADER -->
+      <!-- Header -->
       <div class="text-center mb-10">
         <h2 class="text-4xl font-bold text-gray-900 dark:text-white">
           Meet Our Team
         </h2>
-        <p class="text-gray-500">Research lab members overview</p>
+
+        <p class="text-gray-500 mt-2">
+          Research Lab Members
+        </p>
       </div>
 
-      <!-- SEARCH -->
+      <!-- Search -->
       <div class="max-w-xl mx-auto mb-6 relative">
-        <Search class="absolute left-3 top-3 w-5 text-gray-400"/>
+        <Search class="absolute left-3 top-3 w-5 h-5 text-gray-400" />
+
         <input
           v-model="searchQuery"
-          class="w-full pl-10 pr-4 py-3 border rounded-xl bg-white dark:bg-gray-800"
           placeholder="Search members..."
-        />
+          class="w-full pl-10 pr-4 py-3 border rounded-xl bg-white dark:bg-gray-800"
+        >
       </div>
 
-      <!-- TABS -->
+      <!-- Tabs -->
       <div class="flex flex-wrap justify-center gap-2 mb-8">
+
         <button
           v-for="tab in tabs"
           :key="tab.key"
@@ -115,177 +303,287 @@ const counts = computed(() => ({
           :class="[
             'px-4 py-2 rounded-xl text-sm font-medium transition',
             activeTab === tab.key
-              ? 'bg-blue-600 text-white shadow'
-              : 'bg-white dark:bg-gray-800 border text-gray-600 dark:text-gray-300'
+              ? 'bg-blue-600 text-white'
+              : 'bg-white dark:bg-gray-800 border'
           ]"
         >
-          {{ tab.label }} ({{ counts[tab.key] }})
+          {{ tab.label }}
+          ({{ counts[tab.key] }})
         </button>
+
       </div>
 
-      <!-- GRID -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+      <!-- Members -->
+      <div
+        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
+      >
 
         <div
-          v-for="(member, index) in filteredMembers"
-          :key="index"
-          class="bg-white dark:bg-gray-800 rounded-2xl overflow-hidden border hover:shadow-xl transition group"
+          v-for="member in sortedMembers"
+          :key="member.username"
+          class="bg-white dark:bg-gray-800 rounded-2xl overflow-hidden border border-gray-200 dark:border-gray-700 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group"
         >
 
-          <!-- 🔥 BIG SQUARE IMAGE -->
-          <div class="w-full aspect-square overflow-hidden bg-gray-100">
+          <!-- Image -->
+          <div class="aspect-[4/5] bg-gray-100 overflow-hidden">
+
             <img
               v-if="member.image"
               :src="member.image"
-              class="w-full h-full object-cover group-hover:scale-105 transition"
+              :alt="member.name"
+              class="w-full h-full object-cover group-hover:scale-105 transition duration-500"
             />
-            <div v-else class="w-full h-full flex items-center justify-center text-gray-400">
-              No Image
+
+            <div
+              v-else
+              class="w-full h-full flex flex-col items-center justify-center text-gray-400 gap-2"
+            >
+              <Mail class="w-8 h-8 opacity-40" />
+              <span class="text-sm">No Image</span>
             </div>
+
           </div>
 
-          <!-- INFO -->
-          <div class="p-4 text-center">
-            <h3 class="font-bold text-lg text-gray-900 dark:text-white">
+          <!-- Content -->
+          <div class="p-5">
+
+            <div class="flex justify-end mb-2">
+
+              <span
+                class="text-xs px-2 py-1 rounded-full"
+                :class="
+                  member.is_active
+                    ? 'bg-green-100 text-green-700'
+                    : 'bg-red-100 text-red-700'
+                "
+              >
+                {{ member.is_active ? 'Active' : 'Inactive' }}
+              </span>
+
+            </div>
+
+            <h3 class="font-bold text-lg text-gray-900 dark:text-white leading-tight">
               {{ member.name }}
             </h3>
-            <p class="text-sm text-gray-500 mb-3">{{ member.role }}</p>
+
+            <p class="text-blue-600 font-medium">
+              {{ roleLabel(member.role) }}
+            </p>
+
+            <p
+              v-if="member.affiliation"
+              class="text-sm text-gray-500 mt-1"
+            >
+              {{ member.affiliation }}
+            </p>
 
             <!-- Stats -->
-            <div class="grid grid-cols-3 text-xs mb-4">
+            <div class="grid grid-cols-2 gap-4 mt-5 text-center">
+
               <div>
-                <BookOpen class="mx-auto w-4 text-gray-400"/>
-                {{ member.publications || 0 }}
+                <BookOpen class="mx-auto w-4 h-4 text-blue-500 mb-1" />
+
+                <p class="font-semibold">
+                  {{ member.total_publications }}
+                </p>
+
+                <p class="text-xs text-gray-500">
+                  Publications
+                </p>
               </div>
+
               <div>
-                <Briefcase class="mx-auto w-4 text-gray-400"/>
-                {{ member.projects || 0 }}
+                <Briefcase class="mx-auto w-4 h-4 text-green-500 mb-1" />
+
+                <p class="font-semibold">
+                  {{ member.total_projects }}
+                </p>
+
+                <p class="text-xs text-gray-500">
+                  Projects
+                </p>
               </div>
-              <div>
-                <Calendar class="mx-auto w-4 text-gray-400"/>
-                {{ member.year || 'Now' }}
-              </div>
+
             </div>
 
-            <!-- BUTTON -->
             <button
               @click="openDialog(member)"
-              class="w-full py-2 rounded-lg bg-blue-600 text-white text-sm hover:opacity-90"
+              class="mt-5 w-full py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition"
             >
-              View Details
+              View Profile
             </button>
+
           </div>
+
         </div>
+
       </div>
 
-      <!-- EMPTY -->
-      <div v-if="filteredMembers.length === 0" class="text-center py-10 text-gray-500">
-        No members found
+      <!-- Empty -->
+      <div
+        v-if="sortedMembers.length === 0"
+        class="text-center py-10 text-gray-500"
+      >
+        No members found.
       </div>
 
-      <!-- 🔥 DIALOG -->
+      <!-- Dialog -->
       <el-dialog
         v-model="dialogVisible"
-        width="650px"
-        :close-on-click-modal="true"
+        width="850px"
+        destroy-on-close
       >
-        <div v-if="selectedMember">
 
-          <!-- 🔥 BIG IMAGE -->
-          <div class="mb-5 overflow-hidden">
-            <img
-              v-if="selectedMember.image"
-              :src="selectedMember.image"
-              class="mx-auto w-2/4 h-2/4 object-cover rounded-lg shadow-lg"
-            />
-          </div>
-
-          <!-- NAME -->
-          <h3 class="text-2xl font-bold text-gray-900 dark:text-white">
-            {{ selectedMember.name }}
-          </h3>
-
-          <!-- ROLE -->
-          <p class="text-blue-600 font-medium mb-4">
-            {{ selectedMember.role }}
-          </p>
-
-          <!-- BIO -->
-          <p v-if="selectedMember.bio" class="text-gray-600 mb-4 leading-relaxed">
-            {{ selectedMember.bio }}
-          </p>
-
-          <!-- INFO GRID -->
-          <div class="grid grid-cols-2 gap-4 mb-4 text-sm">
-
-            <div v-if="selectedMember.education">
-              <p class="text-gray-400">Education</p>
-              <p class="font-medium">{{ selectedMember.education }}</p>
-            </div>
-
-            <div>
-              <p class="text-gray-400">Since</p>
-              <p class="font-medium">{{ selectedMember.year }}</p>
-            </div>
-
-            <div>
-              <p class="text-gray-400">Publications</p>
-              <p class="font-medium">{{ selectedMember.publications }}</p>
-            </div>
-
-            <div>
-              <p class="text-gray-400">Projects</p>
-              <p class="font-medium">{{ selectedMember.projects }}</p>
-            </div>
-
-          </div>
-
-          <!-- EXPERTISE -->
-          <div v-if="selectedMember.expertise?.length" class="mb-5">
-            <p class="text-gray-400 mb-2">Expertise</p>
-            <div class="flex flex-wrap gap-2">
-        <span
-          v-for="(skill, i) in selectedMember.expertise"
-          :key="i"
-          class="px-3 py-1 text-xs bg-blue-100 text-blue-600 rounded-full"
+        <div
+          v-if="selectedMember"
+          class="space-y-10"
         >
-          {{ skill }}
-        </span>
+
+          <!-- Top -->
+          <div class="flex flex-col md:flex-row gap-6">
+
+            <img
+              :src="selectedMember.image"
+              class="w-56 h-72 object-cover rounded-xl shadow-lg"
+            >
+
+            <div class="flex-1">
+
+              <h2 class="text-3xl font-bold">
+                {{ selectedMember.name }}
+              </h2>
+
+              <p class="text-blue-600 text-lg">
+                {{ roleLabel(selectedMember.role) }}
+              </p>
+
+              <p
+                v-if="selectedMember.position"
+                class="text-gray-600 mt-1"
+              >
+                {{ selectedMember.position }}
+              </p>
+
+              <p
+                v-if="selectedMember.affiliation"
+                class="text-gray-500"
+              >
+                {{ selectedMember.affiliation }}
+              </p>
+
+              <div class="grid grid-cols-2 gap-4 mt-6">
+
+                <div>
+                  <p class="text-gray-400 text-sm">
+                    Publications
+                  </p>
+
+                  <p class="font-bold text-xl">
+                    {{ selectedMember.total_publications }}
+                  </p>
+                </div>
+
+                <div>
+                  <p class="text-gray-400 text-sm">
+                    Projects
+                  </p>
+
+                  <p class="font-bold text-xl">
+                    {{ selectedMember.total_projects }}
+                  </p>
+                </div>
+
+                <div v-if="selectedMember.join_date">
+                  <p class="text-gray-400 text-sm">
+                    Joined
+                  </p>
+
+                  <p>
+                    {{ formatDate(selectedMember.join_date) }}
+                  </p>
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+          <!-- Research Domains -->
+          <div
+            v-if="parseArray(selectedMember.research_domains).length"
+          >
+            <h3 class="font-semibold mb-3">
+              Research Domains
+            </h3>
+
+            <div class="flex flex-wrap gap-2">
+
+              <span
+                v-for="domain in parseArray(selectedMember.research_domains)"
+                :key="domain"
+                class="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm"
+              >
+                {{ domain }}
+              </span>
+
             </div>
           </div>
 
-          <!-- CONTACT -->
-          <div class="flex flex-wrap gap-2 pt-3 border-t">
+          <!-- Academic Profiles -->
+          <div
+            v-if="parseArray(selectedMember.academic_profiles).length"
+          >
+            <h3 class="font-semibold mb-3">
+              Academic Profiles
+            </h3>
+
+            <ul class="space-y-2">
+
+              <li
+                v-for="(profile,index) in parseArray(selectedMember.academic_profiles)"
+                :key="index"
+                class="p-3 rounded-lg border"
+              >
+                {{ profile }}
+              </li>
+
+            </ul>
+
+          </div>
+
+          <!-- Contact -->
+          <div class="flex flex-wrap gap-3 pt-4 border-t">
 
             <a
               v-if="selectedMember.email"
               :href="`mailto:${selectedMember.email}`"
-              class="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm"
+              class="px-4 py-2 bg-blue-600 text-white rounded-lg"
             >
               Email
+            </a>
+
+            <a
+              v-if="selectedMember.phone"
+              :href="`tel:${selectedMember.phone}`"
+              class="px-4 py-2 border rounded-lg"
+            >
+              Phone
             </a>
 
             <a
               v-if="selectedMember.website"
               :href="selectedMember.website"
               target="_blank"
-              class="px-4 py-2 bg-gray-100 rounded-lg text-sm"
+              class="px-4 py-2 border rounded-lg"
             >
               Website
-            </a>
-
-            <a
-              v-if="selectedMember.linkedin"
-              :href="selectedMember.linkedin"
-              target="_blank"
-              class="px-4 py-2 bg-gray-200 rounded-lg text-sm"
-            >
-              LinkedIn
             </a>
 
           </div>
 
         </div>
+
       </el-dialog>
 
     </div>

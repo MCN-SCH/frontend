@@ -3,5 +3,5 @@ import home from './home'
 
 export default {
   ...auth,
-  ...home,
+  ...home
 }

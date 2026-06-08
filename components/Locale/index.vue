@@ -1,93 +1,61 @@
 <template>
-  <el-dropdown @command="changeLocale">
-    <span class="el-dropdown-link">
-      <img
-        :src="currentFlag"
-        alt="Language Flag"
-        width="20"
-        height="15"
-        class="me-1"
-      />
-      {{ currentLabel }}
-      <el-icon class="ms-1">
-        <arrow-down />
-      </el-icon>
-    </span>
+  <div class="lang-switch">
+    <img
+      :src="currentFlag"
+      alt="Language Flag"
+      width="20"
+      height="15"
+      class="me-2"
+    />
 
-    <template #dropdown>
-      <el-dropdown-menu>
-        <el-dropdown-item command="en">
-          <img :src="usFlag" alt="US Flag" width="20" height="15" class="me-1" />
-          English
-        </el-dropdown-item>
-        <el-dropdown-item command="ko">
-          <img :src="krFlag" alt="Korean Flag" width="20" height="15" class="me-1" />
-          Korean
-        </el-dropdown-item>
-      </el-dropdown-menu>
-    </template>
-  </el-dropdown>
+    <el-switch
+      v-model="isKorean"
+      active-text="한국"
+      inactive-text="EN"
+      inline-prompt
+      @change="changeLocale"
+    />
+  </div>
 </template>
 
 <script setup>
-import { computed, onMounted } from 'vue'
+import { computed, ref, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useCookies } from 'vue3-cookies'
-import { ArrowDown } from '@element-plus/icons-vue'
 
-// ✅ import assets
+// flags
 import usFlag from '@/assets/image/lang/us.svg'
 import krFlag from '@/assets/image/lang/kr.svg'
 
 const { locale } = useI18n()
 const { cookies } = useCookies()
 
-locale.value = 'en'
+const isKorean = ref(false)
 
+// init locale
 onMounted(() => {
-  const storedLocale = cookies.get('locale')
-  if (storedLocale) {
-    locale.value = storedLocale
-  }
+  const storedLocale = cookies.get('locale') || 'en'
+  locale.value = storedLocale
+  isKorean.value = storedLocale === 'ko'
 })
 
-const changeLocale = (lang) => {
+// switch handler
+const changeLocale = (value) => {
+  const lang = value ? 'ko' : 'en'
   locale.value = lang
   cookies.set('locale', lang, { path: '/', expires: '7d' })
 }
 
 // UI helpers
-const currentLabel = computed(() =>
-  locale.value === 'ko' ? 'Korean' : 'English'
-)
-
 const currentFlag = computed(() =>
-  locale.value === 'ko' ? krFlag : usFlag
+  isKorean.value ? krFlag : usFlag
 )
 </script>
 
-
 <style scoped>
-.el-dropdown-link {
-  cursor: pointer;
-  display: inline-flex;
+.lang-switch {
+  display: flex;
   align-items: center;
+  gap: 8px;
 }
-
-/* Remove hover / focus border on dropdown trigger */
-.el-dropdown-link {
-  outline: none !important;
-  box-shadow: none !important;
-  border: none !important;
-}
-
-/* When Element Plus applies focus-visible */
-.el-dropdown:focus,
-.el-dropdown:focus-visible,
-.el-dropdown-link:focus,
-.el-dropdown-link:focus-visible {
-  outline: none !important;
-  box-shadow: none !important;
-}
-
 </style>

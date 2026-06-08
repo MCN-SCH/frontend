@@ -16,6 +16,7 @@ import {
   upcomingEvents
 } from '@/composables/useData.js';
 import { ChevronUp } from 'lucide-vue-next'
+import { useHomeStore } from '~/store/home.js'
 
 useSeoMeta({
   title: 'Home',
@@ -30,10 +31,10 @@ definePageMeta({
 // Background Animation
 const techCanvas = ref(null)
 const { currentSeason, setSeason } = useBackgroundAnimation(techCanvas)
+const store = useHomeStore()
 
-// Optional: For debugging - you can uncomment to see current season
-// console.log('Current Season:', currentSeason.value)
-
+const { index } = store
+const data = ref(null)
 // State
 const isMenuOpen = ref(false);
 const currentLanguage = ref('EN');
@@ -42,7 +43,8 @@ const darkMode = ref(false);
 const showScrollTop = ref(false);
 const activePub = ref(null);
 const showBibtex = ref(false);
-
+const loading = ref(false)
+const member = ref(null)
 // Methods
 const scrollToSection = (id) => {
   const element = document.getElementById(id);
@@ -79,7 +81,21 @@ const openBibtex = (pub) => {
   showBibtex.value = true;
 };
 
+const fetchHome = async () => {
+  loading.value = true
+
+  try {
+    data.value = await index()
+    member.value = data.value?.member || null
+  } catch (error) {
+    console.error(error)
+  } finally {
+    loading.value = false
+  }
+}
+
 onMounted(() => {
+  fetchHome();
   gsap.registerPlugin(ScrollTrigger);
 
   // Set light mode as default
@@ -139,7 +155,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="min-h-screen text-gray-900 overflow-x-hidden transition-colors duration-300 dark:text-white">
+  <div v-if="data" class="min-h-screen text-gray-900 overflow-x-hidden transition-colors duration-300 dark:text-white">
     <!-- Background Canvas -->
     <div class="tech-background">
       <canvas ref="techCanvas"></canvas>
@@ -178,7 +194,7 @@ onMounted(() => {
     <HomeSectionsStats :achievements="achievements" />
 
     <!-- People Section -->
-    <HomeSectionsPeople :lab-members="labMembers" />
+    <HomeSectionsPeople :lab-members="member" />
 
     <!-- Publications -->
     <HomeSectionsPublications

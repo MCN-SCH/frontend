@@ -1,6 +1,6 @@
 import { createI18n } from 'vue-i18n'
 import en from '../locales/en'
-import kh from '../locales/kh'
+import ko from '../locales/ko'
 
 export default defineNuxtPlugin(({ vueApp }) => {
   const i18n = createI18n({
@@ -10,7 +10,7 @@ export default defineNuxtPlugin(({ vueApp }) => {
     fallbackLocale: 'en', // fallback locale
     messages: {
       en,
-      kh
+      ko
     }
   })
   vueApp.use(i18n)

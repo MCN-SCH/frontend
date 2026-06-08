@@ -1,7 +1,9 @@
 <script setup>
 import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { Sun, Moon } from 'lucide-vue-next'
+import { useI18n } from 'vue-i18n'
 
+const { t } = useI18n()
 const props = defineProps({
   darkMode: Boolean,
   currentLanguage: String,
@@ -12,16 +14,15 @@ const emit = defineEmits(['toggleDarkMode', 'toggleLanguage', 'scrollTo'])
 const isScrolled = ref(false)
 const mobileMenuOpen = ref(false)
 const activeSection = ref('hero')
-
 const navLinks = [
-  { id: 'hero', label: 'Home' },
-  { id: 'about', label: 'About' },
-  { id: 'research', label: 'Research' },
-  { id: 'team', label: 'Team' },
-  { id: 'publications', label: 'Publications' },
-  { id: 'projects', label: 'Projects' },
-  { id: 'facilities', label: 'Facilities' },
-  { id: 'contact', label: 'Contact' },
+  { id: 'hero', label: 'home' },
+  { id: 'about', label: 'about' },
+  { id: 'research', label: 'research' },
+  { id: 'team', label: 'team' },
+  { id: 'publications', label: 'publications' },
+  { id: 'projects', label: 'projects' },
+  { id: 'facilities', label: 'facilities' },
+  { id: 'contact', label: 'contact' },
 ]
 
 const handleScroll = () => {
@@ -81,7 +82,7 @@ onBeforeUnmount(() => {
                 : 'text-gray-700 dark:text-gray-300 group-hover:text-blue-500',
             ]"
           >
-            {{ link.label }}
+            {{ $t(link.label) }}
           </span>
 
           <!-- underline -->
@@ -97,12 +98,7 @@ onBeforeUnmount(() => {
       <!-- RIGHT CONTROLS -->
       <div class="hidden lg:flex items-center gap-3">
         <!-- Language -->
-        <button
-          @click="$emit('toggleLanguage')"
-          class="px-3 py-1.5 text-sm rounded-lg border border-gray-200 dark:border-gray-700 hover:border-blue-500 transition"
-        >
-          {{ currentLanguage }}
-        </button>
+        <Locale />
 
         <!-- Dark Mode -->
         <button
