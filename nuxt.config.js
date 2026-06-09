@@ -153,9 +153,11 @@ export default defineNuxtConfig({
     ],
   },
 
+  /* ----------------------------------
+   * Security - FIXED FOR LOCAL DEVELOPMENT
+   * ---------------------------------- */
   security: {
     headers: {
-      // crossOriginEmbedderPolicy: "require-corp",
       crossOriginEmbedderPolicy: false,
       crossOriginOpenerPolicy: "same-origin",
       crossOriginResourcePolicy: "same-origin",
@@ -166,26 +168,41 @@ export default defineNuxtConfig({
           "'self'",
           'data:',
           'https:',
-          'http://localhost:8000'
+          'http://localhost:8000',
+          'http://localhost:*'
         ],
         "script-src": ["'self'", "'unsafe-inline'", "'unsafe-eval'"],
         "style-src": ["'self'", "'unsafe-inline'"],
+
+        // FIX: Add localhost HTTP to connect-src
         "connect-src": [
           "'self'",
+          // Allow HTTPS production URL
           process.env.SERVER_API_URL || "",
-        ],
-
+          // ALLOW localhost HTTP for development
+          "http://localhost",
+          "http://localhost:8000",
+          "http://localhost:80",
+          "http://127.0.0.1",
+          "http://127.0.0.1:8000",
+        ].filter(Boolean), // Remove empty values
       },
     },
-    csrf: true,
+    csrf: {
+      // Disable CSRF for local development
+      enabled: process.env.NODE_ENV === 'production',
+    },
     rateLimiter: {
       tokensPerInterval: 100,
       interval: "minute",
     },
   },
 
-
+  /* ----------------------------------
+   * Plugins
+   * ---------------------------------- */
   plugins: [
+    '~/plugins/api-config.client.js'
   ],
 
   routeRules: {
@@ -193,7 +210,7 @@ export default defineNuxtConfig({
       middleware: ['maintenance']
     },
     '/maintenance': {
-      ssr: false // Optional: disable SSR for maintenance page
+      ssr: false
     }
   },
 
