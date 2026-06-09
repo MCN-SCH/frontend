@@ -143,7 +143,7 @@ const socialMedia = [
                   <ul class="space-y-2 text-sm">
                     <li class="flex items-center space-x-2 text-gray-300">
                       <span class="text-cyan-400">→</span>
-                      <span>Email: team@lab.sch.ac.kr</span>
+                      <span>Email: team@mcn.sch.ac.kr</span>
                     </li>
                     <li class="flex items-center space-x-2 text-gray-300">
                       <span class="text-cyan-400">→</span>

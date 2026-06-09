@@ -3,20 +3,18 @@ import { ref, onMounted } from 'vue';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useBackgroundAnimation } from '@/composables/useBackgroundAnimation';
+import { ChevronUp } from 'lucide-vue-next'
+import { useHomeStore } from '~/store/home.js'
 
 // Data
 import {
   researchAreas,
-  labMembers,
-  recentPublications,
   achievements,
   currentProjects,
   facilities,
   newsUpdates,
   upcomingEvents
 } from '@/composables/useData.js';
-import { ChevronUp } from 'lucide-vue-next'
-import { useHomeStore } from '~/store/home.js'
 
 useSeoMeta({
   title: 'Home',
@@ -35,19 +33,23 @@ const store = useHomeStore()
 
 const { index } = store
 const data = ref(null)
-// State
+
+// Navigation State
 const isMenuOpen = ref(false);
 const currentLanguage = ref('EN');
 const showKoreanText = ref(false);
 const darkMode = ref(false);
 const showScrollTop = ref(false);
-const activePub = ref(null);
-const showBibtex = ref(false);
+const currentRoute = ref('home');
+
+// State
 const loading = ref(false)
 const member = ref(null)
+const publication = ref(null)
+
 // Methods
-const scrollToSection = (id) => {
-  const element = document.getElementById(id);
+const scrollToSection = (sectionId) => {
+  const element = document.getElementById(sectionId);
   if (element) {
     element.scrollIntoView({ behavior: 'smooth' });
     isMenuOpen.value = false;
@@ -76,17 +78,13 @@ const toggleDarkMode = () => {
   localStorage.setItem('darkMode', darkMode.value);
 };
 
-const openBibtex = (pub) => {
-  activePub.value = pub;
-  showBibtex.value = true;
-};
-
 const fetchHome = async () => {
   loading.value = true
 
   try {
     data.value = await index()
     member.value = data.value?.member || null
+    publication.value = data.value?.publication || null
   } catch (error) {
     console.error(error)
   } finally {
@@ -94,18 +92,21 @@ const fetchHome = async () => {
   }
 }
 
+const handleScroll = () => {
+  showScrollTop.value = window.scrollY > 500;
+};
+
 onMounted(() => {
   fetchHome();
   gsap.registerPlugin(ScrollTrigger);
 
   // Set light mode as default
-  document.documentElement.classList.remove('dark');
-
-  // Check saved preference
   const savedDarkMode = localStorage.getItem('darkMode');
   if (savedDarkMode === 'true') {
     darkMode.value = true;
     document.documentElement.classList.add('dark');
+  } else {
+    document.documentElement.classList.remove('dark');
   }
 
   // Animations
@@ -141,17 +142,8 @@ onMounted(() => {
   });
 
   // Scroll to top button
-  window.addEventListener('scroll', () => {
-    showScrollTop.value = window.scrollY > 500;
-  });
+  window.addEventListener('scroll', handleScroll);
 });
-
-// For testing different seasons - you can uncomment and change the season
-// onMounted(() => {
-//   setTimeout(() => {
-//     setSeason('winter') // Try 'spring', 'summer', 'fall', 'winter'
-//   }, 100)
-// })
 </script>
 
 <template>
@@ -165,57 +157,62 @@ onMounted(() => {
     <NavBar
       :dark-mode="darkMode"
       :current-language="currentLanguage"
+      :current-route="currentRoute"
       @toggle-dark-mode="toggleDarkMode"
       @toggle-language="toggleLanguage"
       @scroll-to="scrollToSection"
       @toggle-menu="isMenuOpen = !isMenuOpen"
-    >
-      <template #mobileMenu>
-        <button @click="scrollToSection('about')" class="block w-full text-left py-2 dark:text-gray-300">About</button>
-        <button @click="scrollToSection('research')" class="block w-full text-left py-2 dark:text-gray-300">Research</button>
-        <button @click="scrollToSection('people')" class="block w-full text-left py-2 dark:text-gray-300">People</button>
-        <button @click="scrollToSection('publications')" class="block w-full text-left py-2 dark:text-gray-300">Publications</button>
-        <button @click="scrollToSection('projects')" class="block w-full text-left py-2 dark:text-gray-300">Projects</button>
-        <button @click="scrollToSection('facilities')" class="block w-full text-left py-2 dark:text-gray-300">Facilities</button>
-        <button @click="scrollToSection('contact')" class="block w-full text-left py-2 dark:text-gray-300">Contact</button>
-      </template>
-    </NavBar>
+    />
 
     <!-- Hero Section -->
-    <HomeSectionsHero @scroll-to="scrollToSection" />
+    <section id="home">
+      <HomeSectionsHero @scroll-to="scrollToSection" />
+    </section>
 
     <!-- About Section -->
-    <HomeSectionsAbout />
+    <section id="about">
+      <HomeSectionsAbout />
+    </section>
 
     <!-- Research Areas -->
-    <HomeSectionsResearchAreas :research-areas="researchAreas" />
+    <section id="research">
+      <HomeSectionsResearchAreas :research-areas="researchAreas" />
+    </section>
 
     <!-- Stats Section -->
-    <HomeSectionsStats :achievements="achievements" />
+    <section id="stats">
+      <HomeSectionsStats :achievements="achievements" />
+    </section>
 
     <!-- People Section -->
-    <HomeSectionsPeople :lab-members="member" />
+    <section id="people">
+      <HomeSectionsPeople :lab-members="member" />
+    </section>
 
     <!-- Publications -->
-    <HomeSectionsPublications
-      :publications="recentPublications"
-      @open-bibtex="openBibtex"
-    />
+    <section id="publications">
+      <HomeSectionsPublications :publications="publication" />
+    </section>
 
     <!-- Projects -->
-    <HomeSectionsProjects :projects="currentProjects" />
+    <section id="projects">
+      <HomeSectionsProjects :projects="currentProjects" />
+    </section>
 
     <!-- Facilities -->
-    <HomeSectionsFacilities :facilities="facilities" />
+    <section id="facilities">
+      <HomeSectionsFacilities :facilities="facilities" />
+    </section>
 
     <!-- News & Events -->
-    <HomeSectionsNewsEvents
-      :news="newsUpdates"
-      :events="upcomingEvents"
-    />
+    <section id="news">
+      <HomeSectionsNewsEvents :news="newsUpdates" :events="upcomingEvents" />
+    </section>
 
     <!-- Contact -->
-    <HomeSectionsContact />
+    <section id="contact">
+      <HomeSectionsContact />
+    </section>
 
     <!-- Footer -->
     <HomeLayoutFooter />
@@ -228,30 +225,6 @@ onMounted(() => {
             ]">
       <ChevronUp class="w-6 h-6" />
     </button>
-
-    <!-- BibTeX Modal -->
-    <div v-if="showBibtex" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-6 backdrop-blur-sm">
-      <div class="bg-white dark:bg-gray-800 rounded-2xl max-w-2xl w-full max-h-[80vh] overflow-hidden shadow-2xl">
-        <div class="p-6 border-b border-gray-100 dark:border-gray-700 flex justify-between items-center">
-          <div>
-            <h3 class="text-xl font-bold text-gray-900 dark:text-white">BibTeX Citation</h3>
-            <p class="text-sm text-gray-600 dark:text-gray-300 mt-1">{{ activePub?.title }}</p>
-          </div>
-          <button @click="showBibtex = false" class="w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 flex items-center justify-center">
-            ✕
-          </button>
-        </div>
-        <div class="p-6 overflow-auto">
-          <pre class="bg-gray-900 text-gray-100 p-6 rounded-lg text-sm overflow-x-auto">{{ activePub?.bibtex || '@article{sample,\n  title={Sample Paper},\n  author={Author},\n  year=2024\n}' }}</pre>
-          <div class="mt-4 flex justify-end">
-            <button @click="navigator.clipboard.writeText(activePub?.bibtex || '')"
-                    class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm">
-              Copy to Clipboard
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
   </div>
 </template>
 
@@ -291,6 +264,7 @@ section {
 .dark ::-webkit-scrollbar-thumb:hover {
   background: linear-gradient(to bottom, #2C5A8A, #3F7BBD);
 }
+
 .tech-background {
   position: fixed;
   top: 0;
@@ -299,17 +273,13 @@ section {
   height: 100vh;
   z-index: -1;
   overflow: hidden;
-  pointer-events: none; /* Allows clicking through to content */
+  pointer-events: none;
 }
 
 .tech-background canvas {
   width: 100%;
   height: 100%;
   display: block;
-  object-fit: cover; /* Ensures canvas covers entire area */
-}
-/* Remove the overlay that might be hiding the canvas */
-.tech-background::after {
-  display: none; /* Remove this overlay */
+  object-fit: cover;
 }
 </style>

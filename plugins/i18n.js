@@ -6,8 +6,8 @@ export default defineNuxtPlugin(({ vueApp }) => {
   const i18n = createI18n({
     legacy: false,
     globalInjection: true,
-    locale: 'en', // default locale
-    fallbackLocale: 'en', // fallback locale
+    locale: 'ko', // default locale
+    fallbackLocale: 'ko', // fallback locale
     messages: {
       en,
       ko

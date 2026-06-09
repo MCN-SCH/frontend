@@ -35,9 +35,9 @@ export default defineNuxtConfig({
   i18n: {
     locales: [
       { code: 'en', language: 'en-US' },
-      { code: 'kr', language: 'ko-KR' },
+      { code: 'ko', language: 'ko-KR' },
     ],
-    defaultLocale: 'en',
+    defaultLocale: 'ko',
   },
 
   /* ----------------------------------

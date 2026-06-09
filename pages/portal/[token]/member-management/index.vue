@@ -2,7 +2,7 @@
 import { computed, onMounted, ref, watch } from 'vue'
 import { useDebounceFn } from '@vueuse/core'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import { Setting } from '@element-plus/icons-vue'
+import { Plus, Refresh, Search, Setting } from '@element-plus/icons-vue'
 import { useMemberStore } from '~/store/member.js'
 
 definePageMeta({
@@ -159,29 +159,40 @@ onMounted(() => {
       </el-card>
     </div>
 
-    <div class="flex flex-col md:flex-row justify-end gap-4 mb-6">
+    <div class="flex flex-col md:flex-row justify-between gap-4 mb-6">
       <div class="flex flex-wrap gap-2">
         <el-input
           v-model="search"
           clearable
           placeholder="Search member..."
           style="width: 300px"
+          :prefix-icon="Search"
         />
-
-        <el-button
-          type="success"
-          @click="createMember"
-        >
-          Create Member
-        </el-button>
 
         <el-button
           type="primary"
           @click="fetchMembers"
+          :icon="Search"
+        >
+          Search
+        </el-button>
+        <el-button
+          type="primary"
+          @click="fetchMembers"
+          :icon="Refresh"
         >
           Refresh
         </el-button>
       </div>
+
+
+      <el-button
+        type="success"
+        @click="createMember"
+        :icon="Plus"
+      >
+        Create Member
+      </el-button>
     </div>
     <!-- Table -->
     <el-table

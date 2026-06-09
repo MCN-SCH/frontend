@@ -13,9 +13,9 @@ const emit = defineEmits(['toggleDarkMode', 'toggleLanguage', 'scrollTo'])
 
 const isScrolled = ref(false)
 const mobileMenuOpen = ref(false)
-const activeSection = ref('hero')
+const activeSection = ref('home')
 const navLinks = [
-  { id: 'hero', label: 'home' },
+  { id: 'home', label: 'home' },
   { id: 'about', label: 'about' },
   { id: 'research', label: 'research' },
   { id: 'team', label: 'team' },
@@ -58,7 +58,7 @@ onBeforeUnmount(() => {
       <!-- LOGO -->
       <div
         class="flex items-center gap-3 cursor-pointer group"
-        @click="scrollToSection('hero')"
+        @click="scrollToSection('home')"
       >
         <img
           src="@/assets/image/logo/mcn.svg"

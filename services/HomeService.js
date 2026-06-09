@@ -23,6 +23,16 @@ class HomeService extends BaseService {
 
     return await this._get(`${this._prefix}?${queryParams}`, {})
   }
+
+  //publication
+  async publication(payload = {}) {
+    const filteredParams = Object.fromEntries(
+      Object.entries(payload).filter(([_, value]) => value != null),
+    )
+    const queryParams = new URLSearchParams(filteredParams).toString()
+
+    return await this._get(`${this._prefix}/publication?${queryParams}`, {})
+  }
 }
 
 export default HomeService

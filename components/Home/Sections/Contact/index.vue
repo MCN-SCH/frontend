@@ -16,7 +16,7 @@ const contactInfo = [
   {
     icon: Mail,
     title: 'Email',
-    details: ['mcnlab@sch.ac.kr', '------@sch.ac.kr (Prof. ----)'],
+    details: ['mcnlab@sch.ac.kr'],
     description: 'For general inquiries'
   },
   {

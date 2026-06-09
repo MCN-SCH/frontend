@@ -24,39 +24,39 @@ const emit = defineEmits(['scrollTo'])
 const heroSlides = ref([
   {
     id: 1,
-    title: 'AI-Enhanced Mobile Computing',
-    description: 'Developing next-gen AI algorithms for mobile edge computing',
+    title: 'hero_slide_1_title',
+    description: 'hero_slide_1_description',
     icon: Zap,
     color: 'from-blue-500 to-cyan-400',
     bgColor: 'bg-blue-500/10',
-    achievements: ['IEEE MobiCom 2023', '5 Patents'],
+    achievements: ['ieee_mobicom_2023', 'patents_5'],
   },
   {
     id: 2,
-    title: '6G Network Research',
-    description: 'Pioneering 6G communication technologies and standards',
+    title: 'hero_slide_2_title',
+    description: 'hero_slide_2_description',
     icon: TrendingUp,
     color: 'from-purple-500 to-pink-500',
     bgColor: 'bg-purple-500/10',
-    achievements: ['3 National Projects', '₩800M Funding'],
+    achievements: ['national_projects_3', 'funding_800m'],
   },
   {
     id: 3,
-    title: 'Cloud-Native Systems',
-    description: 'Building scalable cloud infrastructure for smart cities',
+    title: 'hero_slide_3_title',
+    description: 'hero_slide_3_description',
     icon: Server,
     color: 'from-green-500 to-emerald-400',
     bgColor: 'bg-green-500/10',
-    achievements: ['ACM SIGCOMM 2024', 'Industry Collaboration'],
+    achievements: ['acm_sigcomm_2024', 'industry_collaboration'],
   },
   {
     id: 4,
-    title: 'IoT Security Solutions',
-    description: 'Advanced security frameworks for IoT ecosystems',
+    title: 'hero_slide_4_title',
+    description: 'hero_slide_4_description',
     icon: Shield,
     color: 'from-orange-500 to-yellow-400',
     bgColor: 'bg-orange-500/10',
-    achievements: ['Best Paper Award', 'Tech Transfer'],
+    achievements: ['best_paper_award', 'tech_transfer'],
   },
 ])
 
@@ -79,7 +79,7 @@ onMounted(() => {
 
 <template>
   <section
-    id="hero"
+    id="home"
     class="relative min-h-screen flex items-center pt-24 md:pt-24 lg:pt-16 overflow-hidden"
   >
     <div
@@ -122,10 +122,11 @@ onMounted(() => {
               <h1
                 class="text-3xl md:text-5xl lg:text-6xl font-black mb-4 leading-tight"
               >
-                <span class="block text-gray-900 dark:text-white"
-                  >{{ $t('mobile_computing') }}</span
-                >
-                <span class="block">
+                <span class="block text-gray-900 dark:text-white">
+                  {{ $t('mobile_computing') }}
+                </span>
+
+                <span class="block mt-3">
                   <span
                     class="bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-400 bg-clip-text text-transparent"
                   >
@@ -168,7 +169,7 @@ onMounted(() => {
                   </div>
                 </div>
                 <div class="text-sm text-gray-600 dark:text-gray-400 mt-1">
-                  Research Papers
+                  {{ $t('research_papers') }}
                 </div>
               </div>
               <div
@@ -181,7 +182,7 @@ onMounted(() => {
                   </div>
                 </div>
                 <div class="text-sm text-gray-600 dark:text-gray-400 mt-1">
-                  Researchers
+                  {{ $t('researchers') }}
                 </div>
               </div>
               <div
@@ -194,7 +195,7 @@ onMounted(() => {
                   </div>
                 </div>
                 <div class="text-sm text-gray-600 dark:text-gray-400 mt-1">
-                  Research Funding
+                  {{ $t('research_funding') }}
                 </div>
               </div>
               <div
@@ -207,7 +208,7 @@ onMounted(() => {
                   </div>
                 </div>
                 <div class="text-sm text-gray-600 dark:text-gray-400 mt-1">
-                  Active Projects
+                  {{ $t('active_projects') }}
                 </div>
               </div>
             </div>
@@ -222,7 +223,7 @@ onMounted(() => {
                 icon-position="right"
                 size="lg"
               >
-                <span class="relative z-10">Explore Research</span>
+                <span class="relative z-10">{{ $t('explore_research') }}</span>
                 <div
                   class="absolute inset-0 bg-gradient-to-r from-blue-600 to-blue-700 transform -translate-x-full group-hover:translate-x-0 transition-transform duration-300 -z-10"
                 ></div>
@@ -233,7 +234,7 @@ onMounted(() => {
                 size="lg"
                 class="border-2 border-gray-300 dark:border-gray-600 hover:border-blue-500 transition-all p-2"
               >
-                Join Our Team
+                {{ $t('join_our_team') }}
               </HomeUIButton>
             </div>
           </div>
@@ -312,18 +313,18 @@ onMounted(() => {
                       <div
                         class="text-sm text-blue-600 dark:text-blue-400 font-semibold"
                       >
-                        Research Focus
+                        {{ $t('research_focus') }}
                       </div>
                       <h3
                         class="text-2xl font-bold text-gray-900 dark:text-white"
                       >
-                        {{ heroSlides[currentSlide].title }}
+                        {{ $t(heroSlides[currentSlide].title) }}
                       </h3>
                     </div>
                   </div>
 
                   <p class="text-gray-600 dark:text-gray-300 text-lg">
-                    {{ heroSlides[currentSlide].description }}
+                    {{ $t(heroSlides[currentSlide].description) }}
                   </p>
 
                   <div class="flex flex-wrap gap-2">
@@ -333,7 +334,7 @@ onMounted(() => {
                       :key="idx"
                       class="px-3 py-1 rounded-full text-sm font-medium bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300"
                     >
-                      {{ achievement }}
+                      {{ $t(achievement) }}
                     </span>
                   </div>
 
@@ -351,11 +352,11 @@ onMounted(() => {
                       class="flex justify-between text-sm text-gray-500 dark:text-gray-400 mt-2"
                     >
                       <span
-                        >Research Area {{ currentSlide + 1 }}/{{
+                        >{{ $t('research_area') }} {{ currentSlide + 1 }}/{{
                           heroSlides.length
                         }}</span
                       >
-                      <span class="font-medium">Key Achievements</span>
+                      <span class="font-medium">{{ $t('key_achievements') }}</span>
                     </div>
                   </div>
                 </div>
@@ -376,20 +377,20 @@ onMounted(() => {
                 class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl p-4 border border-gray-200 dark:border-gray-700"
               >
                 <div class="text-sm text-gray-500 dark:text-gray-400 mb-1">
-                  International Collaboration
+                  {{ $t('international_collaborations') }}
                 </div>
                 <div class="font-bold text-gray-900 dark:text-white">
-                  KAIST • POSTECH • Seoul National
+                  MDPI • Springer • IEEE
                 </div>
               </div>
               <div
                 class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl p-4 border border-gray-200 dark:border-gray-700"
               >
                 <div class="text-sm text-gray-500 dark:text-gray-400 mb-1">
-                  Industry Partners
+                  {{ $t('industry_partnerships') }}
                 </div>
                 <div class="font-bold text-gray-900 dark:text-white">
-                  Samsung • LG • Naver
+                  SW Convergence . SCHU
                 </div>
               </div>
             </div>

@@ -34,7 +34,7 @@ const isKorean = ref(false)
 
 // init locale
 onMounted(() => {
-  const storedLocale = cookies.get('locale') || 'en'
+  const storedLocale = cookies.get('locale') || 'ko'
   locale.value = storedLocale
   isKorean.value = storedLocale === 'ko'
 })
