@@ -158,20 +158,6 @@ const socialMedia = [
               </div>
             </div>
 
-            <!-- Newsletter -->
-            <div class="p-4 rounded-xl bg-gradient-to-r from-blue-900/20 to-purple-900/20 border border-blue-500/20">
-              <h5 class="font-medium mb-3">Newsletters</h5>
-              <div class="flex space-x-2">
-                <input
-                  type="email"
-                  placeholder="your.email@example.com"
-                  class="flex-1 px-4 py-2 bg-gray-800/50 border border-gray-700 rounded-lg text-sm focus:outline-none focus:border-cyan-500 transition-colors"
-                />
-                <button class="px-4 py-2 bg-gradient-to-r from-cyan-500 to-blue-600 text-white rounded-lg text-sm font-medium hover:opacity-90 transition-opacity">
-                  Subscribe
-                </button>
-              </div>
-            </div>
           </div>
 
           <!-- Resources and Social -->
