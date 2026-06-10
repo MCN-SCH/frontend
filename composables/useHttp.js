@@ -1,6 +1,6 @@
 export const useHttp = async (url, options = {}) => {
   const config = useRuntimeConfig()
-  const baseURL = `${config.public.serverApiUrl}/${config.public.apiVersion}`
+  const baseURL = `${config.public.serverApiUrl}${config.public.apiVersion}`
   const cookie = useCookie('access_token')
   const token = cookie.value
 
