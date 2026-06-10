@@ -97,6 +97,9 @@ const handleScroll = () => {
 };
 
 onMounted(() => {
+  setTimeout(() => {
+    setSeason('summer') // Try 'spring', 'summer', 'fall', 'winter'
+  }, 100)
   fetchHome();
   gsap.registerPlugin(ScrollTrigger);
 

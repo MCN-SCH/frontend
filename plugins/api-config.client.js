@@ -21,9 +21,6 @@ export default defineNuxtPlugin(() => {
 
   const apiUrl = getApiUrl();
 
-  // Log the API URL for debugging
-  console.log('🔧 API Base URL:', apiUrl);
-
   // Create a custom fetch function
   const apiFetch = (endpoint, options = {}) => {
     const fullUrl = endpoint.startsWith('http')

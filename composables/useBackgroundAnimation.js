@@ -18,11 +18,14 @@ export function useBackgroundAnimation(canvasRef) {
     background: null,
     ribbons: null,
     particles: null,
+    summerEmojis: null,
     clouds: null
   }
 
   // Preloaded PNG texture for spring (cherry blossom leaf)
   let springLeafTexture = null
+  // Preloaded PNG texture for summer (hibiscus - 무궁화)
+  let summerFlowerTexture = null
 
   /* -------------------------------------------------- */
   /* KOREAN SEASON COLORS (background, ribbons, etc.)   */
@@ -36,10 +39,10 @@ export function useBackgroundAnimation(canvasRef) {
       bg: 0xe3f2fd
     },
     summer: {
-      primary: 0x4caf50,
-      secondary: 0x81c784,
-      accent: 0xffd54f,
-      bg: 0xe8f5e9
+      primary: 0x2196f3,   // Bright Korean summer sky blue
+      secondary: 0x64b5f6, // Lighter sky blue
+      accent: 0xff6b35,    // Hibiscus orange-red (무궁화)
+      bg: 0xe1f5fe          // Fresh summer sky
     },
     fall: {
       primary: 0xff7043,
@@ -56,15 +59,24 @@ export function useBackgroundAnimation(canvasRef) {
   }
 
   /* -------------------------------------------------- */
-  /* LEAF COLORS (for particles)                        */
+  /* FLOWER COLORS (for particles)                      */
   /* -------------------------------------------------- */
 
-  const leafColors = {
-    spring: 0xffb6c1,      // cherry blossom pink
-    summer: 0x66bb6a,      // lotus leaf green
+  const flowerColors = {
+    spring: 0xffb6c1,      // cherry blossom pink (벚꽃)
+    summer: 0xff6b35,      // hibiscus orange-red (무궁화)
     fall: 0xff7043,        // maple orange
     winter: 0xe0f0ff       // icy blue-white
   }
+
+  /* -------------------------------------------------- */
+  /* SUMMER EMOJI LIST                                  */
+  /* -------------------------------------------------- */
+
+  const summerEmojis = [
+    "🕶️", "🍦", "🏖️", "⚽", "🥤", "🍉", "🏄", "☀️",
+    "🐚", "🩴", "🍹", "⛱️", "🌊", "🍧", "🏐", "🥥"
+  ]
 
   /* -------------------------------------------------- */
   /* SAFE DISPOSAL                                      */
@@ -95,6 +107,95 @@ export function useBackgroundAnimation(canvasRef) {
   }
 
   /* -------------------------------------------------- */
+  /* CREATE TEXTURE FROM EMOJI                          */
+  /* -------------------------------------------------- */
+
+  const createEmojiTexture = (emoji, color = "#ffffff") => {
+    const canvas = document.createElement("canvas")
+    canvas.width = 128
+    canvas.height = 128
+    const ctx = canvas.getContext("2d")
+
+    ctx.clearRect(0, 0, 128, 128)
+
+    // Set font and draw emoji
+    ctx.font = "80px 'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', 'Android Emoji', 'EmojiOne Color', 'Twemoji Mozilla', sans-serif"
+    ctx.textAlign = "center"
+    ctx.textBaseline = "middle"
+
+    // Add subtle glow effect
+    ctx.shadowBlur = 10
+    ctx.shadowColor = "rgba(255,255,255,0.5)"
+    ctx.fillStyle = color
+    ctx.fillText(emoji, 64, 64)
+
+    // Reset shadow
+    ctx.shadowBlur = 0
+
+    const texture = new THREE.CanvasTexture(canvas)
+    texture.minFilter = THREE.LinearFilter
+    texture.magFilter = THREE.LinearFilter
+
+    return texture
+  }
+
+  /* -------------------------------------------------- */
+  /* SUMMER EMOJI PARTICLES                             */
+  /* -------------------------------------------------- */
+
+  const createSummerEmojis = () => {
+    const group = new THREE.Group()
+    // REDUCED: emojiCount reduced from 80 to 56 (30% reduction)
+    const emojiCount = 56
+
+    for (let i = 0; i < emojiCount; i++) {
+      // Randomly select an emoji from the summer list
+      const emoji = summerEmojis[Math.floor(Math.random() * summerEmojis.length)]
+
+      // Random color variation for each emoji
+      const colors = ["#ffffff", "#ffeb3b", "#ff9800", "#ff6b35", "#4caf50", "#2196f3"]
+      const color = colors[Math.floor(Math.random() * colors.length)]
+
+      const texture = createEmojiTexture(emoji, color)
+
+      // Create sprite material
+      const material = new THREE.SpriteMaterial({
+        map: texture,
+        transparent: true,
+        opacity: 0.7,
+        blending: THREE.AdditiveBlending
+      })
+
+      const sprite = new THREE.Sprite(material)
+
+      // Random position in 3D space
+      sprite.position.x = (Math.random() - 0.5) * 60
+      sprite.position.y = (Math.random() - 0.5) * 30
+      sprite.position.z = (Math.random() - 0.5) * 15 - 5
+
+      // Random scale
+      const scale = 0.5 + Math.random() * 1
+      sprite.scale.set(scale, scale, 1)
+
+      // Store custom properties for animation
+      sprite.userData = {
+        speedX: (Math.random() - 0.5) * 0.02,
+        speedY: (Math.random() - 0.5) * 0.02,
+        speedZ: (Math.random() - 0.5) * 0.01,
+        rotationSpeed: (Math.random() - 0.5) * 0.02,
+        floatAmp: Math.random() * 0.5,
+        floatSpeed: 0.5 + Math.random() * 1,
+        originalY: sprite.position.y,
+        emoji: emoji
+      }
+
+      group.add(sprite)
+    }
+
+    return group
+  }
+
+  /* -------------------------------------------------- */
   /* BACKGROUND                                         */
   /* -------------------------------------------------- */
 
@@ -115,13 +216,33 @@ export function useBackgroundAnimation(canvasRef) {
     ctx.fillStyle = gradient
     ctx.fillRect(0,0,1024,1024)
 
+    // Add summer-specific decorations if summer season
+    if (currentSeason.value === "summer") {
+      // Draw sun in corner
+      ctx.save()
+      ctx.shadowBlur = 20
+      ctx.shadowColor = "rgba(255,200,0,0.5)"
+      ctx.font = "80px 'Segoe UI Emoji', 'Apple Color Emoji'"
+      ctx.fillStyle = "#ffeb3b"
+      ctx.fillText("☀️", 850, 150)
+
+      // Draw small summer elements scattered
+      ctx.font = "40px 'Segoe UI Emoji', 'Apple Color Emoji'"
+      ctx.fillStyle = "#ff9800"
+      ctx.fillText("🏖️", 100, 900)
+      ctx.fillText("🌊", 200, 950)
+      ctx.fillStyle = "#4caf50"
+      ctx.fillText("🍉", 900, 900)
+      ctx.restore()
+    }
+
     const texture = new THREE.CanvasTexture(canvas)
 
     const geometry = new THREE.PlaneGeometry(120,120)
 
     const material = new THREE.MeshBasicMaterial({
       map: texture,
-      depthWrite:false
+      depthWrite: false
     })
 
     const mesh = new THREE.Mesh(geometry,material)
@@ -131,16 +252,21 @@ export function useBackgroundAnimation(canvasRef) {
   }
 
   /* -------------------------------------------------- */
-  /* LEAF TEXTURE GENERATOR – with PNG for spring       */
+  /* FLOWER TEXTURE GENERATOR – with PNG for spring & summer */
   /* -------------------------------------------------- */
 
-  const createLeafTexture = (season) => {
+  const createFlowerTexture = (season) => {
     // For spring, return the preloaded PNG texture if available
     if (season === "spring" && springLeafTexture) {
       return springLeafTexture
     }
 
-    // Otherwise generate canvas textures for all seasons (including fallback for spring)
+    // For summer, return the preloaded hibiscus texture if available
+    if (season === "summer" && summerFlowerTexture) {
+      return summerFlowerTexture
+    }
+
+    // Otherwise generate canvas textures for all seasons (including fallback)
     const canvas = document.createElement("canvas")
     canvas.width = 256
     canvas.height = 256
@@ -174,34 +300,56 @@ export function useBackgroundAnimation(canvasRef) {
       }
 
       case "summer": {
-        // Lotus leaf (연잎) – large round leaf with stem and veins
+        // Korean Hibiscus (무궁화) - Korea's national flower
         ctx.save()
         ctx.translate(cx, cy)
+        ctx.scale(1.1, 1.1)
 
-        // Main leaf (broad, slightly irregular circle)
+        // Draw 5 petals (hibiscus has 5 petals)
+        const petals = 5
+        for (let i = 0; i < petals; i++) {
+          const angle = (i * 2 * Math.PI) / petals - Math.PI / 2
+          ctx.save()
+          ctx.rotate(angle)
+
+          // Large rounded petal
+          ctx.beginPath()
+          ctx.ellipse(0, 45, 30, 45, 0, 0, Math.PI * 2)
+          ctx.fill()
+
+          // Add petal vein
+          ctx.beginPath()
+          ctx.moveTo(0, 5)
+          ctx.quadraticCurveTo(0, 30, 0, 80)
+          ctx.lineWidth = 1.5
+          ctx.strokeStyle = "#ffffff"
+          ctx.stroke()
+
+          ctx.restore()
+        }
+
+        // Center of the flower
         ctx.beginPath()
-        ctx.ellipse(0, -10, 45, 40, 0, 0, Math.PI * 2)
+        ctx.arc(0, 0, 18, 0, Math.PI * 2)
         ctx.fill()
 
-        // Stem (curved)
+        // Center detail (stamen)
         ctx.beginPath()
-        ctx.moveTo(-5, 30)
-        ctx.quadraticCurveTo(10, 50, 20, 70)
-        ctx.lineWidth = 8
-        ctx.strokeStyle = "#ffffff"
-        ctx.stroke()
+        ctx.ellipse(0, 0, 8, 12, 0, 0, Math.PI * 2)
+        ctx.fillStyle = "#ffeb3b"
+        ctx.fill()
 
-        // Veins (radiating lines)
-        ctx.globalAlpha = 0.4
-        ctx.beginPath()
+        // Small dots around center
         for (let i = 0; i < 8; i++) {
-          const angle = (i * Math.PI / 4) - 0.5
-          const x = 30 * Math.cos(angle)
-          const y = 20 + 30 * Math.sin(angle)
-          ctx.moveTo(0, -10)
-          ctx.lineTo(x, y)
+          const angle = (i * Math.PI * 2) / 8
+          const x = 12 * Math.cos(angle)
+          const y = 12 * Math.sin(angle)
+          ctx.beginPath()
+          ctx.arc(x, y, 2, 0, Math.PI * 2)
+          ctx.fillStyle = "#ffeb3b"
+          ctx.fill()
         }
-        ctx.stroke()
+
         ctx.restore()
         break
       }
@@ -293,13 +441,14 @@ export function useBackgroundAnimation(canvasRef) {
   /* -------------------------------------------------- */
 
   const createParticles = () => {
-    const count = 500
+    // REDUCED: particle count reduced from 500 to 350 (30% reduction)
+    const count = 350
     const geometry = new THREE.BufferGeometry()
 
     const positions = new Float32Array(count * 3)
     const colors = new Float32Array(count * 3)
 
-    const leafBaseColor = new THREE.Color(leafColors[currentSeason.value])
+    const flowerBaseColor = new THREE.Color(flowerColors[currentSeason.value])
 
     for (let i = 0; i < count; i++) {
       positions[i * 3] = (Math.random() - 0.5) * 50
@@ -307,9 +456,9 @@ export function useBackgroundAnimation(canvasRef) {
       positions[i * 3 + 2] = (Math.random() - 0.5) * 20
 
       const colorVar = 0.15
-      const r = Math.max(0, Math.min(1, leafBaseColor.r + (Math.random() - 0.5) * colorVar))
-      const g = Math.max(0, Math.min(1, leafBaseColor.g + (Math.random() - 0.5) * colorVar))
-      const b = Math.max(0, Math.min(1, leafBaseColor.b + (Math.random() - 0.5) * colorVar))
+      const r = Math.max(0, Math.min(1, flowerBaseColor.r + (Math.random() - 0.5) * colorVar))
+      const g = Math.max(0, Math.min(1, flowerBaseColor.g + (Math.random() - 0.5) * colorVar))
+      const b = Math.max(0, Math.min(1, flowerBaseColor.b + (Math.random() - 0.5) * colorVar))
 
       colors[i * 3] = r
       colors[i * 3 + 1] = g
@@ -320,16 +469,20 @@ export function useBackgroundAnimation(canvasRef) {
     geometry.attributes.position.setUsage(THREE.DynamicDrawUsage)
     geometry.setAttribute("color", new THREE.BufferAttribute(colors, 3))
 
-    const texture = createLeafTexture(currentSeason.value)
+    const texture = createFlowerTexture(currentSeason.value)
     texture.minFilter = THREE.LinearMipmapLinearFilter
     texture.magFilter = THREE.LinearFilter
 
-    // 👇 Set opacity to 0.5 for spring, otherwise 1.0
+    // Adjust opacity based on season
+    let opacity = 1.0
+    if (currentSeason.value === 'spring') opacity = 0.5
+    if (currentSeason.value === 'summer') opacity = 0.7
+
     const material = new THREE.PointsMaterial({
       size: 2.0,
       map: texture,
       transparent: true,
-      opacity: currentSeason.value === 'spring' ? 0.5 : 1.0,
+      opacity: opacity,
       depthWrite: false,
       blending: THREE.NormalBlending,
       vertexColors: true,
@@ -338,6 +491,7 @@ export function useBackgroundAnimation(canvasRef) {
 
     return new THREE.Points(geometry, material)
   }
+
   /* -------------------------------------------------- */
   /* CLOUDS                                             */
   /* -------------------------------------------------- */
@@ -346,23 +500,27 @@ export function useBackgroundAnimation(canvasRef) {
 
     const group = new THREE.Group()
 
-    for (let i=0;i<5;i++) {
+    for (let i=0;i<8;i++) { // Increased cloud count for summer
 
-      const geo = new THREE.CircleGeometry(1,20)
+      const geo = new THREE.CircleGeometry(1.5,20)
 
       const mat = new THREE.MeshBasicMaterial({
-        color:0xffffff,
-        opacity:0.08,
-        transparent:true
+        color: 0xffffff,
+        opacity: currentSeason.value === 'summer' ? 0.15 : 0.08,
+        transparent: true
       })
 
       const mesh = new THREE.Mesh(geo,mat)
 
       mesh.position.set(
-        (Math.random()-0.5)*30,
-        Math.random()*10,
-        -10
+        (Math.random()-0.5)*35,
+        Math.random()*12,
+        -12
       )
+
+      // Random scale for variety
+      const scale = 0.8 + Math.random() * 0.7
+      mesh.scale.set(scale, scale, 1)
 
       group.add(mesh)
 
@@ -390,13 +548,14 @@ export function useBackgroundAnimation(canvasRef) {
 
     renderer = new THREE.WebGLRenderer({
       canvas: canvasRef.value,
-      antialias:true,
-      powerPreference:"high-performance",
-      precision:"mediump"
+      antialias: true,
+      powerPreference: "high-performance",
+      precision: "mediump",
+      alpha: true
     })
 
-    renderer.setSize(window.innerWidth,window.innerHeight)
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio,2))
+    renderer.setSize(window.innerWidth, window.innerHeight)
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 
     buildScene()
 
@@ -407,18 +566,23 @@ export function useBackgroundAnimation(canvasRef) {
   /* -------------------------------------------------- */
 
   const buildScene = () => {
+    // Ensure scene exists before adding elements
+    if (!scene) return
 
     elements.background = createBackground()
-    // elements.ribbons = createRibbons()
     elements.particles = createParticles()
     elements.clouds = createClouds()
 
-    scene.add(
-      elements.background,
-      elements.particles,
-      elements.clouds
-    )
+    // Add all elements to scene
+    scene.add(elements.background)
+    scene.add(elements.particles)
+    scene.add(elements.clouds)
 
+    // Only add summer emojis during summer season
+    if (currentSeason.value === 'summer') {
+      elements.summerEmojis = createSummerEmojis()
+      scene.add(elements.summerEmojis)
+    }
   }
 
   /* -------------------------------------------------- */
@@ -440,33 +604,58 @@ export function useBackgroundAnimation(canvasRef) {
 
     time += 0.003
 
-    camera.position.x = Math.sin(time*0.2)*2
+    if (camera) {
+      camera.position.x = Math.sin(time*0.2)*2
+    }
 
     if (elements.ribbons)
       elements.ribbons.rotation.y += 0.0008
 
+    // Cloud animation
     if (elements.clouds) {
       elements.clouds.children.forEach((c)=>{
-        c.position.x += 0.01
-        if (c.position.x>20) c.position.x = -20
+        c.position.x += currentSeason.value === 'summer' ? 0.015 : 0.01
+        if (c.position.x>25) c.position.x = -25
       })
     }
 
-    if (elements.particles) {
-
-      const positions =
-        elements.particles.geometry.attributes.position.array
-
+    // Particle animation
+    if (elements.particles && elements.particles.geometry && elements.particles.geometry.attributes.position) {
+      const positions = elements.particles.geometry.attributes.position.array
       for (let i=0;i<positions.length;i+=9) {
         positions[i+1] += Math.sin(time)*0.01
       }
-
       elements.particles.geometry.attributes.position.needsUpdate=true
-
     }
 
-    renderer.render(scene,camera)
+    // Summer emoji animation
+    if (elements.summerEmojis && currentSeason.value === 'summer') {
+      elements.summerEmojis.children.forEach((sprite, index) => {
+        // Floating motion
+        sprite.position.y += Math.sin(time * sprite.userData.floatSpeed + index) * 0.005
+        sprite.position.x += sprite.userData.speedX
+        sprite.position.z += sprite.userData.speedZ
 
+        // Gentle rotation
+        if (sprite.material) {
+          sprite.material.rotation += sprite.userData.rotationSpeed
+        }
+
+        // Wrap around edges
+        if (sprite.position.x > 35) sprite.position.x = -35
+        if (sprite.position.x < -35) sprite.position.x = 35
+        if (sprite.position.y > 20) sprite.position.y = -20
+        if (sprite.position.y < -20) sprite.position.y = 20
+
+        // Pulsing scale
+        const scale = 0.5 + Math.sin(time * 2 + index) * 0.1
+        sprite.scale.set(scale, scale, 1)
+      })
+    }
+
+    if (renderer && scene && camera) {
+      renderer.render(scene, camera)
+    }
   }
 
   /* -------------------------------------------------- */
@@ -498,6 +687,8 @@ export function useBackgroundAnimation(canvasRef) {
   /* -------------------------------------------------- */
 
   const rebuildScene = () => {
+
+    if (!scene) return
 
     Object.keys(elements).forEach((key)=>{
       const el = elements[key]
@@ -557,19 +748,28 @@ export function useBackgroundAnimation(canvasRef) {
       return
     }
 
-    // Preload the cherry blossom PNG from local assets
-    const loader = new THREE.TextureLoader()
-    // Dynamically import the image to get its public URL (Nuxt 3)
+    // Preload the cherry blossom PNG from local assets (spring)
     try {
-      const imgModule = await import('~/assets/image/cherry-blossom.png')
-      const springLeafUrl = imgModule.default || imgModule
-      //opacity is handled in the material, so we just load the PNG as a texture without modification
+      const springImgModule = await import('~/assets/image/cherry-blossom.png')
+      const springLeafUrl = springImgModule.default || springImgModule
       springLeafTexture = await new THREE.TextureLoader().loadAsync(springLeafUrl)
       springLeafTexture.minFilter = THREE.LinearMipmapLinearFilter
       springLeafTexture.magFilter = THREE.LinearFilter
     } catch (error) {
-      console.warn('Failed to load spring PNG via import, using fallback.', error)
+      console.warn('Failed to load spring PNG, using fallback.', error)
       springLeafTexture = null
+    }
+
+    // Preload the hibiscus PNG from local assets (summer - 무궁화)
+    try {
+      const summerImgModule = await import('~/assets/image/hibiscus.png')
+      const summerFlowerUrl = summerImgModule.default || summerImgModule
+      summerFlowerTexture = await new THREE.TextureLoader().loadAsync(summerFlowerUrl)
+      summerFlowerTexture.minFilter = THREE.LinearMipmapLinearFilter
+      summerFlowerTexture.magFilter = THREE.LinearFilter
+    } catch (error) {
+      console.warn('Failed to load summer hibiscus PNG, using fallback.', error)
+      summerFlowerTexture = null
     }
 
     initScene()
