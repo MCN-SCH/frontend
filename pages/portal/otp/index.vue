@@ -2,6 +2,10 @@
 import { ElMessage, ElNotification } from 'element-plus'
 import { useAuthStore } from '~/store/auth.js'
 
+definePageMeta({
+  layout: 'auth',
+  middleware: ['redirect-if-verified']
+})
 
 const authStore = useAuthStore()
 const { sendCode, verifyCode } = authStore

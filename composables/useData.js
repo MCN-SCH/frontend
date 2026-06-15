@@ -48,6 +48,93 @@ export const researchAreas = [
   },
 ]
 
+export const professorInfo = {
+  name: 'Professor Kim Seokhoon',
+  title: 'Professor, Ph.D.',
+
+  currentPositions: [
+    {
+      position: 'Supervisor',
+      organization: 'Mobile Computing & Networking Laboratory',
+    },
+    {
+      position: 'Professor',
+      department: 'Computer Software Engineering',
+      organization: 'Soonchunhyang University',
+    },
+  ],
+
+  education: [
+    {
+      degree: 'Doctor of Philosophy (Ph.D.)',
+      field: 'Computer Engineering',
+      institution: 'Kyung Hee University',
+      startYear: 2000,
+      endYear: 2004,
+    },
+    {
+      degree: 'Bachelor of Engineering (B.E.)',
+      field: 'Computer Engineering',
+      institution: 'Kyung Hee University',
+      startYear: 1995,
+      endYear: 2000,
+    },
+  ],
+
+  researchInterests: [
+    'Cloud Computing',
+    'Mobile Edge Computing',
+    'Internet of Things (IoT)',
+    'Heterogeneous Internet of Things',
+    'Software Defined Networking (SDN)',
+    'Network Function Virtualization (NFV)',
+    'Mobile Systems and Communications',
+    'Machine Learning',
+    'Big Data',
+  ],
+
+  profile: `Professor Kim Seokhoon received his B.E. and Ph.D. in Computer Engineering from Kyung Hee University, Korea, in 2000 and 2004, respectively. From 2004 to 2006, he worked at IPOne, Inc. as a Research Engineer. From 2006 to 2009, he worked at Neowave, Inc., where he developed Mobile WiMAX (IEEE 802.16) devices. He later served as a Research Professor and Postdoctoral Researcher at Kyung Hee University and as an Assistant Professor at Changshin University. Since 2016, he has been with Soonchunhyang University. His research interests include Cloud and Mobile Edge Computing, IoT, SDN, NFV, Mobile Systems, and Machine Learning based on Big Data.`,
+
+  experiences: [
+    {
+      period: '2016 - Present',
+      position: 'Professor',
+      organization: 'Soonchunhyang University',
+      department: 'Computer Software Engineering',
+    },
+    {
+      period: '2013 - 2016',
+      position: 'Assistant Professor',
+      organization: 'Changshin University',
+      department: 'Mobile Communications Engineering',
+    },
+    {
+      period: '2011 - 2013',
+      position: 'Research Professor',
+      organization: 'Kyung Hee University',
+      department: 'Computer Engineering',
+    },
+    {
+      period: '2009 - 2011',
+      position: 'Postdoctoral Researcher',
+      organization: 'Kyung Hee University',
+      department: 'RU-IPTV Research Center',
+    },
+    {
+      period: '2006 - 2009',
+      position: 'Research Engineer',
+      organization: 'Neowave Inc.',
+      department: 'Technology Lab',
+    },
+    {
+      period: '2004 - 2006',
+      position: 'Research Engineer',
+      organization: 'IPOne, Inc.',
+      department: 'Technology Lab',
+    },
+  ],
+}
+
 export const labMembers = [
   {
     id: 1,

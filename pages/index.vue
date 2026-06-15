@@ -13,7 +13,8 @@ import {
   currentProjects,
   facilities,
   newsUpdates,
-  upcomingEvents
+  upcomingEvents,
+  professorInfo
 } from '@/composables/useData.js';
 
 useSeoMeta({
@@ -83,7 +84,11 @@ const fetchHome = async () => {
 
   try {
     data.value = await index()
-    member.value = data.value?.member || null
+    member.value = data.value || null
+    member.value.professor = member.value.professor.map(professor => ({
+      ...professor,
+      ...professorInfo,
+    }))
     publication.value = data.value?.publication || null
   } catch (error) {
     console.error(error)
@@ -182,10 +187,10 @@ onMounted(() => {
       <HomeSectionsResearchAreas :research-areas="researchAreas" />
     </section>
 
-    <!-- Stats Section -->
-    <section id="stats">
-      <HomeSectionsStats :achievements="achievements" />
-    </section>
+<!--    &lt;!&ndash; Stats Section &ndash;&gt;-->
+<!--    <section id="stats">-->
+<!--      <HomeSectionsStats :achievements="achievements" />-->
+<!--    </section>-->
 
     <!-- People Section -->
     <section id="people">

@@ -119,7 +119,7 @@ export const useAuthStore = defineStore('auth', () => {
 
       //remove previous cookie if exists
       cookies.remove('mcn')
-      cookies.set('mcn', 'a8fcab8-9c1e-4a7c-9d0e-5f2b3c4d5e6f', cookieOptions)
+      cookies.set('mcn', 'a8fcab8-9c1e-4a7c-9d0e-f2b3c4d5e6f', cookieOptions)
       return data
     } catch (error) {
       // ElMessage.error(error.message || 'Failed')

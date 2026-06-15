@@ -189,7 +189,7 @@ const patterns = {
         </div>
 
         <!-- Stats Banner -->
-        <div class="relative rounded-3xl bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 p-10 mb-20 shadow-2xl overflow-hidden">
+        <div class="relative rounded-3xl bg-blue-500 p-10 mb-20 shadow-2xl overflow-hidden">
           <div
             class="absolute inset-0 opacity-10"
             :style="{ backgroundImage: `url('${patterns.pattern6}')` }"
@@ -221,7 +221,7 @@ const patterns = {
             Join us in shaping the future of computing research at Soonchunhyang University.
           </p>
           <div class="flex flex-wrap justify-center gap-4">
-            <button class="px-8 py-3 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold hover:shadow-xl transition-all duration-300 hover:scale-105">
+            <button class="px-8 py-3 rounded-full bg-blue-500 text-white font-semibold hover:shadow-xl transition-all duration-300 hover:scale-105">
               Explore Research
             </button>
             <button class="px-8 py-3 rounded-full border-2 border-gray-300 dark:border-gray-700 text-gray-800 dark:text-white font-semibold hover:border-blue-500 dark:hover:border-blue-500 transition-all duration-300">
