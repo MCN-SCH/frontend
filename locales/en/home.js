@@ -50,4 +50,6 @@ export default {
   best_paper_award: 'Best Paper Award',
   tech_transfer: 'Technology Transfer',
 
+  news: 'News',
+
 }

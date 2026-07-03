@@ -46,7 +46,6 @@ const goToAdminPage = async () => {
     navigateTo(`/portal/otp`)
   } catch (err) {
     console.error(err)
-    ElMessage.error('Login failed')
   } finally {
     loading.value = false
   }

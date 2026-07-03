@@ -21,7 +21,7 @@ const navLinks = [
   { id: 'team', label: 'team' },
   { id: 'publications', label: 'publications' },
   { id: 'projects', label: 'projects' },
-  { id: 'facilities', label: 'facilities' },
+  { id: 'news', label: 'news' },
   { id: 'contact', label: 'contact' },
 ]
 

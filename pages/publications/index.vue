@@ -238,23 +238,25 @@ const { publication } = store
 const fetchPublications = async () => {
   loading.value = true;
   try {
-    const params = new URLSearchParams();
-    params.append('page', currentPage.value);
-    params.append('per_page', perPage.value);
+    // Build query params as an object
+    const params = {
+      page: currentPage.value,
+      per_page: perPage.value,
+      sort: sortBy.value
+    };
 
     if (searchQuery.value) {
-      params.append('search', searchQuery.value);
+      params.search = searchQuery.value;
     }
     if (selectedType.value !== 'all') {
-      params.append('type', selectedType.value);
+      params.type = selectedType.value;
     }
     if (selectedYear.value !== 'all') {
-      params.append('year', selectedYear.value);
+      params.year = selectedYear.value;
     }
 
-    params.append('sort', sortBy.value);
-
-    const response = await publication(params.toString());
+    // Pass the params object to the publication method
+    const response = await publication(params);
 
     if (response) {
       const responseData = response;
@@ -290,7 +292,8 @@ const fetchPublications = async () => {
 
 const fetchAvailableYears = async () => {
   try {
-    const response = await publication('per_page=100');
+    const response = await publication({ per_page: 100 });
+
     if (response && response.data && response.data.data) {
       const years = new Set();
       response.data.data.forEach(pub => {
@@ -309,9 +312,16 @@ const handleScroll = () => {
   showScrollTop.value = window.scrollY > 500;
 };
 
+// Add this at the top with other refs
+let debounceTimer = null;
+
+// Replace the watch with this:
 watch([searchQuery, selectedType, selectedYear, sortBy], () => {
-  currentPage.value = 1;
-  fetchPublications();
+  clearTimeout(debounceTimer);
+  debounceTimer = setTimeout(() => {
+    currentPage.value = 1;
+    fetchPublications();
+  }, 300);
 });
 
 onMounted(() => {

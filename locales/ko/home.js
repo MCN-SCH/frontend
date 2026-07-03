@@ -50,4 +50,6 @@ export default {
   best_paper_award: '최우수 논문상',
   tech_transfer: '기술 이전',
 
+  news: '뉴스',
+
 }

@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useBackgroundAnimation } from '@/composables/useBackgroundAnimation';
@@ -48,6 +48,23 @@ const loading = ref(false)
 const member = ref(null)
 const publication = ref(null)
 
+// Computed properties for null safety
+const safeMember = computed(() => {
+  if (!member.value) return null
+  if (!member.value.professor) return null
+  return {
+    ...member.value,
+    professor: member.value.professor.map(professor => ({
+      ...professor,
+      ...professorInfo,
+    }))
+  }
+})
+
+const safePublication = computed(() => {
+  return publication.value || []
+})
+
 // Methods
 const scrollToSection = (sectionId) => {
   const element = document.getElementById(sectionId);
@@ -91,7 +108,11 @@ const fetchHome = async () => {
     }))
     publication.value = data.value?.publication || null
   } catch (error) {
-    console.error(error)
+    console.error('Error fetching home data:', error)
+    // Set fallback data to prevent UI errors
+    member.value = { professor: [] }
+    publication.value = []
+    data.value = { member: { professor: [] }, publication: [] }
   } finally {
     loading.value = false
   }
@@ -103,51 +124,78 @@ const handleScroll = () => {
 
 onMounted(() => {
   setTimeout(() => {
-    setSeason('summer') // Try 'spring', 'summer', 'fall', 'winter'
+    try {
+      setSeason('summer') // Try 'spring', 'summer', 'fall', 'winter'
+    } catch (error) {
+      console.error('Season setting error:', error)
+    }
   }, 100)
-  fetchHome();
-  gsap.registerPlugin(ScrollTrigger);
 
-  // Set light mode as default
-  const savedDarkMode = localStorage.getItem('darkMode');
-  if (savedDarkMode === 'true') {
-    darkMode.value = true;
-    document.documentElement.classList.add('dark');
-  } else {
-    document.documentElement.classList.remove('dark');
+  fetchHome();
+
+  try {
+    gsap.registerPlugin(ScrollTrigger);
+  } catch (error) {
+    console.error('GSAP registration error:', error)
   }
 
-  // Animations
-  gsap.from('.hero-title', {
-    y: 20,
-    opacity: 0,
-    duration: 0.4,
-    ease: 'power2.out'
-  });
+  // Set light mode as default
+  try {
+    const savedDarkMode = localStorage.getItem('darkMode');
+    if (savedDarkMode === 'true') {
+      darkMode.value = true;
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  } catch (error) {
+    console.error('Dark mode initialization error:', error)
+  }
 
-  gsap.from('.hero-subtitle', {
-    y: 15,
-    opacity: 0,
-    duration: 0.5,
-    delay: 0.1,
-    ease: 'power2.out'
-  });
+  // Animations with null safety
+  try {
+    const heroTitle = document.querySelector('.hero-title');
+    if (heroTitle) {
+      gsap.from('.hero-title', {
+        y: 20,
+        opacity: 0,
+        duration: 0.4,
+        ease: 'power2.out'
+      });
+    }
 
-  // Stagger animations
-  gsap.utils.toArray('.stagger-item').forEach((el, i) => {
-    gsap.from(el, {
-      scrollTrigger: {
-        trigger: el,
-        start: 'top 90%',
-        toggleActions: 'play none none none'
-      },
-      y: 20,
-      opacity: 0,
-      duration: 0.3,
-      delay: i * 0.05,
-      ease: 'power2.out'
-    });
-  });
+    const heroSubtitle = document.querySelector('.hero-subtitle');
+    if (heroSubtitle) {
+      gsap.from('.hero-subtitle', {
+        y: 15,
+        opacity: 0,
+        duration: 0.5,
+        delay: 0.1,
+        ease: 'power2.out'
+      });
+    }
+
+    // Stagger animations with null safety
+    const staggerItems = document.querySelectorAll('.stagger-item');
+    if (staggerItems.length > 0) {
+      staggerItems.forEach((el, i) => {
+        gsap.from(el, {
+          scrollTrigger: {
+            trigger: el,
+            start: 'top 90%',
+            toggleActions: 'play none none none'
+          },
+          y: 20,
+          opacity: 0,
+          duration: 0.3,
+          delay: i * 0.05,
+          ease: 'power2.out'
+        });
+      });
+    }
+  } catch (error) {
+    console.error('Animation initialization error:', error)
+  }
 
   // Scroll to top button
   window.addEventListener('scroll', handleScroll);
@@ -155,7 +203,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div v-if="data" class="min-h-screen text-gray-900 overflow-x-hidden transition-colors duration-300 dark:text-white">
+  <div v-if="data || true" class="min-h-screen text-gray-900 overflow-x-hidden transition-colors duration-300 dark:text-white">
     <!-- Background Canvas -->
     <div class="tech-background">
       <canvas ref="techCanvas"></canvas>
@@ -184,37 +232,27 @@ onMounted(() => {
 
     <!-- Research Areas -->
     <section id="research">
-      <HomeSectionsResearchAreas :research-areas="researchAreas" />
+      <HomeSectionsResearchAreas :research-areas="researchAreas || []" />
     </section>
-
-<!--    &lt;!&ndash; Stats Section &ndash;&gt;-->
-<!--    <section id="stats">-->
-<!--      <HomeSectionsStats :achievements="achievements" />-->
-<!--    </section>-->
 
     <!-- People Section -->
     <section id="people">
-      <HomeSectionsPeople :lab-members="member" />
+      <HomeSectionsPeople :lab-members="safeMember || { professor: [] }" />
     </section>
 
     <!-- Publications -->
     <section id="publications">
-      <HomeSectionsPublications :publications="publication" />
+      <HomeSectionsPublications :publications="safePublication" />
     </section>
 
     <!-- Projects -->
     <section id="projects">
-      <HomeSectionsProjects :projects="currentProjects" />
-    </section>
-
-    <!-- Facilities -->
-    <section id="facilities">
-      <HomeSectionsFacilities :facilities="facilities" />
+      <HomeSectionsProjects :projects="currentProjects || []" />
     </section>
 
     <!-- News & Events -->
     <section id="news">
-      <HomeSectionsNewsEvents :news="newsUpdates" :events="upcomingEvents" />
+      <HomeSectionsNewsEvents :news="newsUpdates || []" :events="upcomingEvents || []" />
     </section>
 
     <!-- Contact -->

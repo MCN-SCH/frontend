@@ -34,20 +34,20 @@ const isMobileMenuOpen = ref(false)
 
 const menuItems = [
   { icon: House, label: 'Dashboard', to: `/portal/${deviceId}/` },
-  {
-    icon: Wallet,
-    label: 'Data',
-    children: [
-      {
-        label: 'Active',
-        to: `/portal/${deviceId}/data/active`
-      },
-      {
-        label: 'History',
-        to: `/portal/${deviceId}/data/history`
-      }
-    ]
-  },
+  // {
+  //   icon: Wallet,
+  //   label: 'Data',
+  //   children: [
+  //     {
+  //       label: 'Active',
+  //       to: `/portal/${deviceId}/data/active`
+  //     },
+  //     {
+  //       label: 'History',
+  //       to: `/portal/${deviceId}/data/history`
+  //     }
+  //   ]
+  // },
   {
     icon: Document,
     label: 'Publication',

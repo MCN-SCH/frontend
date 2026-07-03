@@ -12,8 +12,7 @@ export const useHomeStore = defineStore('home', () => {
       product.value = products
       return products
     } catch (error) {
-      ElMessage.error(error.message || 'Get failed')
-      throw new Error(`Get failed: ${error.message || 'Unknown error'}`)
+      throw new Error('Server Error')
     }
   }
 
