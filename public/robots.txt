@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /dashboard/
+Disallow: /maintenance/
+Disallow: /_nuxt/
+Disallow: /api/
+
+Sitemap: https://mcn.sch.ac.kr/sitemap.xml
+Host: https://mcn.sch.ac.kr
