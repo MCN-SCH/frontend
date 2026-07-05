@@ -140,12 +140,7 @@ onBeforeUnmount(() => {
             {{ link.label }}
           </button>
 
-          <button
-            @click="$emit('toggleLanguage')"
-            class="text-left py-2 font-medium"
-          >
-            Language: {{ currentLanguage }}
-          </button>
+          <Locale />
         </div>
       </div>
     </transition>
