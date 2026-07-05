@@ -139,8 +139,6 @@ onBeforeUnmount(() => {
           >
             {{ link.label }}
           </button>
-
-          <Locale />
         </div>
       </div>
     </transition>
