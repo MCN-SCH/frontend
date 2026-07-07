@@ -156,7 +156,7 @@ export default defineNuxtConfig({
         },
         {
           property: "og:image",
-          content: "/images/mcn_og_image.png",
+          content: "/images/mcn_white.png",
         },
         {
           property: "og:image:width",
@@ -172,20 +172,6 @@ export default defineNuxtConfig({
         },
         { property: "og:locale", content: "ko_KR" },
         { property: "og:locale:alternate", content: "en_US" },
-
-        // Twitter Card (Enhanced)
-        { name: "twitter:card", content: "summary_large_image" },
-        { name: "twitter:site", content: "@MCNLab_SCH" },
-        { name: "twitter:creator", content: "@MCNLab_SCH" },
-        { name: "twitter:title", content: "MCN 연구실 - 모바일컴퓨팅네트워킹 연구실" },
-        {
-          name: "twitter:description",
-          content: "Mobile Computing & Networking Lab, Department of Software Convergence, Soonchunhyang University",
-        },
-        {
-          name: "twitter:image",
-          content: "/images/mcn_twitter_card.png",
-        },
 
         // Additional SEO
         { name: "apple-mobile-web-app-capable", content: "yes" },
@@ -220,7 +206,7 @@ export default defineNuxtConfig({
             "name": "MCN Lab - Mobile Computing & Networking Lab",
             "alternateName": ["모바일컴퓨팅네트워킹 연구실", "MCN"],
             "url": process.env.APP_SITE_URL,
-            "logo": `${process.env.APP_SITE_URL}/images/mcn_logo.png`,
+            "logo": `${process.env.APP_SITE_URL}/images/mcn_white.png`,
             "description": "Mobile Computing & Networking Lab, Department of Software Convergence, Soonchunhyang University",
             "foundingDate": "2000",
             "founder": {
