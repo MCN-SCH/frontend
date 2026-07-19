@@ -9,7 +9,7 @@ export default {
   contact: '연락처',
 
   badge: '순천향대학교 연구실',
-  since: '20**년부터',
+  since: '2016년부터',
   mobile_computing: '모바일 컴퓨팅',
   networking_lab: '네트워킹 랩',
   schu_mcn_laboratory: 'SCHU MCN 연구실',

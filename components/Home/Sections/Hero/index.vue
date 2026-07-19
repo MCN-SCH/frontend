@@ -1,18 +1,16 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { onMounted, ref } from 'vue'
 import {
+  BookOpen,
+  ChevronLeft,
+  ChevronRight,
   Rocket,
   Server,
-  ChevronRight,
-  ChevronLeft,
+  Shield,
   Sparkles,
   TrendingUp,
   Users,
-  Award,
-  BookOpen,
   Zap,
-  Calendar,
-  Shield,
 } from 'lucide-vue-next'
 
 defineProps({
@@ -107,8 +105,8 @@ onMounted(() => {
               >
                 <div class="flex items-center gap-2">
                   <div
-                    @click="navigateTo('/portal')"
                     class="w-6 h-6 flex items-center justify-center bg-gradient-to-r from-blue-500 to-blue-600 rounded-full cursor-pointer transition-transform transform hover:scale-110 active:scale-95"
+                    @click="navigateTo('/portal')"
                   >
                     <Rocket class="w-3 h-3 text-white" />
                   </div>
@@ -185,43 +183,17 @@ onMounted(() => {
                   {{ $t('researchers') }}
                 </div>
               </div>
-              <div
-                class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl p-4 border border-gray-200 dark:border-gray-700"
-              >
-                <div class="flex items-center gap-2">
-                  <Award class="w-5 h-5 text-yellow-500" />
-                  <div class="text-2xl font-bold text-gray-900 dark:text-white">
-                    ₩2.1B
-                  </div>
-                </div>
-                <div class="text-sm text-gray-600 dark:text-gray-400 mt-1">
-                  {{ $t('research_funding') }}
-                </div>
-              </div>
-              <div
-                class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl p-4 border border-gray-200 dark:border-gray-700"
-              >
-                <div class="flex items-center gap-2">
-                  <Calendar class="w-5 h-5 text-purple-500" />
-                  <div class="text-2xl font-bold text-gray-900 dark:text-white">
-                    8
-                  </div>
-                </div>
-                <div class="text-sm text-gray-600 dark:text-gray-400 mt-1">
-                  {{ $t('active_projects') }}
-                </div>
-              </div>
             </div>
 
             <!-- CTA Buttons -->
 
             <div class="flex justify-center sm:justify-start flex-wrap gap-4">
               <HomeUIButton
-                @click="$emit('scrollTo', 'research')"
-                class="group relative overflow-hidden p-2"
                 :icon="ChevronRight"
+                class="group relative overflow-hidden p-2"
                 icon-position="right"
                 size="lg"
+                @click="$emit('scrollTo', 'research')"
               >
                 <span class="relative z-10">{{ $t('explore_research') }}</span>
                 <div
@@ -229,10 +201,10 @@ onMounted(() => {
                 ></div>
               </HomeUIButton>
               <HomeUIButton
-                @click="$emit('scrollTo', 'contact')"
-                variant="secondary"
-                size="lg"
                 class="border-2 border-gray-300 dark:border-gray-600 hover:border-blue-500 transition-all p-2"
+                size="lg"
+                variant="secondary"
+                @click="$emit('scrollTo', 'contact')"
               >
                 {{ $t('join_our_team') }}
               </HomeUIButton>
@@ -259,20 +231,20 @@ onMounted(() => {
                     <div
                       v-for="(slide, index) in heroSlides"
                       :key="slide.id"
-                      @click="currentSlide = index"
-                      class="w-2 h-2 rounded-full cursor-pointer transition-all"
                       :class="
                         currentSlide === index
                           ? 'bg-blue-500 w-6'
                           : 'bg-gray-300 dark:bg-gray-600 hover:bg-gray-400'
                       "
+                      class="w-2 h-2 rounded-full cursor-pointer transition-all"
+                      @click="currentSlide = index"
                     ></div>
                   </div>
                   <div class="flex gap-2">
                     <button
-                      @click="prevSlide"
-                      class="p-2.5 rounded-full bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-gray-200 dark:border-gray-700 hover:border-blue-500 dark:hover:border-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/30 transition-all duration-300 shadow-sm hover:shadow-md active:scale-95 group"
                       aria-label="Previous slide"
+                      class="p-2.5 rounded-full bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-gray-200 dark:border-gray-700 hover:border-blue-500 dark:hover:border-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/30 transition-all duration-300 shadow-sm hover:shadow-md active:scale-95 group"
+                      @click="prevSlide"
                     >
                       <ChevronLeft
                         class="w-5 h-5 text-gray-600 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors"
@@ -280,9 +252,9 @@ onMounted(() => {
                     </button>
 
                     <button
-                      @click="nextSlide"
-                      class="p-2.5 rounded-full bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-gray-200 dark:border-gray-700 hover:border-blue-500 dark:hover:border-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/30 transition-all duration-300 shadow-sm hover:shadow-md active:scale-95 group"
                       aria-label="Next slide"
+                      class="p-2.5 rounded-full bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-gray-200 dark:border-gray-700 hover:border-blue-500 dark:hover:border-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/30 transition-all duration-300 shadow-sm hover:shadow-md active:scale-95 group"
+                      @click="nextSlide"
                     >
                       <ChevronRight
                         class="w-5 h-5 text-gray-600 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors"
@@ -295,7 +267,6 @@ onMounted(() => {
                 <div class="space-y-6">
                   <div class="flex items-center gap-4">
                     <div
-                      class="w-16 h-16 rounded-2xl flex items-center justify-center"
                       :class="[
                         heroSlides[currentSlide].bgColor,
                         heroSlides[currentSlide].color.replace(
@@ -303,6 +274,7 @@ onMounted(() => {
                           'bg-gradient-to-r ',
                         ),
                       ]"
+                      class="w-16 h-16 rounded-2xl flex items-center justify-center"
                     >
                       <component
                         :is="heroSlides[currentSlide].icon"
@@ -344,8 +316,8 @@ onMounted(() => {
                       class="h-1 w-full bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden"
                     >
                       <div
-                        class="h-full bg-gradient-to-r from-blue-500 to-cyan-400 transition-all duration-500"
                         :style="{ width: `${(currentSlide + 1) * 25}%` }"
+                        class="h-full bg-gradient-to-r from-blue-500 to-cyan-400 transition-all duration-500"
                       ></div>
                     </div>
                     <div
@@ -356,7 +328,9 @@ onMounted(() => {
                           heroSlides.length
                         }}</span
                       >
-                      <span class="font-medium">{{ $t('key_achievements') }}</span>
+                      <span class="font-medium">{{
+                        $t('key_achievements')
+                      }}</span>
                     </div>
                   </div>
                 </div>

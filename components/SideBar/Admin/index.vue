@@ -59,6 +59,11 @@ const menuItems = [
     to: `/portal/${deviceId}/member-management`
   },
   {
+    icon: User,
+    label: 'User Management',
+    to: `/portal/${deviceId}/user-management`
+  },
+  {
     icon: Setting,
     label: 'Settings',
     to: `/portal/${deviceId}/settings`

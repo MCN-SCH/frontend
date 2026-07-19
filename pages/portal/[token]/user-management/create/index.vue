@@ -140,11 +140,6 @@ const submit = async () => {
         formData.append('image', form.value.member.imageFile)
       }
 
-      //is_active
-      formData.append('is_active', form.value.member.is_active ? '1' : '0')
-      //order
-      formData.append('order', form.value.member.order)
-
       await register(formData)
       ElMessage.success('Member created successfully')
       navigateTo(`/portal/${deviceId}/member-management`)

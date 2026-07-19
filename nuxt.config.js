@@ -340,6 +340,7 @@ export default defineNuxtConfig({
           "https://*.googleapis.com",
           "https://*.gstatic.com",
           "https://*.githubusercontent.com",
+          "*.google.com"
         ],
         "script-src": [
           "'self'",
@@ -349,6 +350,7 @@ export default defineNuxtConfig({
           "https://*.gstatic.com",
           "https://*.sch.ac.kr",
           "https://*.googletagmanager.com",
+          "https://www.google.com",
         ],
         "style-src": [
           "'self'",
@@ -368,6 +370,8 @@ export default defineNuxtConfig({
           "https://*.googleapis.com",
           "https://*.telegram.org",
           "wss://*.telegram.org",
+          //www.google.com
+          "https://www.google.com",
         ].filter(Boolean),
         "font-src": [
           "'self'",
@@ -379,6 +383,8 @@ export default defineNuxtConfig({
           "'self'",
           "https://*.sch.ac.kr",
           "https://*.telegram.org",
+          "*.google.com",
+          "*.google.co.kr"
         ],
         "media-src": ["'self'", "data:", "https:"],
         "object-src": ["'none'"],

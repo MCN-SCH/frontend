@@ -9,7 +9,7 @@ export default {
   contact: 'Contact',
 
   badge : 'Soonchunhyang University\'s Research Lab',
-  since : 'Since 20**',
+  since : 'Since 2016',
   mobile_computing : 'Mobile Computing',
   networking_lab : '& Networking Lab',
   schu_mcn_laboratory : 'SCHU MCN Laboratory',

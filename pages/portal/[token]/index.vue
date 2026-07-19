@@ -136,10 +136,6 @@ onMounted(() => {
                 {{ loginDuration }}
               </span>
             </div>
-            <div>
-              <span class="text-xs text-gray-400 block">Device</span>
-              <span class="text-sm">{{ userData?.device?.name || 'N/A' }}</span>
-            </div>
           </div>
 
           <!-- Additional Info -->
@@ -151,10 +147,6 @@ onMounted(() => {
             <div v-if="userData?.member?.position">
               <span class="text-xs text-gray-400 block">Position</span>
               <span class="text-sm">{{ userData.member.position }}</span>
-            </div>
-            <div v-if="userData?.device?.ip_address">
-              <span class="text-xs text-gray-400 block">IP Address</span>
-              <span class="text-sm">{{ userData.device.ip_address }}</span>
             </div>
             <div v-if="userData?.device?.last_seen_at">
               <span class="text-xs text-gray-400 block">Last Active</span>
