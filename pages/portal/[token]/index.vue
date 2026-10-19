@@ -61,6 +61,7 @@ const fetchData = async () => {
 }
 
 const roleLabels = {
+  ADMIN: 'Administrator',
   PROFESSOR: 'Professor',
   RESEARCHER: 'Researcher',
   PHD_STUDENT: 'PhD Student',
@@ -70,12 +71,13 @@ const roleLabels = {
 }
 
 const roleMap = {
-  '1': 'Professor',
-  '2': 'Researcher',
-  '3': 'PhD Student',
-  '4': 'Master Student',
-  '5': 'Undergraduate Student',
-  '6': 'Alumni',
+  1: 'Administrator',
+  2: 'Professor',
+  3: 'Researcher',
+  4: 'PhD Student',
+  5: 'Master Student',
+  6: 'Undergraduate Student',
+  7: 'Alumni',
 }
 
 const getRoleLabel = (roleId) => {
@@ -120,14 +122,20 @@ onMounted(() => {
           </div>
 
           <!-- Contact Info -->
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-4">
+          <div
+            class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-4"
+          >
             <div>
               <span class="text-xs text-gray-400 block">Email</span>
-              <span class="text-sm">{{ userData?.member?.email || userData?.user?.email || 'N/A' }}</span>
+              <span class="text-sm">{{
+                userData?.member?.email || userData?.user?.email || 'N/A'
+              }}</span>
             </div>
             <div>
               <span class="text-xs text-gray-400 block">Phone</span>
-              <span class="text-sm">{{ userData?.member?.phone || userData?.user?.phone || 'N/A' }}</span>
+              <span class="text-sm">{{
+                userData?.member?.phone || userData?.user?.phone || 'N/A'
+              }}</span>
             </div>
             <div>
               <span class="text-xs text-gray-400 block">Login Duration</span>
@@ -150,7 +158,9 @@ onMounted(() => {
             </div>
             <div v-if="userData?.device?.last_seen_at">
               <span class="text-xs text-gray-400 block">Last Active</span>
-              <span class="text-sm">{{ new Date(userData.device.last_seen_at).toLocaleString() }}</span>
+              <span class="text-sm">{{
+                new Date(userData.device.last_seen_at).toLocaleString()
+              }}</span>
             </div>
           </div>
         </div>
@@ -163,7 +173,7 @@ onMounted(() => {
         <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
           <el-card shadow="hover">
             <div class="text-center">
-              <p class="text-gray-500 text-sm">Total Users</p>
+              <p class="text-gray-500 text-sm">Total Active Members</p>
               <h2 class="text-4xl font-bold text-blue-600 mt-2">
                 {{ data?.total_users ?? 0 }}
               </h2>

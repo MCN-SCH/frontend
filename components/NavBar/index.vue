@@ -2,6 +2,7 @@
 import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { Sun, Moon } from 'lucide-vue-next'
 import { useI18n } from 'vue-i18n'
+import { useRouter } from 'vue-router'
 
 const { t } = useI18n()
 const props = defineProps({
@@ -37,6 +38,12 @@ const scrollToSection = (id) => {
 
 onMounted(() => {
   window.addEventListener('scroll', handleScroll)
+  //get current route and set activeSection accordingly
+  const router = useRouter()
+  const currentRoute = router.currentRoute.value
+  if (currentRoute.name === 'publications') {
+    activeSection.value = 'publications'
+  }
 })
 
 onBeforeUnmount(() => {
@@ -140,7 +147,7 @@ onBeforeUnmount(() => {
             {{ link.label }}
           </button>
 
-           <button
+          <button
             @click="$emit('toggleLanguage')"
             class="text-left py-2 font-medium"
           >
