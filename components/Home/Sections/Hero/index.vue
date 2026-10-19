@@ -95,13 +95,13 @@ onMounted(() => {
 
     <div class="absolute inset-0 bg-grid-pattern opacity-[0.02]"></div>
 
-    <div class="container mx-auto px-4 sm:px-6 relative z-10">
+    <div class="container mx-auto p-4 sm:p-6 relative z-10">
       <div class="max-w-7xl mx-auto">
         <div class="grid lg:grid-cols-2 gap-12 items-center">
           <div class="relative">
             <div class="flex justify-center sm:justify-start">
               <div
-                class="inline-flex flex-col sm:flex-row sm:items-center gap-2 px-4 py-3 rounded-full bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-blue-200 dark:border-blue-800 text-blue-700 dark:text-blue-300 text-sm font-medium mb-6 shadow-lg"
+                class="inline-flex flex-col sm:flex-row sm:items-center gap-2 px-4 py-3 rounded-xl bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-blue-200 dark:border-blue-800 text-blue-700 dark:text-blue-300 text-sm font-medium mb-6 shadow-lg"
               >
                 <div class="flex items-center gap-2">
                   <div

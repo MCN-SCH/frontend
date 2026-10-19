@@ -1,5 +1,6 @@
 import { Brain, Cpu, Database, Globe, Shield, Users } from 'lucide-vue-next'
 
+
 export const researchAreas = [
   {
     title: 'AI & Machine Learning',
@@ -7,46 +8,38 @@ export const researchAreas = [
     desc: 'Advanced AI algorithms for real-world applications.',
     features: ['Deep Learning', 'Computer Vision', 'NLP'],
     icon: 'Brain',
-    color: 'from-purple-500 to-pink-500',
+    color: 'from-violet-500 to-fuchsia-500',
     stats: '15+ Papers',
   },
   {
     title: 'Network Design',
-    korean: 'HCI 연구',
-    desc: 'Intuitive interfaces for next-gen digital experiences.',
-    features: ['Accessibility'],
-    icon: 'Users',
-    color: 'from-blue-500 to-cyan-400',
+    korean: '네트워크 설계',
+    desc: 'Designing intelligent, reliable, and efficient network architectures.',
+    features: ['Network Architecture', 'Optimization', 'Connectivity'],
+    icon: 'Network',
+    color: 'from-sky-500 to-blue-600',
     stats: '10 Projects',
   },
   {
-    title: 'Security',
-    korean: '보안',
-    desc: 'Threat detection and privacy technologies.',
-    features: ['Blockchain', 'Cryptography', 'Zero Trust'],
-    icon: 'Shield',
-    color: 'from-green-500 to-emerald-400',
-    stats: '8 Patents',
-  },
-  {
     title: 'Big Data Analytics',
-    korean: '빅데이터',
-    desc: 'Processing massive datasets for insights.',
-    features: ['Real-time', 'Data Mining', 'Visualization'],
+    korean: '빅데이터 분석',
+    desc: 'Transforming large-scale datasets into actionable insights.',
+    features: ['Real-time Analytics', 'Data Mining', 'Visualization'],
     icon: 'Database',
-    color: 'from-orange-500 to-red-500',
+    color: 'from-amber-500 to-orange-600',
     stats: '12TB+ Data',
   },
   {
-    title: 'Quantum Computing',
-    korean: '양자 컴퓨팅',
-    desc: 'Quantum algorithms and applications.',
-    features: ['Quantum ML', 'Simulation', 'Algorithms'],
+    title: 'Digital Twin & Simulation',
+    korean: '디지털 트윈',
+    desc: 'Creating virtual replicas of physical systems for intelligent simulation.',
+    features: ['Digital Twin', 'Simulation', 'Modeling'],
     icon: 'Cpu',
-    color: 'from-indigo-500 to-purple-600',
+    color: 'from-indigo-500 to-violet-600',
     stats: '5 Research',
   },
 ]
+
 
 export const professorInfo = {
   name: 'Professor Kim Seokhoon',

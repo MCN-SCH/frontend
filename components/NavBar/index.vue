@@ -132,27 +132,57 @@ onBeforeUnmount(() => {
 
     <!-- MOBILE MENU -->
 
+    <!-- MOBILE MENU -->
     <transition name="menu">
       <div
         v-if="mobileMenuOpen"
         class="lg:hidden border-t border-gray-200 dark:border-gray-700"
       >
-        <div class="flex flex-col px-6 py-4 space-y-3">
+        <div class="flex flex-col px-6 py-4 space-y-2">
+          <!-- Navigation Links -->
           <button
             v-for="link in navLinks"
             :key="link.id"
             @click="scrollToSection(link.id)"
-            class="text-left py-2 font-medium text-gray-700 dark:text-gray-300 hover:text-blue-500"
+            class="relative group w-full text-left py-2 text-sm font-medium"
           >
-            {{ link.label }}
+            <span
+              :class="[
+                'transition-colors duration-300',
+                activeSection === link.id
+                  ? 'text-blue-600 dark:text-blue-400'
+                  : 'text-gray-700 dark:text-gray-300 group-hover:text-blue-500',
+              ]"
+            >
+              {{ $t(link.label) }}
+            </span>
+
+            <!-- Active / Hover Underline -->
+            <span
+              :class="
+                activeSection === link.id ? 'w-full' : 'w-0 group-hover:w-full'
+              "
+              class="absolute left-0 bottom-0 h-[2px] bg-gradient-to-r from-blue-500 to-indigo-500 transition-all duration-300"
+            ></span>
           </button>
 
-          <button
-            @click="$emit('toggleLanguage')"
-            class="text-left py-2 font-medium"
+          <!-- Language and Dark Mode Controls -->
+          <div
+            class="flex items-center justify-between pt-3 mt-2 border-t border-gray-200 dark:border-gray-700"
           >
-            Language: {{ currentLanguage }}
-          </button>
+            <!-- Language Selector -->
+            <Locale />
+
+            <!-- Dark Mode -->
+            <button
+              @click="$emit('toggleDarkMode')"
+              class="p-2 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-blue-500 transition"
+              aria-label="Toggle dark mode"
+            >
+              <Sun v-if="darkMode" class="w-5 h-5 text-yellow-500" />
+              <Moon v-else class="w-5 h-5 text-gray-600 dark:text-gray-400" />
+            </button>
+          </div>
         </div>
       </div>
     </transition>
