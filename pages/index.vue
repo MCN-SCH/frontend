@@ -1,8 +1,8 @@
 <script setup>
-import { ref, onMounted, computed } from 'vue';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { useBackgroundAnimation } from '@/composables/useBackgroundAnimation';
+import { ref, onMounted, computed } from 'vue'
+import { gsap } from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { useBackgroundAnimation } from '@/composables/useBackgroundAnimation'
 import { ChevronUp } from 'lucide-vue-next'
 import { useHomeStore } from '~/store/home.js'
 
@@ -14,12 +14,13 @@ import {
   facilities,
   newsUpdates,
   upcomingEvents,
-  professorInfo
-} from '@/composables/useData.js';
+  professorInfo,
+} from '@/composables/useData.js'
 
 useSeoMeta({
   title: 'Home',
-  description: 'Welcome to our Research Lab - Pioneering Innovations in Science and Technology',
+  description:
+    'Welcome to our Research Lab - Pioneering Innovations in Science and Technology',
 })
 
 definePageMeta({
@@ -29,19 +30,20 @@ definePageMeta({
 
 // Background Animation
 const techCanvas = ref(null)
-const { currentSeason, setSeason } = useBackgroundAnimation(techCanvas)
+const { currentSeason, setSeason, getCurrentSeason } =
+  useBackgroundAnimation(techCanvas)
 const store = useHomeStore()
 
 const { index } = store
 const data = ref(null)
 
 // Navigation State
-const isMenuOpen = ref(false);
-const currentLanguage = ref('EN');
-const showKoreanText = ref(false);
-const darkMode = ref(false);
-const showScrollTop = ref(false);
-const currentRoute = ref('home');
+const isMenuOpen = ref(false)
+const currentLanguage = ref('EN')
+const showKoreanText = ref(false)
+const darkMode = ref(false)
+const showScrollTop = ref(false)
+const currentRoute = ref('home')
 
 // State
 const loading = ref(false)
@@ -54,10 +56,10 @@ const safeMember = computed(() => {
   if (!member.value.professor) return null
   return {
     ...member.value,
-    professor: member.value.professor.map(professor => ({
+    professor: member.value.professor.map((professor) => ({
       ...professor,
       ...professorInfo,
-    }))
+    })),
   }
 })
 
@@ -67,34 +69,34 @@ const safePublication = computed(() => {
 
 // Methods
 const scrollToSection = (sectionId) => {
-  const element = document.getElementById(sectionId);
+  const element = document.getElementById(sectionId)
   if (element) {
-    element.scrollIntoView({ behavior: 'smooth' });
-    isMenuOpen.value = false;
+    element.scrollIntoView({ behavior: 'smooth' })
+    isMenuOpen.value = false
   }
-};
+}
 
 const scrollToTop = () => {
   window.scrollTo({
     top: 0,
-    behavior: 'smooth'
-  });
-};
+    behavior: 'smooth',
+  })
+}
 
 const toggleLanguage = () => {
-  currentLanguage.value = currentLanguage.value === 'EN' ? 'KR' : 'EN';
-  showKoreanText.value = !showKoreanText.value;
-};
+  currentLanguage.value = currentLanguage.value === 'EN' ? 'KR' : 'EN'
+  showKoreanText.value = !showKoreanText.value
+}
 
 const toggleDarkMode = () => {
-  darkMode.value = !darkMode.value;
+  darkMode.value = !darkMode.value
   if (darkMode.value) {
-    document.documentElement.classList.add('dark');
+    document.documentElement.classList.add('dark')
   } else {
-    document.documentElement.classList.remove('dark');
+    document.documentElement.classList.remove('dark')
   }
-  localStorage.setItem('darkMode', darkMode.value);
-};
+  localStorage.setItem('darkMode', darkMode.value)
+}
 
 const fetchHome = async () => {
   loading.value = true
@@ -102,7 +104,7 @@ const fetchHome = async () => {
   try {
     data.value = await index()
     member.value = data.value || null
-    member.value.professor = member.value.professor.map(professor => ({
+    member.value.professor = member.value.professor.map((professor) => ({
       ...professor,
       ...professorInfo,
     }))
@@ -119,34 +121,35 @@ const fetchHome = async () => {
 }
 
 const handleScroll = () => {
-  showScrollTop.value = window.scrollY > 500;
-};
+  showScrollTop.value = window.scrollY > 500
+}
 
 onMounted(() => {
+  const cSeason = getCurrentSeason()
   setTimeout(() => {
     try {
-      setSeason('summer') // Try 'spring', 'summer', 'fall', 'winter'
+      setSeason(cSeason) // Try 'spring', 'summer', 'fall', 'winter'
     } catch (error) {
       console.error('Season setting error:', error)
     }
   }, 100)
 
-  fetchHome();
+  fetchHome()
 
   try {
-    gsap.registerPlugin(ScrollTrigger);
+    gsap.registerPlugin(ScrollTrigger)
   } catch (error) {
     console.error('GSAP registration error:', error)
   }
 
   // Set light mode as default
   try {
-    const savedDarkMode = localStorage.getItem('darkMode');
+    const savedDarkMode = localStorage.getItem('darkMode')
     if (savedDarkMode === 'true') {
-      darkMode.value = true;
-      document.documentElement.classList.add('dark');
+      darkMode.value = true
+      document.documentElement.classList.add('dark')
     } else {
-      document.documentElement.classList.remove('dark');
+      document.documentElement.classList.remove('dark')
     }
   } catch (error) {
     console.error('Dark mode initialization error:', error)
@@ -154,56 +157,59 @@ onMounted(() => {
 
   // Animations with null safety
   try {
-    const heroTitle = document.querySelector('.hero-title');
+    const heroTitle = document.querySelector('.hero-title')
     if (heroTitle) {
       gsap.from('.hero-title', {
         y: 20,
         opacity: 0,
         duration: 0.4,
-        ease: 'power2.out'
-      });
+        ease: 'power2.out',
+      })
     }
 
-    const heroSubtitle = document.querySelector('.hero-subtitle');
+    const heroSubtitle = document.querySelector('.hero-subtitle')
     if (heroSubtitle) {
       gsap.from('.hero-subtitle', {
         y: 15,
         opacity: 0,
         duration: 0.5,
         delay: 0.1,
-        ease: 'power2.out'
-      });
+        ease: 'power2.out',
+      })
     }
 
     // Stagger animations with null safety
-    const staggerItems = document.querySelectorAll('.stagger-item');
+    const staggerItems = document.querySelectorAll('.stagger-item')
     if (staggerItems.length > 0) {
       staggerItems.forEach((el, i) => {
         gsap.from(el, {
           scrollTrigger: {
             trigger: el,
             start: 'top 90%',
-            toggleActions: 'play none none none'
+            toggleActions: 'play none none none',
           },
           y: 20,
           opacity: 0,
           duration: 0.3,
           delay: i * 0.05,
-          ease: 'power2.out'
-        });
-      });
+          ease: 'power2.out',
+        })
+      })
     }
   } catch (error) {
     console.error('Animation initialization error:', error)
   }
 
   // Scroll to top button
-  window.addEventListener('scroll', handleScroll);
-});
+  window.addEventListener('scroll', handleScroll)
+})
 </script>
 
 <template>
-  <div v-if="data || true" class="min-h-screen text-gray-900 overflow-x-hidden transition-colors duration-300 dark:text-white">
+  <div
+    v-if="data || true"
+    class="min-h-screen text-gray-900 overflow-x-hidden transition-colors duration-300 dark:text-white"
+  >
     <!-- Background Canvas -->
     <div class="tech-background">
       <canvas ref="techCanvas"></canvas>
@@ -252,7 +258,10 @@ onMounted(() => {
 
     <!-- News & Events -->
     <section id="news">
-      <HomeSectionsNewsEvents :news="newsUpdates || []" :events="upcomingEvents || []" />
+      <HomeSectionsNewsEvents
+        :news="newsUpdates || []"
+        :events="upcomingEvents || []"
+      />
     </section>
 
     <!-- Contact -->
@@ -264,11 +273,15 @@ onMounted(() => {
     <HomeLayoutFooter />
 
     <!-- Scroll to Top Button -->
-    <button @click="scrollToTop"
-            :class="[
-              'fixed right-6 bottom-6 z-40 w-12 h-12 rounded-full bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center',
-              showScrollTop ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10 pointer-events-none'
-            ]">
+    <button
+      @click="scrollToTop"
+      :class="[
+        'fixed right-6 bottom-6 z-40 w-12 h-12 rounded-full bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center',
+        showScrollTop
+          ? 'opacity-100 translate-y-0'
+          : 'opacity-0 translate-y-10 pointer-events-none',
+      ]"
+    >
       <ChevronUp class="w-6 h-6" />
     </button>
   </div>
@@ -289,26 +302,26 @@ section {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(to bottom, #3F7BBD, #6B9BD2);
+  background: linear-gradient(to bottom, #3f7bbd, #6b9bd2);
   border-radius: 5px;
   border: 2px solid #f1f1f1;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(to bottom, #2C5A8A, #3F7BBD);
+  background: linear-gradient(to bottom, #2c5a8a, #3f7bbd);
 }
 
 .dark ::-webkit-scrollbar-track {
-  background: #2D3748;
+  background: #2d3748;
 }
 
 .dark ::-webkit-scrollbar-thumb {
-  background: linear-gradient(to bottom, #3F7BBD, #6B9BD2);
-  border: 2px solid #2D3748;
+  background: linear-gradient(to bottom, #3f7bbd, #6b9bd2);
+  border: 2px solid #2d3748;
 }
 
 .dark ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(to bottom, #2C5A8A, #3F7BBD);
+  background: linear-gradient(to bottom, #2c5a8a, #3f7bbd);
 }
 
 .tech-background {

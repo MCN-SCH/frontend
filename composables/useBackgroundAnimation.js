@@ -26,6 +26,8 @@ export function useBackgroundAnimation(canvasRef) {
   let springLeafTexture = null
   // Preloaded PNG texture for summer (hibiscus - 무궁화)
   let summerFlowerTexture = null
+  // Fall
+  let fallFlowerTexture = null
 
   /* -------------------------------------------------- */
   /* KOREAN SEASON COLORS (background, ribbons, etc.)   */
@@ -264,6 +266,10 @@ export function useBackgroundAnimation(canvasRef) {
     // For summer, return the preloaded hibiscus texture if available
     if (season === "summer" && summerFlowerTexture) {
       return summerFlowerTexture
+    }
+
+    if (season === 'fall' && fallFlowerTexture) {
+      return fallFlowerTexture
     }
 
     // Otherwise generate canvas textures for all seasons (including fallback)
@@ -752,7 +758,9 @@ export function useBackgroundAnimation(canvasRef) {
     try {
       const springImgModule = await import('~/assets/image/cherry-blossom.png')
       const springLeafUrl = springImgModule.default || springImgModule
-      springLeafTexture = await new THREE.TextureLoader().loadAsync(springLeafUrl)
+      springLeafTexture = await new THREE.TextureLoader().loadAsync(
+        springLeafUrl,
+      )
       springLeafTexture.minFilter = THREE.LinearMipmapLinearFilter
       springLeafTexture.magFilter = THREE.LinearFilter
     } catch (error) {
@@ -764,12 +772,28 @@ export function useBackgroundAnimation(canvasRef) {
     try {
       const summerImgModule = await import('~/assets/image/hibiscus.png')
       const summerFlowerUrl = summerImgModule.default || summerImgModule
-      summerFlowerTexture = await new THREE.TextureLoader().loadAsync(summerFlowerUrl)
+      summerFlowerTexture = await new THREE.TextureLoader().loadAsync(
+        summerFlowerUrl,
+      )
       summerFlowerTexture.minFilter = THREE.LinearMipmapLinearFilter
       summerFlowerTexture.magFilter = THREE.LinearFilter
     } catch (error) {
       console.warn('Failed to load summer hibiscus PNG, using fallback.', error)
       summerFlowerTexture = null
+    }
+
+    // Preload the ginkgo PNG from local assets (fall)
+    try {
+      const fallImgModule = await import('~/assets/image/ginkgo.png')
+      const fallFlowerUrl = fallImgModule.default || fallImgModule
+      fallFlowerTexture = await new THREE.TextureLoader().loadAsync(
+        fallFlowerUrl,
+      )
+      fallFlowerTexture.minFilter = THREE.LinearMipmapLinearFilter
+      fallFlowerTexture.magFilter = THREE.LinearFilter
+    } catch (error) {
+      console.warn('Failed to load summer hibiscus PNG, using fallback.', error)
+      fallFlowerTexture = null
     }
 
     initScene()
@@ -810,6 +834,7 @@ export function useBackgroundAnimation(canvasRef) {
   onUnmounted(stopAnimation)
 
   return {
+    getCurrentSeason,
     currentSeason,
     setSeason
   }

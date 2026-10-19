@@ -215,7 +215,7 @@ const socialMedia = [
         </div>
 
         <!-- Footer Bottom -->
-        <div class="pt-8 border-t border-gray-800/50 text-center">
+        <div class="pt-8 border-t border-gray-800/50 text-center mb-10">
           <div class="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
             <p class="text-gray-400 text-sm">
               © {{ currentYear }} Mobile Computing & Networking Lab, Soonchunhyang University.
@@ -230,9 +230,6 @@ const socialMedia = [
               </span>
             </div>
           </div>
-          <p class="my-4 text-xs text-gray-500">
-            Innovating with Korean heritage • Embracing global technology • Building the future together
-          </p>
         </div>
       </div>
     </div>

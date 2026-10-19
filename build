@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+rm -rf .nuxt .output dist
+
+npm ci
+npm run build
+npm run generate
