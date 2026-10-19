@@ -34,12 +34,18 @@ const labHighlights = [
 
 // Quick links
 const quickLinks = [
-  { name: 'Research Areas', icon: '🔬', color: 'text-purple-400' },
-  { name: 'Publications', icon: '📚', color: 'text-blue-400' },
-  { name: 'People', icon: '👥', color: 'text-green-400' },
-  { name: 'Projects', icon: '🚀', color: 'text-yellow-400' },
-  { name: 'Events', icon: '📅', color: 'text-pink-400' },
-  { name: 'Recruitment', icon: '💼', color: 'text-cyan-400' },
+  {
+    name: 'University Website',
+    icon: '🏠',
+    color: 'text-purple-400',
+    url: 'https://www.sch.ac.kr/',
+  },
+  {
+    name: 'Publications',
+    icon: '📚',
+    color: 'text-blue-400',
+    url: 'https://mcn.sch.ac.kr/publications',
+  },
 ]
 
 // Social media platforms
@@ -97,10 +103,10 @@ const socialMedia = [
                 />
               </div>
             </div>
-            <p class="text-gray-300 mb-6 leading-relaxed">
-              Blending Korean heritage with cutting-edge research in AI, HCI,
-              and Multimedia Computing. We innovate at the intersection of
-              tradition and technology.
+            <p class="text-gray-300 mb-6 leading-relaxed text-justify">
+              Mobile Computing and Networking Laboratory (MCN Lab) is under the
+              supervision of Professor Kim Seokhoon, Ph.D., who leads the
+              research candidates for master's, Ph.D., and postdoctoral degrees.
             </p>
 
             <!-- Quick Access Grid -->
@@ -112,7 +118,7 @@ const socialMedia = [
                 <a
                   v-for="link in quickLinks"
                   :key="link.name"
-                  href="#"
+                  :href="link.url"
                   class="group flex items-center space-x-2 p-3 rounded-lg bg-gray-800/50 hover:bg-gray-700/50 border border-gray-700/50 hover:border-cyan-500/50 transition-all duration-300"
                 >
                   <span class="text-xl" :class="link.color">{{
@@ -193,7 +199,7 @@ const socialMedia = [
                   <p class="text-xs text-gray-400">Datasets & Tools</p>
                 </a>
                 <a
-                  href="#"
+                  href="https://library.sch.ac.kr/local/html/researchSupport3"
                   class="group p-3 rounded-lg bg-gray-800/50 hover:bg-gradient-to-r hover:from-purple-900/30 hover:to-pink-900/30 border border-gray-700/50 hover:border-purple-500/50 transition-all duration-300"
                 >
                   <div class="text-purple-400 mb-1">🎓</div>
@@ -212,46 +218,21 @@ const socialMedia = [
                   <p
                     class="text-sm font-medium group-hover:text-green-300 transition-colors"
                   >
-                    GitHub
+                    Gallery
                   </p>
-                  <p class="text-xs text-gray-400">Open Source Projects</p>
+                  <p class="text-xs text-gray-400">Images & Media</p>
                 </a>
                 <a
-                  href="#"
+                  href="https://library.sch.ac.kr/"
                   class="group p-3 rounded-lg bg-gray-800/50 hover:bg-gradient-to-r hover:from-yellow-900/30 hover:to-orange-900/30 border border-gray-700/50 hover:border-yellow-500/50 transition-all duration-300"
                 >
                   <div class="text-yellow-400 mb-1">📖</div>
                   <p
                     class="text-sm font-medium group-hover:text-yellow-300 transition-colors"
                   >
-                    Lab Wiki
+                    University Library
                   </p>
-                  <p class="text-xs text-gray-400">Internal Docs</p>
-                </a>
-              </div>
-            </div>
-
-            <!-- Social Media -->
-            <div>
-              <h4 class="font-bold text-lg mb-4 flex items-center">
-                <span class="mr-2">🌐</span> Connect With Us
-              </h4>
-              <div class="grid grid-cols-4 gap-3">
-                <a
-                  v-for="social in socialMedia"
-                  :key="social.name"
-                  :href="social.url"
-                  :class="social.color"
-                  class="flex flex-col items-center justify-center p-4 rounded-xl bg-gray-800/50 border border-gray-700/50 transition-all duration-300 group hover:scale-105"
-                >
-                  <el-icon
-                    class="w-6 h-6 mb-2 group-hover:scale-110 transition-transform"
-                  >
-                    <component :is="social.icon" />
-                  </el-icon>
-                  <span class="text-xs opacity-75 group-hover:opacity-100">{{
-                    social.name
-                  }}</span>
+                  <p class="text-xs text-gray-400">중앙도서관</p>
                 </a>
               </div>
             </div>

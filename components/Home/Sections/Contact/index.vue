@@ -7,7 +7,7 @@ const contactInfo = [
     icon: MapPin,
     title: 'Location',
     details: [
-      'Multi Media Building, Room 510',
+      'Multi Media Building, Room 515',
       '22 Sooncheonhyang-ro, Asan-si',
       'Chungcheongnam-do, South Korea 31538'
     ],
