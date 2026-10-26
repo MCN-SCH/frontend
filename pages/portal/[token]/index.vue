@@ -1,6 +1,8 @@
 <script setup>
 import { useDashboardStore } from '~/store/dashboard.js'
 import { useCookie } from '#app'
+import { ElMessage } from 'element-plus'
+import { useCookies } from 'vue3-cookies'
 
 definePageMeta({
   layout: 'admin',
@@ -12,6 +14,7 @@ const { getDashboard } = dashboardStore
 
 const data = ref(null)
 const loading = ref(false)
+const { cookies } = useCookies()
 
 // Get user data from cookie
 const userCookie = useCookie('user')
@@ -56,7 +59,15 @@ const fetchData = async () => {
   try {
     data.value = await getDashboard()
   } finally {
+    cookies.remove('device_id')
+    cookies.remove('expires_at')
+    cookies.remove('expires_in')
+    cookies.remove('mcn')
+    cookies.remove('refresh_token')
+    cookies.remove('token_type')
     loading.value = false
+    await navigateTo('/')
+    ElMessage.success('Logged out successfully')
   }
 }
 

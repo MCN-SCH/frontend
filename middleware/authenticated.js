@@ -9,7 +9,7 @@ export default defineNuxtRouteMiddleware(async () => {
     return navigateTo('/portal')
   }
 
-  if (!verifyCookie.value || verifyCookie.value !== 'a8fcab8-9c1e-4a7c-9d0e-f2b3c4d5e6f') {
+    if (!verifyCookie.value || verifyCookie.value !== 'a8fcab8-9c1e-4a7c-9d0e-f2b3c4d5e6f') {
     // ElMessage.error('Please Verify Access')
     return navigateTo('/portal/otp')
   }
