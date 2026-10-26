@@ -2,6 +2,7 @@
 import { useDashboardStore } from '~/store/dashboard.js'
 import { useCookie } from '#app'
 import { useAuthStore } from '~/store/auth.js'
+import { useCookies } from 'vue3-cookies'
 
 definePageMeta({
   layout: 'admin',
@@ -13,6 +14,7 @@ const { getDashboard } = dashboardStore
 
 const authStore = useAuthStore()
 const { user } = authStore
+const { cookies } = useCookies()
 
 const data = ref(null)
 const loading = ref(false)
