@@ -42,6 +42,7 @@ import lab4 from '@/assets/image/lab/4.jpg'
 import lab5 from '@/assets/image/lab/5.jpg'
 import lab6 from '@/assets/image/lab/6.jpg'
 import lab7 from '@/assets/image/lab/7.jpg'
+import lab8 from '@/assets/image/lab/8.jpg'
 
 const getBadgeType = (type) => {
   const types = {
@@ -122,6 +123,12 @@ const galleryPhotos = [
     highRes: lab7,
     title: 'Research Collaboration',
     alt: 'Collaborating with other researchers',
+  },
+  {
+    url: lab8,
+    highRes: lab8,
+    title: 'Open Lab Day',
+    alt: 'Visitors exploring our lab during open lab day hosted by the university',
   },
 ]
 
