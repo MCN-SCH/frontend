@@ -21,8 +21,9 @@ const authorsList = ref([])
 const typeOptions = [
   { value: 'journal', label: 'Journal' },
   { value: 'conference', label: 'Conference' },
-  { value: 'chapter', label: 'Book Chapter' },
+  { value: 'workshop', label: 'Workshop/Poster' },
   { value: 'book', label: 'Book' },
+  { value: 'thesis', label: 'Thesis' },
 ]
 
 // Badge options
