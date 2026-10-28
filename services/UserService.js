@@ -24,6 +24,11 @@ class MemberService extends BaseService {
     return await this._get(`${this._prefix}?${queryParams}`, {})
   }
 
+  //register
+  async register (req) {
+    return await this._post(`${this._prefix}/`, req)
+  }
+
   //destroy
   async destroy(id) {
     return await this._delete(`${this._prefix}/${id}`)
@@ -31,7 +36,7 @@ class MemberService extends BaseService {
 
   //reset password
   async resetPassword(id, payload = {}) {
-    return await this._post(`${this._prefix}/reset-password/${id}`, payload)
+    return await this._post(`${this._prefix}/change-password/${id}`, payload)
   }
 }
 

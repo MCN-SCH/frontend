@@ -17,6 +17,19 @@ export const useUserStore = defineStore('user', () => {
     }
   }
 
+  //register
+  const register = async (params) => {
+    try {
+      const { data } = await service.register(params)
+      const products = data || {}
+      product.value = products
+      return products
+    } catch (error) {
+      ElMessage.error(error.message || 'Register failed')
+      throw new Error(`Register failed: ${error.message || 'Unknown error'}`)
+    }
+  }
+
   //destroy
   const destroy = async (id) => {
     try {
@@ -39,7 +52,9 @@ export const useUserStore = defineStore('user', () => {
       product.value = products
       return products
     } catch (error) {
-      throw new Error(`Reset password failed: ${error.message || 'Unknown error'}`)
+      throw new Error(
+        `Reset password failed: ${error.message || 'Unknown error'}`,
+      )
     }
   }
 
@@ -47,6 +62,7 @@ export const useUserStore = defineStore('user', () => {
     product: computed(() => product.value),
     index,
     destroy,
+    register,
     resetPassword
   }
 })

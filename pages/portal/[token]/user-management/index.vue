@@ -126,8 +126,8 @@ watch(search, () => {
   debouncedSearch()
 })
 
-const createMember = () => {
-  navigateTo(`/portal/${deviceId.value}/member-management/create`)
+const createUser = () => {
+  navigateTo(`/portal/${deviceId.value}/user-management/create`)
 }
 
 const viewMember = (user) => {
@@ -135,28 +135,92 @@ const viewMember = (user) => {
   viewDialogVisible.value = true
 }
 
-const resetUserPassword = async (user) => {
+const resetPasswordDialogVisible = ref(false)
+const passwordFormRef = ref(null)
+const selectedPasswordUser = ref(null)
+
+const passwordForm = ref({
+  password: '',
+  password_confirmation: '',
+})
+
+const passwordRules = {
+  password: [
+    {
+      required: true,
+      message: 'Please enter a new password.',
+      trigger: 'blur',
+    },
+    {
+      min: 8,
+      message: 'Password must be at least 8 characters.',
+      trigger: 'blur',
+    },
+  ],
+  password_confirmation: [
+    {
+      required: true,
+      message: 'Please confirm the new password.',
+      trigger: 'blur',
+    },
+    {
+      validator: (rule, value, callback) => {
+        if (value !== passwordForm.value.password) {
+          callback(new Error('Passwords do not match.'))
+        } else {
+          callback()
+        }
+      },
+      trigger: ['blur', 'change'],
+    },
+  ],
+}
+
+const resetUserPassword = (user) => {
   if (!user?.id || actionLoading.value) return
 
-  try {
-    await ElMessageBox.confirm(
-      `Reset the password for ${user.member?.name || user.email || `user #${user.id}`}?`,
-      'Confirm Password Reset',
-      {
-        confirmButtonText: 'Reset Password',
-        cancelButtonText: 'Cancel',
-        type: 'warning',
-      },
-    )
+  selectedPasswordUser.value = user
 
-    actionLoading.value = true
-    const response = await resetPassword(user.id)
+  passwordForm.value = {
+    password: '',
+    password_confirmation: '',
+  }
+
+  resetPasswordDialogVisible.value = true
+}
+
+const submitPasswordReset = async () => {
+  if (actionLoading.value || !selectedPasswordUser.value?.id) return
+
+  try {
+    const valid = await passwordFormRef.value?.validate()
+    if (!valid) return
+  } catch {
+    return
+  }
+
+  actionLoading.value = true
+
+  try {
+    const response = await resetPassword(selectedPasswordUser.value.id, {
+      password: passwordForm.value.password,
+      password_confirmation: passwordForm.value.password_confirmation,
+    })
+
     ElMessage.success(response?.message || 'Password reset successfully.')
+
+    resetPasswordDialogVisible.value = false
+    selectedPasswordUser.value = null
+    passwordForm.value = {
+      password: '',
+      password_confirmation: '',
+    }
   } catch (error) {
-    if (error === 'cancel' || error === 'close') return
     console.error('Failed to reset password:', error)
+
     ElMessage.error(
       error?.response?.data?.message ||
+        error?.data?.message ||
         error?.message ||
         'Failed to reset password.',
     )
@@ -261,14 +325,14 @@ onMounted(() => {
       class="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between"
     >
       <div>
-        <h1 class="text-2xl font-bold text-gray-900">Member Management</h1>
+        <h1 class="text-2xl font-bold text-gray-900">User Management</h1>
         <p class="mt-1 text-sm text-gray-500">
           Manage user accounts and member profiles.
         </p>
       </div>
 
-      <el-button type="success" :icon="Plus" @click="createMember">
-        Create Member
+      <el-button type="success" :icon="Plus" @click="createUser">
+        Create User
       </el-button>
     </div>
 
@@ -343,9 +407,7 @@ onMounted(() => {
                     :disabled="actionLoading || isCurrentUser(row)"
                     @click="removeUser(row)"
                   >
-                    <span class="text-red-600">
-                      Remove User
-                    </span>
+                    <span class="text-red-600"> Remove User </span>
                   </el-dropdown-item>
                 </el-dropdown-menu>
               </template>
@@ -611,6 +673,74 @@ onMounted(() => {
           @click="createMember"
         >
           Create Member Profile
+        </el-button>
+      </template>
+    </el-dialog>
+
+    <el-dialog
+      v-model="resetPasswordDialogVisible"
+      title="Reset User Password"
+      width="450px"
+      destroy-on-close
+      :close-on-click-modal="false"
+    >
+      <div class="mb-4 text-sm text-gray-500">
+        Enter a new password for
+        <span class="font-medium text-gray-900">
+          {{
+            selectedPasswordUser?.member?.name ||
+            selectedPasswordUser?.email ||
+            `User #${selectedPasswordUser?.id}`
+          }} </span
+        >.
+      </div>
+
+      <el-form
+        ref="passwordFormRef"
+        :model="passwordForm"
+        :rules="passwordRules"
+        label-position="top"
+        @submit.prevent="submitPasswordReset"
+      >
+        <el-form-item label="New Password" prop="password">
+          <el-input
+            v-model="passwordForm.password"
+            type="password"
+            placeholder="Enter new password"
+            show-password
+            autocomplete="new-password"
+            maxlength="128"
+            @input="passwordFormRef?.validateField('password_confirmation')"
+          />
+        </el-form-item>
+
+        <el-form-item label="Confirm Password" prop="password_confirmation">
+          <el-input
+            v-model="passwordForm.password_confirmation"
+            type="password"
+            placeholder="Confirm new password"
+            show-password
+            autocomplete="new-password"
+            maxlength="128"
+            @keyup.enter="submitPasswordReset"
+          />
+        </el-form-item>
+      </el-form>
+
+      <template #footer>
+        <el-button
+          :disabled="actionLoading"
+          @click="resetPasswordDialogVisible = false"
+        >
+          Cancel
+        </el-button>
+
+        <el-button
+          type="primary"
+          :loading="actionLoading"
+          @click="submitPasswordReset"
+        >
+          Reset Password
         </el-button>
       </template>
     </el-dialog>
