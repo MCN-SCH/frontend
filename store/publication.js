@@ -79,6 +79,18 @@ export const usePublicationStore = defineStore('publication', () => {
     }
   }
 
+  const getLabAuthors = async () => {
+    try {
+      const { data } = await service.getLabAuthors()
+      return data || {}
+    } catch (error) {
+      ElMessage.error(error.message || 'Get lab authors failed')
+      throw new Error(
+        `Get lab authors failed: ${error.message || 'Unknown error'}`,
+      )
+    }
+  }
+
   return {
     product: computed(() => product.value),
     index,
@@ -86,6 +98,7 @@ export const usePublicationStore = defineStore('publication', () => {
     show,
     register,
     getFilterOptions,
-    detelePub
+    detelePub,
+    getLabAuthors,
   }
 })

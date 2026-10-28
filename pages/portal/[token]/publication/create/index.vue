@@ -1,7 +1,7 @@
 <script setup>
-import { ref, reactive } from 'vue'
+import { reactive, ref } from 'vue'
 import { ElMessage } from 'element-plus'
-import { Plus, Delete } from '@element-plus/icons-vue'
+import { Delete, Plus } from '@element-plus/icons-vue'
 import { usePublicationStore } from '~/store/publication.js'
 
 definePageMeta({
@@ -10,11 +10,12 @@ definePageMeta({
 })
 
 const store = usePublicationStore()
-const { register } = store
+const { register, getLabAuthors } = store
 
 const saving = ref(false)
 const deviceCookie = useCookie('device_id')
 const deviceId = deviceCookie.value
+const authorsList = ref([])
 
 // Publication type options
 const typeOptions = [
@@ -55,9 +56,9 @@ const form = ref({
       member_id: null,
       author_name: '',
       affiliation: '',
-      author_order: 1
-    }
-  ]
+      author_order: 1,
+    },
+  ],
 })
 
 // Auto-generate slug from title
@@ -72,11 +73,14 @@ const generateSlug = (title) => {
 }
 
 // Watch title to auto-generate slug
-watch(() => form.value.title, (newTitle) => {
-  if (newTitle && !form.value.slug) {
-    form.value.slug = generateSlug(newTitle)
-  }
-})
+watch(
+  () => form.value.title,
+  (newTitle) => {
+    if (newTitle && !form.value.slug) {
+      form.value.slug = generateSlug(newTitle)
+    }
+  },
+)
 
 // Add author
 const addAuthor = () => {
@@ -84,7 +88,7 @@ const addAuthor = () => {
     member_id: null,
     author_name: '',
     affiliation: '',
-    author_order: form.value.authors.length + 1
+    author_order: form.value.authors.length + 1,
   })
 }
 
@@ -129,26 +133,38 @@ const moveAuthorDown = (index) => {
 const rules = reactive({
   title: [
     { required: true, message: 'Title is required', trigger: 'blur' },
-    { min: 3, message: 'Title must be at least 3 characters', trigger: 'blur' }
+    { min: 3, message: 'Title must be at least 3 characters', trigger: 'blur' },
   ],
-  slug: [
-    { required: true, message: 'Slug is required', trigger: 'blur' }
-  ],
+  slug: [{ required: true, message: 'Slug is required', trigger: 'blur' }],
   type: [
-    { required: true, message: 'Publication type is required', trigger: 'change' }
+    {
+      required: true,
+      message: 'Publication type is required',
+      trigger: 'change',
+    },
   ],
   journal: [
-    { required: true, message: 'Journal/Conference name is required', trigger: 'blur' }
+    {
+      required: true,
+      message: 'Journal/Conference name is required',
+      trigger: 'blur',
+    },
   ],
   date: [
-    { required: true, message: 'Publication date is required', trigger: 'change' }
+    {
+      required: true,
+      message: 'Publication date is required',
+      trigger: 'change',
+    },
   ],
   doi: [
-    { pattern: /^10\.\d{4,9}\/[-._;()/:A-Z0-9]+$/i, message: 'Invalid DOI format', trigger: 'blur' }
+    {
+      pattern: /^10\.\d{4,9}\/[-._;()/:A-Z0-9]+$/i,
+      message: 'Invalid DOI format',
+      trigger: 'blur',
+    },
   ],
-  url: [
-    { type: 'url', message: 'Invalid URL format', trigger: 'blur' }
-  ]
+  url: [{ type: 'url', message: 'Invalid URL format', trigger: 'blur' }],
 })
 
 // Validate authors
@@ -163,12 +179,28 @@ const validateAuthors = () => {
   return true
 }
 
+const handleAuthorChange = (value, index) => {
+  const selectedAuthor = authorsList.value.find((author) => author.id === value)
+
+  if (selectedAuthor) {
+    // Existing author: save ID and name
+    form.value.authors[index].member_id = selectedAuthor.id
+    form.value.authors[index].author_name = selectedAuthor.name
+  } else {
+    // Custom author: save name, no member ID
+    form.value.authors[index].member_id = null
+    form.value.authors[index].author_name = value
+  }
+}
+
 const submit = async () => {
   if (!formRef.value) return
 
   await formRef.value.validate(async (valid) => {
     if (!valid) {
-      ElMessage.warning('Please correct the validation errors before submitting.')
+      ElMessage.warning(
+        'Please correct the validation errors before submitting.',
+      )
       return
     }
 
@@ -196,21 +228,35 @@ const submit = async () => {
         citations: form.value.citations || 0,
         is_featured: form.value.is_featured || false,
         order: form.value.order || 0,
-        authors: form.value.authors
+        authors: form.value.authors,
       }
 
       await register(payload)
       ElMessage.success('Publication created successfully')
       navigateTo(`/portal/${deviceId}/publication`)
-
     } catch (error) {
-      const errorMsg = error.response?._data?.message || error.message || 'Failed to create publication'
+      const errorMsg =
+        error.response?._data?.message ||
+        error.message ||
+        'Failed to create publication'
       ElMessage.error(errorMsg)
     } finally {
       saving.value = false
     }
   })
 }
+
+const getLabAuthorsList = async () => {
+  try {
+    authorsList.value = await getLabAuthors()
+  } catch (error) {
+    console.error('Failed to fetch lab authors:', error)
+  }
+}
+
+onMounted(() => {
+  getLabAuthorsList()
+})
 </script>
 
 <template>
@@ -259,7 +305,11 @@ const submit = async () => {
 
             <el-col :span="12">
               <el-form-item label="Publication Type" prop="type">
-                <el-select v-model="form.type" placeholder="Select type" style="width: 100%">
+                <el-select
+                  v-model="form.type"
+                  placeholder="Select type"
+                  style="width: 100%"
+                >
                   <el-option
                     v-for="item in typeOptions"
                     :key="item.value"
@@ -272,7 +322,12 @@ const submit = async () => {
 
             <el-col :span="12">
               <el-form-item label="Badge/Category">
-                <el-select v-model="form.badge" placeholder="Select badge" clearable style="width: 100%">
+                <el-select
+                  v-model="form.badge"
+                  placeholder="Select badge"
+                  clearable
+                  style="width: 100%"
+                >
                   <el-option
                     v-for="item in badgeOptions"
                     :key="item.value"
@@ -285,13 +340,19 @@ const submit = async () => {
 
             <el-col :span="12">
               <el-form-item label="Journal / Conference Name" prop="journal">
-                <el-input v-model="form.journal" placeholder="e.g., IEEE Transactions, MDPI Sensors" />
+                <el-input
+                  v-model="form.journal"
+                  placeholder="e.g., IEEE Transactions, MDPI Sensors"
+                />
               </el-form-item>
             </el-col>
 
             <el-col :span="12">
               <el-form-item label="Publisher">
-                <el-input v-model="form.publisher" placeholder="Publisher name (optional)" />
+                <el-input
+                  v-model="form.publisher"
+                  placeholder="Publisher name (optional)"
+                />
               </el-form-item>
             </el-col>
 
@@ -309,13 +370,19 @@ const submit = async () => {
 
             <el-col :span="12">
               <el-form-item label="DOI">
-                <el-input v-model="form.doi" placeholder="10.1016/j.comnet.2024.110123" />
+                <el-input
+                  v-model="form.doi"
+                  placeholder="10.1016/j.comnet.2024.110123"
+                />
               </el-form-item>
             </el-col>
 
             <el-col :span="24">
               <el-form-item label="URL">
-                <el-input v-model="form.url" placeholder="https://doi.org/..." />
+                <el-input
+                  v-model="form.url"
+                  placeholder="https://doi.org/..."
+                />
               </el-form-item>
             </el-col>
 
@@ -344,26 +411,39 @@ const submit = async () => {
 
             <el-col :span="12">
               <el-form-item label="PDF URL">
-                <el-input v-model="form.pdf" placeholder="https://example.com/paper.pdf" />
+                <el-input
+                  v-model="form.pdf"
+                  placeholder="https://example.com/paper.pdf"
+                />
               </el-form-item>
             </el-col>
 
             <el-col :span="6">
               <el-form-item label="Citations">
-                <el-input-number v-model="form.citations" :min="0" style="width: 100%" />
+                <el-input-number
+                  v-model="form.citations"
+                  :min="0"
+                  style="width: 100%"
+                />
               </el-form-item>
             </el-col>
 
             <el-col :span="6">
               <el-form-item label="Display Order">
-                <el-input-number v-model="form.order" :min="0" style="width: 100%" />
+                <el-input-number
+                  v-model="form.order"
+                  :min="0"
+                  style="width: 100%"
+                />
               </el-form-item>
             </el-col>
 
             <el-col :span="12">
               <el-form-item label="Featured Publication">
                 <el-switch v-model="form.is_featured" />
-                <span class="ml-2 text-gray-500 text-sm">Show this publication as featured</span>
+                <span class="ml-2 text-gray-500 text-sm"
+                  >Show this publication as featured</span
+                >
               </el-form-item>
             </el-col>
           </el-row>
@@ -377,7 +457,9 @@ const submit = async () => {
               class="author-item mb-4 p-4 border rounded-lg"
             >
               <div class="flex justify-between items-start mb-3">
-                <h3 class="text-md font-semibold">Author {{ author.author_order }}</h3>
+                <h3 class="text-md font-semibold">
+                  Author {{ author.author_order }}
+                </h3>
                 <div class="flex gap-2">
                   <el-button
                     size="small"
@@ -408,12 +490,31 @@ const submit = async () => {
                   <el-form-item
                     label="Author Name"
                     :prop="`authors.${index}.author_name`"
-                    :rules="[{ required: true, message: 'Author name is required' }]"
+                    :rules="[
+                      {
+                        required: true,
+                        message: 'Author name is required',
+                        trigger: 'change',
+                      },
+                    ]"
                   >
-                    <el-input
-                      v-model="author.author_name"
-                      placeholder="Full name"
-                    />
+                    <el-select
+                      v-model="form.authors[index].author_name"
+                      filterable
+                      allow-create
+                      default-first-option
+                      :reserve-keyword="false"
+                      placeholder="Choose or type author name"
+                      style="width: 100%"
+                      @change="(value) => handleAuthorChange(value, index)"
+                    >
+                      <el-option
+                        v-for="item in authorsList"
+                        :key="item.id"
+                        :label="item.name"
+                        :value="item.id"
+                      />
+                    </el-select>
                   </el-form-item>
                 </el-col>
 

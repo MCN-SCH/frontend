@@ -14,9 +14,7 @@
 
     <!-- Main Layout -->
     <div class="app-layout">
-      <div class="sidebar-fixed">
         <SideBarAdmin />
-      </div>
 
       <main class="main-content">
         <div class="content-wrapper">

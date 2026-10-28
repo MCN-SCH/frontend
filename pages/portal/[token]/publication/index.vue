@@ -184,12 +184,12 @@
                     :step="1"
                     :marks="yearMarks"
                     @change="applyFilters"
-                    :height="40"
                   />
+
                   <div class="flex justify-between mt-3 text-xs text-gray-500">
-                    <span class="font-medium">{{ filters.yearRange[0] || minYear }}</span>
+                    <span class="font-medium">{{ filters.yearRange[0] }}</span>
                     <span>to</span>
-                    <span class="font-medium">{{ filters.yearRange[1] || maxYear }}</span>
+                    <span class="font-medium">{{ filters.yearRange[1] }}</span>
                   </div>
                 </div>
               </el-form-item>
@@ -459,11 +459,15 @@
           align="center"
         >
           <template #default="{ row }">
-            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-blue-50 border border-blue-200">
+            <div
+              class="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-blue-50 border border-blue-200"
+            >
               <el-icon class="w-3.5 h-3.5 text-blue-600">
                 <DocumentCopy />
               </el-icon>
-              <span class="text-sm font-bold text-blue-700">{{ row.citations }}</span>
+              <span class="text-sm font-bold text-blue-700">{{
+                row.citations
+              }}</span>
             </div>
           </template>
         </el-table-column>
@@ -542,14 +546,21 @@
       :close-on-click-modal="false"
       class="publication-view-dialog"
     >
-      <div v-if="viewPublicationData" v-loading="viewLoading" class="publication-details">
+      <div
+        v-if="viewPublicationData"
+        v-loading="viewLoading"
+        class="publication-details"
+      >
         <el-descriptions :column="2" border>
           <el-descriptions-item label="Title" :span="2">
             <span class="font-semibold">{{ viewPublicationData.title }}</span>
           </el-descriptions-item>
 
           <el-descriptions-item label="Type">
-            <el-tag :type="getTypeTagType(viewPublicationData.type)" size="small">
+            <el-tag
+              :type="getTypeTagType(viewPublicationData.type)"
+              size="small"
+            >
               {{ getTypeLabel(viewPublicationData.type) }}
             </el-tag>
           </el-descriptions-item>
@@ -580,7 +591,10 @@
 
           <el-descriptions-item label="DOI">
             <span v-if="viewPublicationData.doi" class="text-blue-600">
-              <el-link :href="`https://doi.org/${viewPublicationData.doi}`" target="_blank">
+              <el-link
+                :href="`https://doi.org/${viewPublicationData.doi}`"
+                target="_blank"
+              >
                 {{ viewPublicationData.doi }}
               </el-link>
             </span>
@@ -594,12 +608,17 @@
           <el-descriptions-item label="Citations">
             <div class="inline-flex items-center gap-2">
               <el-icon class="text-blue-600"><DocumentCopy /></el-icon>
-              <span class="font-bold text-blue-700">{{ viewPublicationData.citations || 0 }}</span>
+              <span class="font-bold text-blue-700">{{
+                viewPublicationData.citations || 0
+              }}</span>
             </div>
           </el-descriptions-item>
 
           <el-descriptions-item label="Featured">
-            <el-tag :type="viewPublicationData.is_featured ? 'warning' : 'info'" size="small">
+            <el-tag
+              :type="viewPublicationData.is_featured ? 'warning' : 'info'"
+              size="small"
+            >
               {{ viewPublicationData.is_featured ? 'Yes' : 'No' }}
             </el-tag>
           </el-descriptions-item>
@@ -633,7 +652,9 @@
               >
                 {{ keyword }}
               </el-tag>
-              <span v-if="!viewPublicationData.keywords?.length">No keywords</span>
+              <span v-if="!viewPublicationData.keywords?.length"
+                >No keywords</span
+              >
             </div>
           </el-descriptions-item>
 
@@ -646,22 +667,41 @@
               >
                 <span class="author-name">{{ author.author_name }}</span>
                 <span v-if="author.orcid" class="orcid-id">
-                  <el-link :href="`https://orcid.org/${author.orcid}`" target="_blank" type="info">
+                  <el-link
+                    :href="`https://orcid.org/${author.orcid}`"
+                    target="_blank"
+                    type="info"
+                  >
                     ORCID: {{ author.orcid }}
                   </el-link>
                 </span>
-                <span v-if="author.email" class="author-email">{{ author.email }}</span>
+                <span v-if="author.email" class="author-email">{{
+                  author.email
+                }}</span>
               </div>
-              <div v-if="!viewPublicationData.authors?.length">No authors listed</div>
+              <div v-if="!viewPublicationData.authors?.length">
+                No authors listed
+              </div>
             </div>
           </el-descriptions-item>
 
-          <el-descriptions-item label="PDF Document" :span="2" v-if="viewPublicationData.pdf_url">
+          <el-descriptions-item
+            label="PDF Document"
+            :span="2"
+            v-if="viewPublicationData.pdf_url"
+          >
             <div class="pdf-section">
-              <el-button type="primary" size="small" @click="downloadPdf(viewPublicationData.pdf_url)">
+              <el-button
+                type="primary"
+                size="small"
+                @click="downloadPdf(viewPublicationData.pdf_url)"
+              >
                 <el-icon><Download /></el-icon> Download PDF
               </el-button>
-              <el-button size="small" @click="viewPdf(viewPublicationData.pdf_url)">
+              <el-button
+                size="small"
+                @click="viewPdf(viewPublicationData.pdf_url)"
+              >
                 <el-icon><View /></el-icon> View PDF
               </el-button>
             </div>
@@ -671,7 +711,11 @@
         <!-- Additional Metadata -->
         <div v-if="viewPublicationData.metadata" class="mt-4">
           <el-divider content-position="left">Additional Metadata</el-divider>
-          <el-table :data="Object.entries(viewPublicationData.metadata)" size="small" border>
+          <el-table
+            :data="Object.entries(viewPublicationData.metadata)"
+            size="small"
+            border
+          >
             <el-table-column prop="0" label="Field" width="200" />
             <el-table-column prop="1" label="Value" />
           </el-table>
@@ -681,10 +725,16 @@
       <template #footer>
         <div class="dialog-footer">
           <el-button @click="viewDialogVisible = false">Close</el-button>
-          <el-button type="primary" @click="editPublication(viewPublicationData?.id)">
+          <el-button
+            type="primary"
+            @click="editPublication(viewPublicationData?.id)"
+          >
             <el-icon><Edit /></el-icon> Edit
           </el-button>
-          <el-button type="danger" @click="deleteFromDialog(viewPublicationData?.id)">
+          <el-button
+            type="danger"
+            @click="deleteFromDialog(viewPublicationData?.id)"
+          >
             <el-icon><Delete /></el-icon> Delete
           </el-button>
         </div>
@@ -759,7 +809,7 @@ const filters = reactive({
   type: '',
   badge: '',
   year: '',
-  yearRange: [null, null],
+  yearRange: [2000, new Date().getFullYear()],
   minCitations: null,
   maxCitations: null,
   isFeatured: false,
@@ -772,25 +822,35 @@ const filters = reactive({
   sortOrder: 'desc',
 })
 
-// Computed
 const minYear = computed(() => {
-  const years = filterOptions.value.years
-  return years.length > 0 ? Math.min(...years) : 2000
+  const years = filterOptions.value.years.map(Number).filter(Number.isFinite)
+
+  return years.length ? Math.min(...years) : 2000
 })
 
 const maxYear = computed(() => {
-  const years = filterOptions.value.years
-  return years.length > 0 ? Math.max(...years) : new Date().getFullYear()
+  const years = filterOptions.value.years.map(Number).filter(Number.isFinite)
+
+  return years.length ? Math.max(...years) : new Date().getFullYear()
+})
+
+const isFullYearRange = computed(() => {
+  return (
+    Number(filters.yearRange[0]) <= minYear.value &&
+    Number(filters.yearRange[1]) >= maxYear.value
+  )
 })
 
 const yearMarks = computed(() => {
   const marks = {}
-  const min = minYear.value
-  const max = maxYear.value
 
-  for (let year = min; year <= max; year += 5) {
-    marks[year] = year.toString()
+  for (let year = minYear.value; year <= maxYear.value; year += 5) {
+    marks[year] = String(year)
   }
+
+  // Always display the final year.
+  marks[maxYear.value] = String(maxYear.value)
+
   return marks
 })
 
@@ -871,7 +931,7 @@ const setQuickFilter = (type, value) => {
   switch (type) {
     case 'year':
       filters.year = value
-      filters.yearRange = [null, null]
+      filters.yearRange = [minYear.value, maxYear.value]
       break
     case 'highCitations':
       filters.minCitations = 100
@@ -957,14 +1017,24 @@ const viewPublication = async (id) => {
     viewPublicationData.value = publication
 
     // Parse keywords if it's a string
-    if (viewPublicationData.value.keywords && typeof viewPublicationData.value.keywords === 'string') {
-      viewPublicationData.value.keywords = viewPublicationData.value.keywords.split(',').map(k => k.trim())
+    if (
+      viewPublicationData.value.keywords &&
+      typeof viewPublicationData.value.keywords === 'string'
+    ) {
+      viewPublicationData.value.keywords = viewPublicationData.value.keywords
+        .split(',')
+        .map((k) => k.trim())
     }
 
     // Parse authors if needed
-    if (viewPublicationData.value.authors && typeof viewPublicationData.value.authors === 'string') {
+    if (
+      viewPublicationData.value.authors &&
+      typeof viewPublicationData.value.authors === 'string'
+    ) {
       try {
-        viewPublicationData.value.authors = JSON.parse(viewPublicationData.value.authors)
+        viewPublicationData.value.authors = JSON.parse(
+          viewPublicationData.value.authors,
+        )
       } catch {
         viewPublicationData.value.authors = []
       }
@@ -995,21 +1065,27 @@ const resetFilters = () => {
   applyFilters()
 }
 
-watch(() => filters.year, (newVal) => {
-  if (newVal) {
-    filters.yearRange = [null, null]
-  }
-})
+watch(
+  () => filters.year,
+  (newVal) => {
+    if (newVal) {
+      filters.yearRange = [minYear.value, maxYear.value]
+    }
+  },
+)
 
-watch(() => filters.yearRange, (newVal) => {
-  if (newVal[0] || newVal[1]) {
-    filters.year = ''
-  }
-})
+watch(
+  () => filters.yearRange,
+  (newVal) => {
+    if (newVal[0] || newVal[1]) {
+      filters.year = ''
+    }
+  },
+)
 
 const removeFilter = (key) => {
   if (key === 'yearRange') {
-    filters.yearRange = [null, null]
+    filters.yearRange = [minYear.value, maxYear.value]
   } else if (key === 'isFeatured' || key === 'hasDoi' || key === 'hasPdf') {
     filters[key] = false
   } else {

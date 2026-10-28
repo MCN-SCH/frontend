@@ -101,6 +101,7 @@ export const useAuthStore = defineStore('auth', () => {
     cookies.remove('mcn')
     cookies.remove('refresh_token')
     cookies.remove('token_type')
+    cookies.remove('user')
   }
 
   const verifyCode = async (credentials) => {

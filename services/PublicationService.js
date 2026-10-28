@@ -48,6 +48,11 @@ class PublicationService extends BaseService {
   async delete(id) {
     return await this._delete(`${this._prefix}/${id}`, {})
   }
+
+  //getLabAuthors
+  async getLabAuthors() {
+    return await this._get(`${this._prefix}/lab-authors`, {})
+  }
 }
 
 export default PublicationService
