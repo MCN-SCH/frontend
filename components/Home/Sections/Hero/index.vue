@@ -15,6 +15,9 @@ import {
 
 defineProps({
   showKoreanText: Boolean,
+  title: Array,
+  subTitle: Array,
+  laboratory: String,
 })
 
 const emit = defineEmits(['scrollTo'])
@@ -121,14 +124,14 @@ onMounted(() => {
                 class="text-3xl md:text-5xl lg:text-6xl font-black mb-4 leading-tight"
               >
                 <span class="block text-gray-900 dark:text-white">
-                  {{ $t('mobile_computing') }}
+                  {{ title }}
                 </span>
 
                 <span class="block mt-3">
                   <span
                     class="bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-400 bg-clip-text text-transparent"
                   >
-                    {{ $t('networking_lab') }}
+                    {{ subTitle }}
                   </span>
                   <Sparkles
                     class="w-8 h-8 md:w-10 md:h-10 inline-block ml-3 text-yellow-400"
@@ -141,7 +144,7 @@ onMounted(() => {
                 <div
                   class="w-12 h-0.5 bg-gradient-to-r from-blue-500 to-transparent"
                 ></div>
-                <span>{{ $t('schu_mcn_laboratory') }}</span>
+                <span>{{ laboratory }}</span>
               </div>
             </div>
 

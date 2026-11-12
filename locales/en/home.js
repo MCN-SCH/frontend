@@ -8,32 +8,35 @@ export default {
   facilities: 'Facilities',
   contact: 'Contact',
 
-  badge : 'Soonchunhyang University\'s Research Lab',
-  since : 'Since 2016',
-  mobile_computing : 'Mobile Computing',
-  networking_lab : '& Networking Lab',
-  schu_mcn_laboratory : 'SCHU MCN Laboratory',
-  AI_6G_Cloud_IoT_Security : 'AI • 6G • Cloud • IoT • Security',
-  research_papers : 'Research Papers',
-  researchers : 'Researchers',
-  research_funding : 'Research Funding',
-  active_projects : 'Active Projects',
-  explore_research : 'Explore Research',
-  join_our_team : 'Join Our Team',
-  research_focus : 'Research Focus',
-  research_area : 'Research Area',
-  key_achievements : 'Key Achievements',
-  international_collaborations : 'International Collaborations',
-  industry_partnerships : 'Industry Partnerships',
+  badge: "Soonchunhyang University's Research Lab",
+  since: 'Since 2016',
+  mobile_computing: 'Mobile Computing',
+  networking_lab: '& Networking Lab',
+  schu_mcn_laboratory: 'SCHU MCN Laboratory',
+  AI_6G_Cloud_IoT_Security: 'AI • 6G • Cloud • IoT • Security',
+  research_papers: 'Research Papers',
+  researchers: 'Researchers',
+  research_funding: 'Research Funding',
+  active_projects: 'Active Projects',
+  explore_research: 'Explore Research',
+  join_our_team: 'Join Our Team',
+  research_focus: 'Research Focus',
+  research_area: 'Research Area',
+  key_achievements: 'Key Achievements',
+  international_collaborations: 'International Collaborations',
+  industry_partnerships: 'Industry Partnerships',
 
   hero_slide_1_title: 'AI-Enhanced Mobile Computing',
-  hero_slide_1_description: 'Developing next-generation AI algorithms for mobile edge computing',
+  hero_slide_1_description:
+    'Developing next-generation AI algorithms for mobile edge computing',
 
   hero_slide_2_title: '6G Network Research',
-  hero_slide_2_description: 'Pioneering 6G communication technologies and standards',
+  hero_slide_2_description:
+    'Pioneering 6G communication technologies and standards',
 
   hero_slide_3_title: 'Cloud-Native Systems',
-  hero_slide_3_description: 'Building scalable cloud infrastructure for smart cities',
+  hero_slide_3_description:
+    'Building scalable cloud infrastructure for smart cities',
 
   hero_slide_4_title: 'IoT Security Solutions',
   hero_slide_4_description: 'Advanced security frameworks for IoT ecosystems',
@@ -52,4 +55,10 @@ export default {
 
   news: 'News',
 
+  aicr_menu: 'AICR Center',
+  aicr_center: 'AI Convergence Technology',
+  aicr_center_sub: 'Research Center',
+  schu_ai_center: 'SCHU AI Convergence Technology',
+  ai_hero_text:
+    'We create new value for the future society and lead innovative research, grounded in artificial intelligence and advanced convergence technologies.',
 }

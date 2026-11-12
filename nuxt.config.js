@@ -5,7 +5,7 @@ export default defineNuxtConfig({
   /* ----------------------------------
    * Global CSS
    * ---------------------------------- */
-  css: ["~/assets/scss/index.scss"],
+  css: ['~/assets/scss/index.scss'],
 
   /* ----------------------------------
    * PostCSS
@@ -21,15 +21,15 @@ export default defineNuxtConfig({
    * Modules
    * ---------------------------------- */
   modules: [
-    "@nuxtjs/eslint-module",
-    "@pinia/nuxt",
-    ["@vee-validate/nuxt", { autoImports: true }],
-    "dayjs-nuxt",
-    ["@vueuse/nuxt", { ssr: false }],
-    "@nuxtjs/sitemap",
-    "@element-plus/nuxt",
-    "nuxt-telegram-auth",
-    "nuxt-security",
+    '@nuxtjs/eslint-module',
+    '@pinia/nuxt',
+    ['@vee-validate/nuxt', { autoImports: true }],
+    'dayjs-nuxt',
+    ['@vueuse/nuxt', { ssr: false }],
+    '@nuxtjs/sitemap',
+    '@element-plus/nuxt',
+    'nuxt-telegram-auth',
+    'nuxt-security',
   ],
 
   i18n: {
@@ -50,7 +50,7 @@ export default defineNuxtConfig({
    * Element Plus
    * ---------------------------------- */
   elementPlus: {
-    importStyle: "css",
+    importStyle: 'css',
   },
 
   /* ----------------------------------
@@ -79,7 +79,7 @@ export default defineNuxtConfig({
       allowedHosts: true,
     },
     optimizeDeps: {
-      include: ["dayjs"],
+      include: ['dayjs'],
     },
   },
 
@@ -89,160 +89,212 @@ export default defineNuxtConfig({
   app: {
     head: {
       htmlAttrs: {
-        lang: "ko",
-        prefix: "og: http://ogp.me/ns#",
+        lang: 'ko',
+        prefix: 'og: http://ogp.me/ns#',
       },
-      titleTemplate: "%s | MCN - 모바일컴퓨팅네트워킹 연구실 | 순천향대학교",
-      title: "MCN 연구실",
+      titleTemplate: '%s | MCN - 모바일컴퓨팅네트워킹 연구실 | 순천향대학교',
+      title: 'MCN 연구실',
       meta: [
-        { charset: "utf-8" },
-        { name: "viewport", content: "width=device-width, initial-scale=1.0, maximum-scale=5.0" },
+        { charset: 'utf-8' },
+        {
+          name: 'viewport',
+          content: 'width=device-width, initial-scale=1.0, maximum-scale=5.0',
+        },
 
         // PRIMARY SEO - English
         {
-          name: "description",
-          content: "Mobile Computing & Networking Lab, Department of Software Convergence, Soonchunhyang University. 모바일컴퓨팅네트워킹 연구실 | 김석훈 교수 | 소프트웨어융합학과",
+          name: 'description',
+          content:
+            'Mobile Computing & Networking Lab, Department of Software Convergence, Soonchunhyang University. 모바일컴퓨팅네트워킹 연구실 | 김석훈 교수 | 소프트웨어융합학과',
         },
-        { name: "robots", content: "index, follow, max-snippet:-1, max-image-preview:large" },
-        { name: "googlebot", content: "index, follow, max-snippet:-1, max-image-preview:large" },
+        {
+          name: 'robots',
+          content: 'index, follow, max-snippet:-1, max-image-preview:large',
+        },
+        {
+          name: 'googlebot',
+          content: 'index, follow, max-snippet:-1, max-image-preview:large',
+        },
 
         // KEYWORDS (English & Korean)
-        { name: "keywords", content: [
-            "MCN",
-            "SCH",
-            "Soonchunhyang University",
-            "Mobile Computing",
-            "Networking Lab",
-            "김석훈",
-            "KIM Sokhoon",
-            "모바일컴퓨팅",
-            "네트워킹 연구실",
-            "순천향대학교",
-            "순천향대",
-            "소프트웨어융합학과",
-            "SCH University",
-            "Mobile Computing Lab",
-            "Networking Research",
-            "SCH Software Convergence",
-            "순천향대 소프트웨어",
-            "김석훈 교수",
-            "Professor KIM Sokhoon",
-            "이동통신 연구",
-            "Wireless Networking",
-            "IoT Research",
-            "SCH Research Lab",
-            "순천향대 컴퓨터공학",
-            "SCH Computer Science",
-            "5G 연구",
-            "인공지능 연구",
-            "AI Research",
-            "모바일 네트워킹",
-            "SCH AI Lab",
-            "순천향대 연구실",
-          ].join(", ") },
+        {
+          name: 'keywords',
+          content: [
+            'MCN',
+            'SCH',
+            'Soonchunhyang University',
+            'Mobile Computing',
+            'Networking Lab',
+            '김석훈',
+            'KIM Sokhoon',
+            '모바일컴퓨팅',
+            '네트워킹 연구실',
+            '순천향대학교',
+            '순천향대',
+            '소프트웨어융합학과',
+            'SCH University',
+            'Mobile Computing Lab',
+            'Networking Research',
+            'SCH Software Convergence',
+            '순천향대 소프트웨어',
+            '김석훈 교수',
+            'Professor KIM Sokhoon',
+            '이동통신 연구',
+            'Wireless Networking',
+            'IoT Research',
+            'SCH Research Lab',
+            '순천향대 컴퓨터공학',
+            'SCH Computer Science',
+            '5G 연구',
+            '인공지능 연구',
+            'AI Research',
+            '모바일 네트워킹',
+            'SCH AI Lab',
+            '순천향대 연구실',
+            'AI Convergence Technology Research Center',
+            'AI Convergence Technology',
+            'AI Convergence Technology Lab',
+            'AI Convergence'
+          ].join(', '),
+        },
 
         // AUTHOR & PUBLISHER
-        { name: "author", content: "MCN Lab, Soonchunhyang University" },
-        { name: "publisher", content: "Soonchunhyang University" },
-        { name: "copyright", content: `MCN Lab ${new Date().getFullYear()}` },
+        { name: 'author', content: 'MCN Lab, Soonchunhyang University' },
+        { name: 'publisher', content: 'Soonchunhyang University' },
+        { name: 'copyright', content: `MCN Lab ${new Date().getFullYear()}` },
 
         // Open Graph (Enhanced)
-        { property: "og:type", content: "website" },
-        { property: "og:site_name", content: "MCN 연구실 - 순천향대학교" },
-        { property: "og:title", content: "MCN 연구실 | 모바일컴퓨팅네트워킹 연구실 | Soonchunhyang University" },
+        { property: 'og:type', content: 'website' },
+        { property: 'og:site_name', content: 'MCN 연구실 - 순천향대학교' },
         {
-          property: "og:description",
-          content: "Mobile Computing & Networking Lab, Department of Software Convergence, Soonchunhyang University. 모바일컴퓨팅네트워킹 연구실 | 김석훈 교수 | 소프트웨어융합학과",
+          property: 'og:title',
+          content:
+            'MCN 연구실 | 모바일컴퓨팅네트워킹 연구실 | Soonchunhyang University',
         },
         {
-          property: "og:image",
-          content: "/images/mcn_white.png",
+          property: 'og:description',
+          content:
+            'Mobile Computing & Networking Lab, Department of Software Convergence, Soonchunhyang University. 모바일컴퓨팅네트워킹 연구실 | 김석훈 교수 | 소프트웨어융합학과',
         },
         {
-          property: "og:image:width",
-          content: "1200",
+          property: 'og:image',
+          content: '/images/mcn_white.png',
         },
         {
-          property: "og:image:height",
-          content: "630",
+          property: 'og:image:width',
+          content: '1200',
         },
         {
-          property: "og:url",
+          property: 'og:image:height',
+          content: '630',
+        },
+        {
+          property: 'og:url',
           content: process.env.APP_SITE_URL,
         },
-        { property: "og:locale", content: "ko_KR" },
-        { property: "og:locale:alternate", content: "en_US" },
+        { property: 'og:locale', content: 'ko_KR' },
+        { property: 'og:locale:alternate', content: 'en_US' },
 
         // Additional SEO
-        { name: "apple-mobile-web-app-capable", content: "yes" },
-        { name: "apple-mobile-web-app-status-bar-style", content: "black" },
-        { name: "theme-color", content: "#0a1628" },
-        { name: "referrer", content: "strict-origin-when-cross-origin" },
+        { name: 'apple-mobile-web-app-capable', content: 'yes' },
+        { name: 'apple-mobile-web-app-status-bar-style', content: 'black' },
+        { name: 'theme-color', content: '#0a1628' },
+        { name: 'referrer', content: 'strict-origin-when-cross-origin' },
 
         // Verification for search engines
-        { name: "google-site-verification", content: process.env.GOOGLE_SITE_VERIFICATION || "" },
-        { name: "naver-site-verification", content: process.env.NAVER_SITE_VERIFICATION || "" },
+        {
+          name: 'google-site-verification',
+          content: process.env.GOOGLE_SITE_VERIFICATION || '',
+        },
+        {
+          name: 'naver-site-verification',
+          content: process.env.NAVER_SITE_VERIFICATION || '',
+        },
       ],
       link: [
-        { rel: "icon", type: "image/png", sizes: "32x32", href: "/images/mcn_white.png" },
-        { rel: "icon", type: "image/png", sizes: "16x16", href: "/images/mcn_white.png" },
-        { rel: "apple-touch-icon", sizes: "180x180", href: "/images/mcn_white.png" },
-        { rel: "manifest", href: "/site.webmanifest" },
-        { rel: "canonical", href: process.env.APP_SITE_URL },
+        {
+          rel: 'icon',
+          type: 'image/png',
+          sizes: '32x32',
+          href: '/images/mcn_white.png',
+        },
+        {
+          rel: 'icon',
+          type: 'image/png',
+          sizes: '16x16',
+          href: '/images/mcn_white.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          sizes: '180x180',
+          href: '/images/mcn_white.png',
+        },
+        { rel: 'manifest', href: '/site.webmanifest' },
+        { rel: 'canonical', href: process.env.APP_SITE_URL },
 
         // Preconnect for performance
-        { rel: "preconnect", href: "https://fonts.googleapis.com" },
-        { rel: "preconnect", href: "https://fonts.gstatic.com", crossorigin: "anonymous" },
+        { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
+        {
+          rel: 'preconnect',
+          href: 'https://fonts.gstatic.com',
+          crossorigin: 'anonymous',
+        },
 
         // RSS Feed
-        { rel: "alternate", type: "application/rss+xml", title: "MCN Lab RSS Feed", href: "/feed.xml" },
+        {
+          rel: 'alternate',
+          type: 'application/rss+xml',
+          title: 'MCN Lab RSS Feed',
+          href: '/feed.xml',
+        },
       ],
       script: [
         {
-          type: "application/ld+json",
+          type: 'application/ld+json',
           children: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "ResearchOrganization",
-            "name": "MCN Lab - Mobile Computing & Networking Lab",
-            "alternateName": ["모바일컴퓨팅네트워킹 연구실", "MCN"],
-            "url": process.env.APP_SITE_URL,
-            "logo": `${process.env.APP_SITE_URL}/images/mcn_white.png`,
-            "description": "Mobile Computing & Networking Lab, Department of Software Convergence, Soonchunhyang University",
-            "foundingDate": "2000",
-            "founder": {
-              "@type": "Person",
-              "name": "KIM Sokhoon",
-              "alternateName": "김석훈",
-              "jobTitle": "Professor",
-              "affiliation": "Soonchunhyang University",
-              "email": "skim@sch.ac.kr",
-              "url": `${process.env.APP_SITE_URL}/people/professor-kim-sokhoon`,
+            '@context': 'https://schema.org',
+            '@type': 'ResearchOrganization',
+            name: 'MCN Lab - Mobile Computing & Networking Lab',
+            alternateName: ['모바일컴퓨팅네트워킹 연구실', 'MCN'],
+            url: process.env.APP_SITE_URL,
+            logo: `${process.env.APP_SITE_URL}/images/mcn_white.png`,
+            description:
+              'Mobile Computing & Networking Lab, Department of Software Convergence, Soonchunhyang University',
+            foundingDate: '2000',
+            founder: {
+              '@type': 'Person',
+              name: 'KIM Sokhoon',
+              alternateName: '김석훈',
+              jobTitle: 'Professor',
+              affiliation: 'Soonchunhyang University',
+              email: 'skim@sch.ac.kr',
+              url: `${process.env.APP_SITE_URL}/people/professor-kim-sokhoon`,
             },
-            "parentOrganization": {
-              "@type": "CollegeOrUniversity",
-              "name": "Soonchunhyang University",
-              "alternateName": "순천향대학교",
-              "url": "https://www.sch.ac.kr"
+            parentOrganization: {
+              '@type': 'CollegeOrUniversity',
+              name: 'Soonchunhyang University',
+              alternateName: '순천향대학교',
+              url: 'https://www.sch.ac.kr',
             },
-            "department": {
-              "@type": "Department",
-              "name": "Department of Software Convergence",
-              "alternateName": "소프트웨어융합학과",
-              "url": "https://software.sch.ac.kr"
+            department: {
+              '@type': 'Department',
+              name: 'Department of Software Convergence',
+              alternateName: '소프트웨어융합학과',
+              url: 'https://software.sch.ac.kr',
             },
-            "sameAs": [
-              "https://scholar.google.com/",
-              "https://www.researchgate.net/",
-              "https://github.com/",
-              "https://orcid.org/"
+            sameAs: [
+              'https://scholar.google.com/',
+              'https://www.researchgate.net/',
+              'https://github.com/',
+              'https://orcid.org/',
             ],
-            "potentialAction": {
-              "@type": "SearchAction",
-              "target": `${process.env.APP_SITE_URL}/search?q={search_term_string}`,
-              "query-input": "required name=search_term_string"
-            }
-          })
-        }
+            potentialAction: {
+              '@type': 'SearchAction',
+              target: `${process.env.APP_SITE_URL}/search?q={search_term_string}`,
+              'query-input': 'required name=search_term_string',
+            },
+          }),
+        },
       ],
     },
   },
@@ -251,48 +303,48 @@ export default defineNuxtConfig({
    * Sitemap (Enhanced)
    * ---------------------------------- */
   sitemap: {
-    hostname: process.env.APP_SITE_URL || "https://mcn.sch.ac.kr",
+    hostname: process.env.APP_SITE_URL || 'https://mcn.sch.ac.kr',
     gzip: true,
-    exclude: ["/admin/**", "/dashboard/**", "/maintenance"],
+    exclude: ['/admin/**', '/dashboard/**', '/maintenance'],
     routes: async () => {
       // You can fetch dynamic routes from your API here
       const staticRoutes = [
         // Main pages
-        "/",
-        "/about",
-        "/research",
-        "/publications",
-        "/people",
-        "/news",
-        "/contact",
+        '/',
+        '/about',
+        '/research',
+        '/publications',
+        '/people',
+        '/news',
+        '/contact',
 
         // Korean pages
-        "/ko",
-        "/ko/about",
-        "/ko/research",
-        "/ko/publications",
-        "/ko/people",
-        "/ko/news",
+        '/ko',
+        '/ko/about',
+        '/ko/research',
+        '/ko/publications',
+        '/ko/people',
+        '/ko/news',
 
         // Project pages
-        "/projects/mobile-computing",
-        "/projects/networking",
-        "/projects/iot",
-        "/projects/ai",
-        "/projects/5g",
+        '/projects/mobile-computing',
+        '/projects/networking',
+        '/projects/iot',
+        '/projects/ai',
+        '/projects/5g',
 
         // People
-        "/people/professor-kim-sokhoon",
-        "/people/researchers",
-        "/people/alumni",
+        '/people/professor-kim-sokhoon',
+        '/people/researchers',
+        '/people/alumni',
 
         // Publications by year
-        "/publications/2024",
-        "/publications/2023",
-        "/publications/2022",
-      ];
+        '/publications/2024',
+        '/publications/2023',
+        '/publications/2022',
+      ]
 
-      return staticRoutes;
+      return staticRoutes
     },
     // Add changefreq and priority
     defaults: {
@@ -309,87 +361,87 @@ export default defineNuxtConfig({
     headers: {
       // Basic Security Headers
       crossOriginEmbedderPolicy: false,
-      crossOriginOpenerPolicy: "same-origin",
-      crossOriginResourcePolicy: "same-origin",
+      crossOriginOpenerPolicy: 'same-origin',
+      crossOriginResourcePolicy: 'same-origin',
 
       // Additional Security Headers
-      xFrameOptions: "DENY",
-      xXSSProtection: "1; mode=block",
-      xContentTypeOptions: "nosniff",
-      referrerPolicy: "strict-origin-when-cross-origin",
+      xFrameOptions: 'DENY',
+      xXSSProtection: '1; mode=block',
+      xContentTypeOptions: 'nosniff',
+      referrerPolicy: 'strict-origin-when-cross-origin',
       permissionsPolicy: {
         geolocation: [],
         microphone: [],
         camera: [],
         payment: [],
         usb: [],
-        "fullscreen": ["self"],
+        fullscreen: ['self'],
       },
 
       // Enhanced CSP with more allowlist
       contentSecurityPolicy: {
-        "base-uri": ["'self'"],
-        "default-src": ["'self'"],
-        "img-src": [
+        'base-uri': ["'self'"],
+        'default-src': ["'self'"],
+        'img-src': [
           "'self'",
-          "data:",
-          "https:",
-          "http://localhost:8000",
-          "http://localhost:*",
-          "https://*.sch.ac.kr",
-          "https://*.googleapis.com",
-          "https://*.gstatic.com",
-          "https://*.githubusercontent.com",
-          "*.google.com"
+          'data:',
+          'https:',
+          'http://localhost:8000',
+          'http://localhost:*',
+          'https://*.sch.ac.kr',
+          'https://*.googleapis.com',
+          'https://*.gstatic.com',
+          'https://*.githubusercontent.com',
+          '*.google.com',
         ],
-        "script-src": [
+        'script-src': [
           "'self'",
           "'unsafe-inline'",
           "'unsafe-eval'",
-          "https://*.googleapis.com",
-          "https://*.gstatic.com",
-          "https://*.sch.ac.kr",
-          "https://*.googletagmanager.com",
-          "https://www.google.com",
+          'https://*.googleapis.com',
+          'https://*.gstatic.com',
+          'https://*.sch.ac.kr',
+          'https://*.googletagmanager.com',
+          'https://www.google.com',
         ],
-        "style-src": [
+        'style-src': [
           "'self'",
           "'unsafe-inline'",
-          "https://*.googleapis.com",
-          "https://*.gstatic.com",
+          'https://*.googleapis.com',
+          'https://*.gstatic.com',
         ],
-        "connect-src": [
+        'connect-src': [
           "'self'",
-          process.env.SERVER_API_URL || "",
-          "http://localhost",
-          "http://localhost:8000",
-          "http://localhost:80",
-          "http://127.0.0.1",
-          "http://127.0.0.1:8000",
-          "https://*.sch.ac.kr",
-          "https://*.googleapis.com",
-          "https://*.telegram.org",
-          "wss://*.telegram.org",
+          process.env.SERVER_API_URL || '',
+          'http://localhost',
+          'http://localhost:8000',
+          'http://localhost:80',
+          'http://127.0.0.1',
+          'http://127.0.0.1:8000',
+          'https://*.sch.ac.kr',
+          'https://*.googleapis.com',
+          'https://*.telegram.org',
+          'wss://*.telegram.org',
           //www.google.com
-          "https://www.google.com",
+          'https://www.google.com',
         ].filter(Boolean),
-        "font-src": [
+        'font-src': [
           "'self'",
-          "data:",
-          "https://*.gstatic.com",
-          "https://*.googleapis.com",
+          'data:',
+          'https://*.gstatic.com',
+          'https://*.googleapis.com',
         ],
-        "frame-src": [
+        'frame-src': [
           "'self'",
-          "https://*.sch.ac.kr",
-          "https://*.telegram.org",
-          "*.google.com",
-          "*.google.co.kr"
+          'https://*.sch.ac.kr',
+          'https://*.telegram.org',
+          '*.google.com',
+          '*.google.co.kr',
         ],
-        "media-src": ["'self'", "data:", "https:"],
-        "object-src": ["'none'"],
-        "worker-src": ["'self'", "blob:"],
-        "manifest-src": ["'self'"],
+        'media-src': ["'self'", 'data:', 'https:'],
+        'object-src': ["'none'"],
+        'worker-src': ["'self'", 'blob:'],
+        'manifest-src': ["'self'"],
       },
     },
 
@@ -404,9 +456,9 @@ export default defineNuxtConfig({
     // Rate Limiting
     rateLimiter: {
       tokensPerInterval: 100,
-      interval: "minute",
+      interval: 'minute',
       max: 1000,
-      driver: "memory",
+      driver: 'memory',
     },
 
     // XSS Protection
@@ -416,7 +468,7 @@ export default defineNuxtConfig({
       sanitizeHtmlOptions: {
         allowedTags: ['b', 'i', 'u', 'em', 'strong', 'a', 'p', 'br'],
         allowedAttributes: {
-          'a': ['href', 'target'],
+          a: ['href', 'target'],
         },
       },
     },
@@ -476,5 +528,5 @@ export default defineNuxtConfig({
     },
   },
 
-  compatibilityDate: "2024-12-07",
-});
+  compatibilityDate: '2024-12-07',
+})

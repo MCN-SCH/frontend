@@ -1,15 +1,15 @@
 <script setup>
 import { ref, onMounted, onBeforeUnmount } from 'vue'
-import { Sun, Moon } from 'lucide-vue-next'
+import { Sun, Moon, ChevronDown } from 'lucide-vue-next'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 
+const router = useRouter()
 const { t } = useI18n()
 const props = defineProps({
   darkMode: Boolean,
   currentLanguage: String,
 })
-
 const emit = defineEmits(['toggleDarkMode', 'toggleLanguage', 'scrollTo'])
 
 const isScrolled = ref(false)
@@ -24,25 +24,46 @@ const navLinks = [
   { id: 'projects', label: 'projects' },
   { id: 'news', label: 'news' },
   { id: 'contact', label: 'contact' },
+  { id: 'aicr-center', label: 'aicr_menu', route: '/aicr_center' },
 ]
 
 const handleScroll = () => {
   isScrolled.value = window.scrollY > 30
+}
+const openDropdown = ref(null)
+
+const toggleDropdown = (id) => {
+  openDropdown.value = openDropdown.value === id ? null : id
 }
 
 const scrollToSection = (id) => {
   activeSection.value = id
   emit('scrollTo', id)
   mobileMenuOpen.value = false
+  openDropdown.value = null
+}
+
+const handleNavigation = (link) => {
+  if (link.route) {
+    router.push(link.route)
+    activeSection.value = link.id
+    mobileMenuOpen.value = false
+    openDropdown.value = null
+    return
+  }
+
+  scrollToSection(link.id)
 }
 
 onMounted(() => {
   window.addEventListener('scroll', handleScroll)
-  //get current route and set activeSection accordingly
-  const router = useRouter()
+
   const currentRoute = router.currentRoute.value
+
   if (currentRoute.name === 'publications') {
     activeSection.value = 'publications'
+  } else if (currentRoute.name === 'aicr_center') {
+    activeSection.value = 'aicr-center'
   }
 })
 
@@ -75,31 +96,65 @@ onBeforeUnmount(() => {
 
       <!-- DESKTOP NAV -->
       <nav class="hidden lg:flex items-center gap-8">
-        <button
-          v-for="link in navLinks"
-          :key="link.id"
-          @click="scrollToSection(link.id)"
-          class="relative group text-sm font-medium"
-        >
-          <span
-            :class="[
-              'transition-colors duration-300',
+        <div v-for="link in navLinks" :key="link.id" class="relative group">
+          <!-- Menu with submenu -->
+          <button
+            v-if="link.children"
+            @click="toggleDropdown(link.id)"
+            class="flex items-center gap-1 text-sm font-medium"
+          >
+            <span
+              :class="
+                activeSection === link.id
+                  ? 'text-blue-600 dark:text-blue-400'
+                  : 'text-gray-700 dark:text-gray-300 group-hover:text-blue-500'
+              "
+            >
+              {{ link.label === 'publications' ? $t(link.label) : link.label }}
+            </span>
+
+            <ChevronDown
+              class="w-3.5 h-3.5 transition-transform"
+              :class="openDropdown === link.id ? 'rotate-180' : ''"
+            />
+          </button>
+
+          <button
+            v-else
+            @click="handleNavigation(link)"
+            class="text-sm font-medium transition-colors duration-300"
+            :class="
               activeSection === link.id
                 ? 'text-blue-600 dark:text-blue-400'
-                : 'text-gray-700 dark:text-gray-300 group-hover:text-blue-500',
-            ]"
+                : 'text-gray-700 dark:text-gray-300 hover:text-blue-500'
+            "
           >
             {{ $t(link.label) }}
-          </span>
+          </button>
 
-          <!-- underline -->
+          <!-- Dropdown -->
+          <div
+            v-if="link.children && openDropdown === link.id"
+            class="absolute top-full left-0 mt-3 w-52 rounded-xl bg-white dark:bg-gray-900 shadow-xl border border-gray-200 dark:border-gray-700 py-2 z-50"
+          >
+            <button
+              v-for="child in link.children"
+              :key="child.id"
+              @click="scrollToSection(child.id)"
+              class="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-gray-800 hover:text-blue-600"
+            >
+              {{ child.label }}
+            </button>
+          </div>
+
+          <!-- Underline -->
           <span
             class="absolute left-0 -bottom-1 h-[2px] bg-gradient-to-r from-blue-500 to-indigo-500 transition-all duration-300"
             :class="
               activeSection === link.id ? 'w-full' : 'w-0 group-hover:w-full'
             "
-          ></span>
-        </button>
+          />
+        </div>
       </nav>
 
       <!-- RIGHT CONTROLS -->

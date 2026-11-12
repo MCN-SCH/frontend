@@ -33,7 +33,8 @@ export default {
   hero_slide_2_description: '6G 통신 기술 및 표준 선도',
 
   hero_slide_3_title: '클라우드 네이티브 시스템',
-  hero_slide_3_description: '스마트 시티를 위한 확장 가능한 클라우드 인프라 구축',
+  hero_slide_3_description:
+    '스마트 시티를 위한 확장 가능한 클라우드 인프라 구축',
 
   hero_slide_4_title: 'IoT 보안 솔루션',
   hero_slide_4_description: 'IoT 생태계를 위한 첨단 보안 프레임워크 개발',
@@ -52,4 +53,11 @@ export default {
 
   news: '뉴스',
 
+  aicr_menu: 'AI융합기술센터',
+  aicr_center: 'AI융합기술',
+  aicr_center_sub: '연구센터',
+  schu_ai_center: 'SCHU AI융합기술',
+
+  ai_hero_text:
+    '인공지능과 첨단 융합 기술을 기반으로 미래 사회의 새로운 가치를 창출하고 혁신적인 연구를 선도합니다.',
 }

@@ -228,7 +228,12 @@ onMounted(() => {
 
     <!-- Hero Section -->
     <section id="home">
-      <HomeSectionsHero @scroll-to="scrollToSection" />
+      <HomeSectionsHero
+        @scroll-to="scrollToSection"
+        :title="$t('mobile_computing') || []"
+        :sub-title="$t('networking_lab') || []"
+        :laboratory="$t('schu_mcn_laboratory') || ''"
+      />
     </section>
 
     <!-- About Section -->
