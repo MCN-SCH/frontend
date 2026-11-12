@@ -18,9 +18,15 @@ import {
 } from '@/composables/useData.js'
 
 useSeoMeta({
-  title: 'Home',
+  title: 'ARCR Research Center',
   description:
-    'Welcome to our Research Lab - AI Convergence Technology Research Center',
+    'Welcome to the AI Convergence Technology Research Center (AI융합기술연구센터) at Soonchunhyang University. Discover our research in artificial intelligence, next-generation networks, cloud and edge computing, and trustworthy digital technologies.',
+  ogTitle:
+    'AI Convergence Technology Research Center | Soonchunhyang University',
+  ogDescription:
+    'Advancing intelligent technologies through interdisciplinary research, innovation, and global collaboration at Soonchunhyang University.',
+  ogType: 'website',
+  twitterCard: 'summary_large_image',
 })
 
 definePageMeta({
@@ -232,7 +238,7 @@ onMounted(() => {
         @scroll-to="scrollToSection"
         :title="$t('aicr_center') || []"
         :sub-title="$t('aicr_center_sub') || []"
-        :laboratory=" $t('schu_ai_center') || ''"
+        :laboratory="$t('schu_ai_center') || ''"
       />
     </section>
 
